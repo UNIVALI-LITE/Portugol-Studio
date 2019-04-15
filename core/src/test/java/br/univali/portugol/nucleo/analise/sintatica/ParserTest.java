@@ -44,7 +44,9 @@ public class ParserTest {
                 + "         x -= 10                                             \n"
                 + "         x *= 10                                             \n"
                 + "         x /= 10                                             \n"                        
-                + "     }                                                       "
+                + "         x += teste()                                        \n"                        
+                + "     }                                                       \n"
+                + "     funcao inteiro teste(){ retorne 1 }"
                 + "}                                                            "
         );
 

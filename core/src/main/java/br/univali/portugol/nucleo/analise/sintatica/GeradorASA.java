@@ -225,22 +225,35 @@ public class GeradorASA {
           */
         @Override
         public No visitAtribuicaoCompostaSoma(AtribuicaoCompostaSomaContext ctx) {
-            return criaNoOperacao(ctx, this, NoOperacaoSoma.class, ctx.OP_MAIS_IGUAL());
+            
+            NoExpressao opEsquerdo = (NoExpressao)ctx.expressao(0).accept(this);
+            NoExpressao opDireito = (NoExpressao)ctx.expressao(1).accept(this);
+
+            return new NoOperacaoAtribuicao(opEsquerdo, new NoOperacaoSoma(opEsquerdo, opDireito));
         }
 
         @Override
         public No visitAtribuicaoCompostaSubtracao(AtribuicaoCompostaSubtracaoContext ctx) {
-            return criaNoOperacao(ctx, this, NoOperacaoSubtracao.class, ctx.OP_MENOS_IGUAL());
+            NoExpressao opEsquerdo = (NoExpressao)ctx.expressao(0).accept(this);
+            NoExpressao opDireito = (NoExpressao)ctx.expressao(1).accept(this);
+
+            return new NoOperacaoAtribuicao(opEsquerdo, new NoOperacaoSubtracao(opEsquerdo, opDireito));
         }
 
         @Override
         public No visitAtribuicaoCompostaDivisao(AtribuicaoCompostaDivisaoContext ctx) {
-            return criaNoOperacao(ctx, this, NoOperacaoDivisao.class, ctx.OP_DIVISAO_IGUAL());
+            NoExpressao opEsquerdo = (NoExpressao)ctx.expressao(0).accept(this);
+            NoExpressao opDireito = (NoExpressao)ctx.expressao(1).accept(this);
+
+            return new NoOperacaoAtribuicao(opEsquerdo, new NoOperacaoDivisao(opEsquerdo, opDireito));
         }
 
         @Override
         public No visitAtribuicaoCompostaMultiplicacao(AtribuicaoCompostaMultiplicacaoContext ctx) {
-            return criaNoOperacao(ctx, this, NoOperacaoMultiplicacao.class, ctx.OP_MULTIPLICACAO_IGUAL());
+            NoExpressao opEsquerdo = (NoExpressao)ctx.expressao(0).accept(this);
+            NoExpressao opDireito = (NoExpressao)ctx.expressao(1).accept(this);
+
+            return new NoOperacaoAtribuicao(opEsquerdo, new NoOperacaoMultiplicacao(opEsquerdo, opDireito));
         }
 
         @Override
