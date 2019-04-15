@@ -164,6 +164,15 @@ public class ParserTest {
     }
     
     @Test
+    public void testListaDeclaracaoVetor() throws IOException, RecognitionException{
+        PortugolParser parser = novoParser("programa {                      "
+                + "     inteiro codewords_bloco1[78], codewords_bloco2[78], error_codewords_bloco1[20], error_codewords_bloco2[20]"
+                + "}                                                        ");
+        
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{
         PortugolParser parser = novoParser("programa {                      "
                 + "     inteiro x=0, y                                            "

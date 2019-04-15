@@ -47,6 +47,18 @@ public class GeradorASATest {
         Assert.assertEquals("erro no operando direito ", new Integer(2), ((NoInteiro)xor.getOperandoDireito()).getValor());
     }
     
+     @Test
+    public void testListaDeclaracaoVetor() throws IOException, RecognitionException{
+        PortugolParser parser = novoParser("programa {                      "
+                + "     inteiro codewords_bloco1[78], codewords_bloco2[78], error_codewords_bloco1[20], error_codewords_bloco2[20]"
+                + "}                                                        ");
+        
+         GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        Assert.assertEquals("Erro no número de declarações globais", 4, asa.getListaDeclaracoesGlobais().size());
+    }
+    
     @Test
     public void testAtribuicoesCompostas() throws Exception {
 

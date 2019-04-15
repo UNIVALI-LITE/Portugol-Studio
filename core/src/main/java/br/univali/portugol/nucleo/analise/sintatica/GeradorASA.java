@@ -45,14 +45,14 @@ public class GeradorASA {
             asa.setListaInclusoesBibliotecas(inclusoes);   
            
             List<ParserRuleContext> declaracoes = ctx.getRuleContexts(ParserRuleContext.class);
-            for (ParserRuleContext declaracao : declaracoes) {
-                NoDeclaracao noDeclaracao = (NoDeclaracao)declaracao.accept(this);
-                if (!(noDeclaracao instanceof NoListaDeclaracaoVariaveis)) {
+            for (ParserRuleContext contextoDeclaracao : declaracoes) {
+                NoDeclaracao noDeclaracao = (NoDeclaracao)contextoDeclaracao.accept(this);
+                if (!(noDeclaracao instanceof NoListaDeclaracoes)) {
                     asa.adicionaDeclaracaoGlobal(noDeclaracao);
                 }
-                else { // trata o caso de listas de declaração de variáveis globais
-                    for (NoDeclaracaoVariavel declaracaoVariavel : ((NoListaDeclaracaoVariaveis)noDeclaracao).getDeclaracoes()) {
-                        asa.adicionaDeclaracaoGlobal(declaracaoVariavel);
+                else { // trata o caso de listas de declaração de variáveis ou arrays globais
+                    for (Object declaracao : ((NoListaDeclaracoes)noDeclaracao).getDeclaracoes()) {
+                        asa.adicionaDeclaracaoGlobal((NoDeclaracao)declaracao);
                     }
                 }
             }
