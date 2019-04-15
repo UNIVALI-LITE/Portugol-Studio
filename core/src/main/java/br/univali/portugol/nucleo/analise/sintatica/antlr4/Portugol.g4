@@ -107,7 +107,7 @@ condicao
     :   expressao ;
 
 incrementoPara
-    :   expressao ;
+    :   expressao | atribuicaoComposta;
 
 escolha
     :   ESCOLHA ABRE_PARENTESES expressao FECHA_PARENTESES ABRE_CHAVES caso* FECHA_CHAVES ;   

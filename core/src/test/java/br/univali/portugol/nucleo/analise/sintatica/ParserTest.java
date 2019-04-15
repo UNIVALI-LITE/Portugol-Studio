@@ -178,7 +178,7 @@ public class ParserTest {
                 + "             escreva(i)                                      "
                 + "         }                                                   "
                 + "         inteiro x                                           "
-                 + "        para (x=0; x < x+1; x++) {                          "
+                 + "        para (x=0; x < x+1; x+=2) {                          "
                 + "             escreva(x)                                      "
                 + "         }                                                   "
                 + "     }                                                       "
