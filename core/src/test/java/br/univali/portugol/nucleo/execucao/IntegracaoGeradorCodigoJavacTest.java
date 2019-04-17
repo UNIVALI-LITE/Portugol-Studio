@@ -105,7 +105,7 @@ public class IntegracaoGeradorCodigoJavacTest
 
 			if (exemplo.getName().endsWith(".por"))
 			{
-				//System.out.println("\nTestando " + exemplo);
+				System.out.println("\nTestando " + exemplo);
 
 				String codigoPortugol = ResourceHandle.readExternalResourceFile(exemplo, "UTF-8");
 				AnalisadorAlgoritmo aa = new AnalisadorAlgoritmo();

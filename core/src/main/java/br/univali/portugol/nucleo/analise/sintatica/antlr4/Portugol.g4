@@ -4,33 +4,35 @@ import PortugolLexico;
 
 arquivo 
     :   PROGRAMA ABRE_CHAVES 
-        inclusaoBiblioteca* 
-        (declaracaoFuncao | (declaracaoVariavel | declaracaoListaVariaveis) | (declaracaoArray | declaracaoListaArray) | declaracaoMatriz)* 
+        inclusaoBiblioteca* (declaracaoFuncao | listaDeclaracoes)* 
         FECHA_CHAVES ;
 
 inclusaoBiblioteca
     : INCLUA BIBLIOTECA ID (OP_ALIAS_BIBLIOTECA ID)?;
 
+listaDeclaracoes
+    :  CONSTANTE? TIPO declaracao (',' declaracao)*;
+
+declaracao
+    :   declaracaoVariavel | declaracaoArray | declaracaoMatriz ;
+
 declaracaoVariavel
-    :  CONSTANTE? TIPO ID (OP_ATRIBUICAO expressao)? ;
-
-declaracaoListaVariaveis
-    : declaracaoVariavel itemListaVariaveis*;
-
-itemListaVariaveis
-    : (',' ID (OP_ATRIBUICAO expressao)?) ;
+    : ID (OP_ATRIBUICAO expressao)? ;
 
 declaracaoMatriz
-    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoMatriz)? ;
+    : ID ABRE_COLCHETES linhaMatriz? FECHA_COLCHETES ABRE_COLCHETES colunaMatriz? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoMatriz)? ;
 
 inicializacaoMatriz
     :  ABRE_CHAVES inicializacaoArray (',' inicializacaoArray)* FECHA_CHAVES;  
 
-declaracaoArray
-    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoArray)? ;
+linhaMatriz
+    :   tamanhoArray ;
 
-declaracaoListaArray
-    :   declaracaoArray (',' ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoArray)?)* ;
+colunaMatriz
+    :   tamanhoArray ;
+
+declaracaoArray
+    :   ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoArray)? ;
 
 inicializacaoArray
     :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
@@ -55,10 +57,7 @@ parametroMatriz
     :   ABRE_COLCHETES FECHA_COLCHETES ABRE_COLCHETES FECHA_COLCHETES ;
 
 comando
-    :   declaracaoVariavel   
-    |   declaracaoListaVariaveis
-    |   declaracaoArray         
-    |   declaracaoMatriz
+    :   listaDeclaracoes   
     |   se   
     |   enquanto
     |   facaEnquanto
@@ -101,8 +100,7 @@ listaComandos
 
 inicializacaoPara
     :   atribuicao                      // quando a variável é declarada fora do loop e apenas inicializada dentro dele
-    |   declaracaoVariavel              // apenas uma variável declarada dentro do loop (o caso mais comum)
-    |   declaracaoListaVariaveis        // lista de variáveis declaradas no loop
+    |   listaDeclaracoes              
     |   ID
 ; 
 

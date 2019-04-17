@@ -61,61 +61,110 @@ public class GeradorASA {
         }
 
         @Override
-        public No visitDeclaracaoListaArray(DeclaracaoListaArrayContext ctx) {
-            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoArray().TIPO().getText());
-            boolean constante = ctx.declaracaoArray().CONSTANTE() != null;
+        public No visitListaDeclaracoes(ListaDeclaracoesContext ctx) {
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            boolean constante = ctx.CONSTANTE() != null;
             
-            NoListaDeclaracaoVetores no = new NoListaDeclaracaoVetores(tipo, constante);
+            NoListaDeclaracoes lista = new NoListaDeclaracoes(tipo, constante);
             
-            // trata o primeiro vetor da lista
-            no.adicionaDeclaracao((NoDeclaracaoVetor)ctx.declaracaoArray().accept(this));
-            
-            int totalVetores = ctx.ID().size(); // trata os outros arrays da lista
-            for (int i = 0; i < totalVetores; i++) {
-                String nomeVetor = ctx.ID(i).getText();
-                
-                NoExpressao tamanho = (ctx.tamanhoArray(i) != null) ? (NoExpressao)ctx.tamanhoArray(i).accept(this) : null;
-                
-                NoDeclaracaoVetor noVetor = new NoDeclaracaoVetor(nomeVetor, tipo, tamanho, constante);
-                
-                InicializacaoArrayContext inicializacao = ctx.inicializacaoArray(i);
-                if (inicializacao != null) { // o vetor tem inicialização?
-                    noVetor.setInicializacao((NoExpressao)inicializacao.accept(this));
-                }
-                
-                no.adicionaDeclaracao(noVetor);
+            for (DeclaracaoContext declaracaoContext : ctx.declaracao()) {
+                NoDeclaracao noDeclaracao = (NoDeclaracao)declaracaoContext.accept(this);
+               lista.adicionaDeclaracao(noDeclaracao);
             }
-
-            return no;
+            
+            return lista;
         }
         
+//        @Override 
+//        public No visitDeclaracaoListaMatriz(DeclaracaoListaMatrizContext ctx) {
+//            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoMatriz().TIPO().getText());
+//            boolean constante = ctx.declaracaoMatriz().CONSTANTE() != null;
+//            
+//            NoListaDeclaracaoMatriz no = new NoListaDeclaracaoMatriz(tipo, constante);
+//            
+//            // trata a primeira matriz da lista
+//            no.adicionaDeclaracao((NoDeclaracaoMatriz)ctx.declaracaoMatriz().accept(this));
+//            
+//            int totalMatrizes = ctx.definicaoMatriz().size(); // trata as outras matrizes da lista
+//            for (int i = 0; i < totalMatrizes; i++) {
+//                DefinicaoMatrizContext definicao = ctx.definicaoMatriz(i);
+//                String nomeMatriz = definicao.ID().getText();
+//                
+//                NoExpressao linhas = (definicao.linhaMatriz() != null) ? (NoExpressao)definicao.linhaMatriz().accept(this) : null;
+//                NoExpressao colunas = (definicao.colunaMatriz() != null) ? (NoExpressao)definicao.colunaMatriz().accept(this) : null;
+//                
+//                NoDeclaracaoMatriz noMatriz = new NoDeclaracaoMatriz(nomeMatriz, tipo, linhas, colunas, constante);
+//                
+//                InicializacaoMatrizContext inicializacao = definicao.inicializacaoMatriz();
+//                if (inicializacao != null) { // a matriz tem inicialização?
+//                    noMatriz.setInicializacao((NoExpressao)inicializacao.accept(this));
+//                }
+//                
+//                no.adicionaDeclaracao(noMatriz);
+//            }
+//
+//            return no;
+//        }
+        
 
-        @Override
-        public No visitDeclaracaoListaVariaveis(DeclaracaoListaVariaveisContext ctx) {
-            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoVariavel().TIPO().getText());
-            boolean constante = ctx.declaracaoVariavel().CONSTANTE() != null;
-            
-            NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo, constante);
-            
-            // trata a primeira variável da lista
-            no.adicionaDeclaracao((NoDeclaracaoVariavel)ctx.declaracaoVariavel().accept(this));
-            
-            int totalVariaveis = ctx.itemListaVariaveis().size(); // trata as outras variáveis da lista
-            for (int i = 0; i < totalVariaveis; i++) {
-                String nomeVariavel = ctx.itemListaVariaveis(i).ID().getText();
-                
-                NoDeclaracaoVariavel noVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipo, constante);
-                
-                ExpressaoContext inicializacao = ctx.itemListaVariaveis(i).expressao();
-                if (inicializacao != null) { // a variável tem inicialização?
-                    noVariavel.setInicializacao((NoExpressao)inicializacao.accept(this));
-                }
-                
-                no.adicionaDeclaracao(noVariavel);
-            }
+//        @Override
+//        public No visitDeclaracaoListaArray(DeclaracaoListaArrayContext ctx) {
+//            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoArray().TIPO().getText());
+//            boolean constante = ctx.declaracaoArray().CONSTANTE() != null;
+//            
+//            NoListaDeclaracaoVetores no = new NoListaDeclaracaoVetores(tipo, constante);
+//            
+//            // trata o primeiro vetor da lista
+//            no.adicionaDeclaracao((NoDeclaracaoVetor)ctx.declaracaoArray().accept(this));
+//            
+//            int totalVetores = ctx.definicaoArray().size(); // trata os outros arrays da lista
+//            for (int i = 0; i < totalVetores; i++) {
+//                
+//                DefinicaoArrayContext definicao = ctx.definicaoArray(i);
+//                String nomeVetor = definicao.ID().getText();
+//                
+//                NoExpressao tamanho = (definicao.tamanhoArray() != null) ? (NoExpressao)definicao.tamanhoArray().accept(this) : null;
+//                
+//                NoDeclaracaoVetor noVetor = new NoDeclaracaoVetor(nomeVetor, tipo, tamanho, constante);
+//                
+//                InicializacaoArrayContext inicializacao = definicao.inicializacaoArray();
+//                if (inicializacao != null) { // o vetor tem inicialização?
+//                    noVetor.setInicializacao((NoExpressao)inicializacao.accept(this));
+//                }
+//                
+//                no.adicionaDeclaracao(noVetor);
+//            }
+//
+//            return no;
+//        }
+        
 
-            return no;
-        }
+//        @Override
+//        public No visitDeclaracaoListaVariaveis(DeclaracaoListaVariaveisContext ctx) {
+//            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoVariavel().TIPO().getText());
+//            boolean constante = ctx.declaracaoVariavel().CONSTANTE() != null;
+//            
+//            NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo, constante);
+//            
+//            // trata a primeira variável da lista
+//            no.adicionaDeclaracao((NoDeclaracaoVariavel)ctx.declaracaoVariavel().accept(this));
+//            
+//            int totalVariaveis = ctx.itemListaVariaveis().size(); // trata as outras variáveis da lista
+//            for (int i = 0; i < totalVariaveis; i++) {
+//                String nomeVariavel = ctx.itemListaVariaveis(i).ID().getText();
+//                
+//                NoDeclaracaoVariavel noVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipo, constante);
+//                
+//                ExpressaoContext inicializacao = ctx.itemListaVariaveis(i).expressao();
+//                if (inicializacao != null) { // a variável tem inicialização?
+//                    noVariavel.setInicializacao((NoExpressao)inicializacao.accept(this));
+//                }
+//                
+//                no.adicionaDeclaracao(noVariavel);
+//            }
+//
+//            return no;
+//        }
         
         @Override
         public No visitDeclaracaoFuncao(PortugolParser.DeclaracaoFuncaoContext ctx) {
@@ -270,7 +319,10 @@ public class GeradorASA {
                     blocos.add(bloco);
                 }
                 else { // trata a lista de declarações (variáveis ou arrays) como um 'amontoado' de declarações
-                    blocos.addAll(((NoListaDeclaracoes)bloco).getDeclaracoes());
+                    List<NoDeclaracao> declaracoes = ((NoListaDeclaracoes)bloco).getDeclaracoes();
+                    for (NoDeclaracao declaracao : declaracoes) {
+                        blocos.add((NoBloco)declaracao);
+                    }
                 }
             }
             return blocos;
@@ -318,9 +370,10 @@ public class GeradorASA {
 
         @Override
         public No visitDeclaracaoVariavel(PortugolParser.DeclaracaoVariavelContext ctx) {
-            TipoDado tipoVariavel = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            ListaDeclaracoesContext listaDeclaracoes = (ListaDeclaracoesContext)ctx.getParent().getParent();
+            TipoDado tipoVariavel = TipoDado.obterTipoDadoPeloNome(listaDeclaracoes.TIPO().getText());
             String nomeVariavel = ctx.ID().getText();
-            boolean constante = ctx.CONSTANTE() != null;
+            boolean constante = listaDeclaracoes.CONSTANTE() != null;
             NoDeclaracaoVariavel noDeclaracaoVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipoVariavel, constante);
 
             // a declaração da variável tem uma inicialização?
@@ -330,9 +383,9 @@ public class GeradorASA {
             }
             
             noDeclaracaoVariavel.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
-            noDeclaracaoVariavel.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            noDeclaracaoVariavel.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(listaDeclaracoes.TIPO()));
             
-            noDeclaracaoVariavel.setTrechoCodigoFonte(getTrechoCodigoFonte(constante ? ctx.CONSTANTE() : ctx.TIPO(), ctx.getText().length()));
+            noDeclaracaoVariavel.setTrechoCodigoFonte(getTrechoCodigoFonte(constante ? listaDeclaracoes.CONSTANTE() : listaDeclaracoes.TIPO(), ctx.getText().length()));
             
             return noDeclaracaoVariavel;
         }
@@ -369,20 +422,21 @@ public class GeradorASA {
 
         @Override
         public No visitDeclaracaoMatriz(DeclaracaoMatrizContext ctx) {
-            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            ListaDeclaracoesContext listaDeclaracoes = (ListaDeclaracoesContext)ctx.getParent().getParent();
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(listaDeclaracoes.TIPO().getText());
             String nome = ctx.ID().getText();
             
             NoExpressao expressaoLinhas = null;
-            if (ctx.tamanhoArray(0) != null) {
-                 expressaoLinhas = (NoExpressao) ctx.tamanhoArray(0).accept(this);
+            if (ctx.linhaMatriz() != null) {
+                 expressaoLinhas = (NoExpressao) ctx.linhaMatriz().accept(this);
             }
             
             NoExpressao expressaoColunas = null;
-            if (ctx.tamanhoArray(1) != null) {
-                 expressaoColunas = (NoExpressao) ctx.tamanhoArray(1).accept(this);
+            if (ctx.colunaMatriz() != null) {
+                 expressaoColunas = (NoExpressao) ctx.colunaMatriz().accept(this);
             }
             
-            boolean constante = ctx.CONSTANTE() != null;
+            boolean constante = listaDeclaracoes.CONSTANTE() != null;
             
             NoDeclaracaoMatriz matriz = new NoDeclaracaoMatriz(nome, tipo, expressaoLinhas, expressaoColunas, constante);
             
@@ -392,10 +446,10 @@ public class GeradorASA {
             }
             
             matriz.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
-            matriz.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            matriz.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(listaDeclaracoes.TIPO()));
             
             // TODO TRATAR as constates
-            matriz.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
+            matriz.setTrechoCodigoFonte(getTrechoCodigoFonte(listaDeclaracoes.TIPO(), ctx.getText().length()));
             
             return matriz; 
         }
@@ -441,7 +495,8 @@ public class GeradorASA {
         
         @Override
         public No visitDeclaracaoArray(DeclaracaoArrayContext ctx) {
-            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            ListaDeclaracoesContext listaDeclaracoes = (ListaDeclaracoesContext)ctx.getParent().getParent();
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(listaDeclaracoes.TIPO().getText());
             String nome = ctx.ID().getText();
             
             NoExpressao tamanho = null;
@@ -450,7 +505,7 @@ public class GeradorASA {
             }
             
             
-            boolean constante = ctx.CONSTANTE() != null;
+            boolean constante = listaDeclaracoes.CONSTANTE() != null;
             
             NoDeclaracaoVetor vetor = new NoDeclaracaoVetor(nome, tipo, tamanho, constante);
             
@@ -460,10 +515,10 @@ public class GeradorASA {
             }
             
             vetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
-            vetor.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            vetor.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(listaDeclaracoes.TIPO()));
             
             // TODO TRATAR as constates
-            vetor.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
+            vetor.setTrechoCodigoFonte(getTrechoCodigoFonte(listaDeclaracoes.TIPO(), ctx.getText().length()));
             
             return vetor; 
         }
@@ -475,14 +530,21 @@ public class GeradorASA {
             PortugolParser.CondicaoContext condicao = contexto.condicao();
             PortugolParser.IncrementoParaContext incrementoPara = contexto.incrementoPara();
 
+            for (int i = 0; i < 10; i++) {
+                
+            }
+            
             NoPara noPara = new NoPara();
 
             if (inicializacaoPara != null) {
                 List<NoBloco> inicializacoes = new ArrayList<>();
                 if (inicializacaoPara.ID() == null) { // se NÃO foi usada uma referência para variável na inicialização do para
                     NoBloco blocoInicializacao = (NoBloco)inicializacaoPara.accept(this);
-                    if (blocoInicializacao instanceof NoListaDeclaracaoVariaveis) {
-                        inicializacoes.addAll(((NoListaDeclaracaoVariaveis)blocoInicializacao).getDeclaracoes());
+                    if (blocoInicializacao instanceof NoListaDeclaracoes) {
+                        List<NoDeclaracao> declaracoes = ((NoListaDeclaracoes)blocoInicializacao).getDeclaracoes();
+                        for (NoDeclaracao declaracao : declaracoes) {
+                            inicializacoes.add((NoBloco)declaracao);
+                        }
                     }
                     else {
                         inicializacoes.add(blocoInicializacao); // declaração única de variável ou atribuição

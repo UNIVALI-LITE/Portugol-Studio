@@ -23,6 +23,26 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testListaDeclaracaoMatrizes() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "   real veiculos[10][6], galoes[][] = {{}}, pontos_reparo[3][8]   "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        Assert.assertEquals("Erro no número de declarações globais", 3, asa.getListaDeclaracoesGlobais().size());
+        
+        List<NoDeclaracao> declaracoes = asa.getListaDeclaracoesGlobais();
+        assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)declaracoes.get(0), "veiculos", 10, 6);
+        assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)declaracoes.get(1), "galoes", new Object[][]{{}});//, 4, 2);
+        assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)declaracoes.get(2), "pontos_reparo", 3, 8);
+    }
+    
+    @Test
     public void testXor() throws Exception {
 
         PortugolParser parser = novoParser(

@@ -6,11 +6,10 @@ import java.util.List;
 /**
  *
  * @author Elieser
- * @param <T>
  */
-public abstract class NoListaDeclaracoes <T extends NoDeclaracao> extends NoBloco implements NoDeclaracao {
+public class NoListaDeclaracoes extends NoBloco implements NoDeclaracao {
     
-    protected final List<T> declaracoes = new ArrayList<>();
+    protected final List<NoDeclaracao> declaracoes = new ArrayList<>();
     protected final TipoDado tipo;
     protected final boolean constante;
 
@@ -19,10 +18,18 @@ public abstract class NoListaDeclaracoes <T extends NoDeclaracao> extends NoBloc
         this.constante = constante;
     }
 
-    public void adicionaDeclaracao(T declaracao) {
+    public void adicionaDeclaracao(NoDeclaracao declaracao) {
         declaracoes.add(declaracao);
     }
 
+    @Override
+    public Object aceitar(VisitanteASA visitante) throws ExcecaoVisitaASA {
+        for (NoDeclaracao declaracao : declaracoes) {
+            declaracao.aceitar(visitante);
+        }
+        return null;
+    }
+    
     public TipoDado getTipo() {
         return tipo;
     }
@@ -31,12 +38,12 @@ public abstract class NoListaDeclaracoes <T extends NoDeclaracao> extends NoBloc
         return constante;
     }
 
-    public List<T> getDeclaracoes() {
+    public List<NoDeclaracao> getDeclaracoes() {
         return declaracoes;
     }
     
     @Override
-    public String getNome() { // TODO remover este método da Interface No Declaracao
+    public String getNome() { // TODO remover este método da Interface NoDeclaracao
         return "";
     }
     

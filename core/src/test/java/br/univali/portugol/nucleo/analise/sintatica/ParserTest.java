@@ -1,12 +1,10 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
-import br.univali.portugol.nucleo.ResourceHandle;
 import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
-import java.io.File;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Recognizer;
@@ -20,6 +18,20 @@ import org.junit.Test;
  */
 public class ParserTest {
 
+    // 
+    
+    @Test
+    public void testListaDeclaracaoMatrizes() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "   real veiculos[10][6], galoes[4][2], pontos_reparo[4][2]   "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
     @Test
     public void testCaracter() throws Exception {
 
