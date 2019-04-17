@@ -58,18 +58,13 @@ LOGICO: VERDADEIRO | FALSO ;
 VERDADEIRO:    'verdadeiro' ;
 FALSO:         'falso' ;
 
-CARACTER:       '\'' ( SEQ_ESC | ~('\''|'\\') ) '\'' ;
+//CARACTER:       '\'' ( SEQ_ESC | ~('\''|'\\') ) '\'' ;
+CARACTER:       '\'' ('\\'? .)?? '\'' ;  
 
 fragment DIGIT_HEX: ('0'..'9'|'a'..'f'|'A'..'F') ;
 
-//fragment SEQ_ESC:	'\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\') | ESC_UNICODE | ESC_OCTAL ;
-fragment SEQ_ESC:       '\\' ('b'|'t'|'n'|'f'|'r'|'\''|'\\') | ESC_UNICODE | ESC_OCTAL ;
-
-fragment ESC_OCTAL:     '\\' ('0'..'3') ('0'..'7') ('0'..'7') | '\\' ('0'..'7') ('0'..'7') | '\\' ('0'..'7') ;
-
-fragment ESC_UNICODE:   '\\' 'u' DIGIT_HEX DIGIT_HEX DIGIT_HEX DIGIT_HEX ;
-
-STRING:         '"' ( SEQ_ESC | ~('\\'|'"') )* '"' ;
+STRING: '"' ('\\"'|.)*? '"' ; // usando nongreedy operador *?, ver pág 283 do livro Antlr4
+          
 ID:             LETRA (LETRA | [0-9] | '_')* ;
 
 fragment LETRA: [a-zA-Z] ;

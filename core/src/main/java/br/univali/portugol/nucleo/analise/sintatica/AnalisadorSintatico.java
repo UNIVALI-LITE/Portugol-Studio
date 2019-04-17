@@ -206,7 +206,7 @@ public final class AnalisadorSintatico
         System.out.println("Contexto atual: " + pilhaContexto.peek());
         System.out.println();
 
-        /*
+         /*
          * @TODO @author manoelcampos O código viola o Open/Closed Principle (OCP),
          * uma vez que para nova exceção, um novo if precisará ser inserido.
          * O código não utiliza polimorfismo para traduzir o erro de uma forma independente de qual classe seja.

@@ -1,10 +1,12 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
+import br.univali.portugol.nucleo.ResourceHandle;
 import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import java.io.File;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Recognizer;
@@ -18,6 +20,19 @@ import org.junit.Test;
  */
 public class ParserTest {
 
+    @Test
+    public void testStringsComScapes() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "   cadeia x = \"A posição do texto \\\"CA\\\" \""
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+        
     @Test
     public void testXor() throws Exception {
 

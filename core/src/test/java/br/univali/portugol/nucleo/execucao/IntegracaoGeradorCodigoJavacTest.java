@@ -36,6 +36,7 @@ import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.execucao.gerador.GeradorCodigoJava;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import java.nio.charset.Charset;
 
 /**
  * @author Elieser
@@ -106,7 +107,7 @@ public class IntegracaoGeradorCodigoJavacTest
 			{
 				//System.out.println("\nTestando " + exemplo);
 
-				String codigoPortugol = ResourceHandle.readExternalResourceFile(exemplo);
+				String codigoPortugol = ResourceHandle.readExternalResourceFile(exemplo, "UTF-8");
 				AnalisadorAlgoritmo aa = new AnalisadorAlgoritmo();
 				ResultadoAnalise resultado = aa.analisar(codigoPortugol);
 
