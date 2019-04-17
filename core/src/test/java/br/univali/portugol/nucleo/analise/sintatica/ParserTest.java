@@ -21,6 +21,23 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testCaracter() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "   caracter x = 'a'                                          "
+                + "   caracter y = '\\n'                                        "    
+                + "   caracter z = '\\033'                                      "   
+                + "   caracter w = '\\u0337'                                    " 
+                + "   caracter v = '\\\\'                                       " 
+                + "   caracter k = '\\''                                        " 
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testStringsComScapes() throws Exception {
 
         PortugolParser parser = novoParser(

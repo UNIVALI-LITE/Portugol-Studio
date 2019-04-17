@@ -58,8 +58,15 @@ LOGICO: VERDADEIRO | FALSO ;
 VERDADEIRO:    'verdadeiro' ;
 FALSO:         'falso' ;
 
-//CARACTER:       '\'' ( SEQ_ESC | ~('\''|'\\') ) '\'' ;
-CARACTER:       '\'' ('\\'? .)?? '\'' ;  
+CARACTER:               '\'' ( ESC_CARACTER | ~('\'')) '\'' ;
+
+fragment SEQ_ESC:       '\\' ('b'|'t'|'n'|'f'|'r'|'\\')  |   ESC_UNICODE  |   ESC_OCTAL   ;
+
+fragment ESC_OCTAL:	'\\' ('0'..'3') ('0'..'7') ('0'..'7')  |   '\\' ('0'..'7') ('0'..'7')    |   '\\' ('0'..'7')    ;
+
+fragment ESC_UNICODE:	'\\' 'u' DIGIT_HEX DIGIT_HEX DIGIT_HEX DIGIT_HEX  ;
+
+fragment ESC_CARACTER:  SEQ_ESC | '\\\'' ;
 
 fragment DIGIT_HEX: ('0'..'9'|'a'..'f'|'A'..'F') ;
 
