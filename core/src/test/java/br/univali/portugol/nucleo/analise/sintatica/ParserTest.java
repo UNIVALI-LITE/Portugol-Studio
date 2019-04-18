@@ -122,7 +122,7 @@ public class ParserTest {
                 + "     inteiro b = 0Xababa                                     \n"
                 + "     inteiro c = 0Xabab                                      \n"
                 + "     inteiro d = 0Xaba                                       \n"
-                + "     inteiro e = 0Xab                                        \n"
+                + "     inteiro g = 0Xab                                        \n"
                 + "     inteiro f = 0Xa                                         \n"                        
                 + "}                                                            "
         );
