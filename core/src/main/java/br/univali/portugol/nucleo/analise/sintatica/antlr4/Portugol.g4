@@ -119,17 +119,20 @@ caso
 pare
     : PARE ;
 
+indiceArray
+    :   ABRE_COLCHETES expressao FECHA_COLCHETES ;
+
 expressao
     :
         escopoBiblioteca? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES                 #chamadaFuncao    // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
-    |   escopoBiblioteca? ID ABRE_COLCHETES expressao FECHA_COLCHETES                              #referenciaArray  // array como a[i]
-    |   escopoBiblioteca? ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)? #referenciaMatriz // a[i][j]
+    |   escopoBiblioteca? ID indiceArray                                                        #referenciaArray  // array como a[i]
+    |   escopoBiblioteca? ID indiceArray indiceArray?                                           #referenciaMatriz // a[i][j]
     |   OP_SUBTRACAO expressao                                                                  #menosUnario 
     |   OP_NAO expressao                                                                        #negacao
-    |   ID OP_INCREMENTO_UNARIO                                                                 #incrementoUnarioPosfixado // x++
-    |   OP_INCREMENTO_UNARIO ID                                                                 #incrementoUnarioPrefixado // ++x
-    |   ID OP_DECREMENTO_UNARIO                                                                 #decrementoUnarioPosfixado // x--
-    |   OP_DECREMENTO_UNARIO ID                                                                 #decrementoUnarioPrefixado // --x
+    |   ID (indiceArray indiceArray?)? OP_INCREMENTO_UNARIO                                     #incrementoUnarioPosfixado // x++
+    |   ID (indiceArray indiceArray?)? OP_DECREMENTO_UNARIO                                     #decrementoUnarioPosfixado // x--    
+    |   OP_INCREMENTO_UNARIO ID (indiceArray indiceArray?)?                                     #incrementoUnarioPrefixado // ++x
+    |   OP_DECREMENTO_UNARIO ID (indiceArray indiceArray?)?                                     #decrementoUnarioPrefixado // --x
     |   expressao OP_MULTIPLICACAO expressao                                                    #multiplicacao
     |   expressao OP_DIVISAO expressao                                                          #divisao
     |   expressao OP_MOD expressao                                                              #modulo

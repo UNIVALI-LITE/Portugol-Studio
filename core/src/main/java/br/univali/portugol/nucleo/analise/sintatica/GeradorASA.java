@@ -332,30 +332,86 @@ public class GeradorASA {
             return getBlocos(ctx.comando());
         }
         
+        private NoOperacaoAtribuicao criaIncrementoUnario(TerminalNode ID, IndiceArrayContext contextoExpressao) {
+            String nomeVetor = ID.getText();
+            NoExpressao expressao = (NoExpressao)contextoExpressao.expressao().accept(this);
+            NoReferenciaVetor referenciaVetor = new NoReferenciaVetor(null, nomeVetor, expressao);
+            
+            referenciaVetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ID));
+            
+            return new NoOperacaoAtribuicao(referenciaVetor, new NoOperacaoSoma(referenciaVetor, new NoInteiro(1)));
+        }
+        
+        private NoOperacaoAtribuicao criaIncrementoUnario(TerminalNode ID, IndiceArrayContext contextoLinhas, IndiceArrayContext contextoColunas) {
+            String nomeMatriz = ID.getText();
+            NoExpressao linhas = (NoExpressao)contextoLinhas.expressao().accept(this);
+            NoExpressao colunas = (NoExpressao)contextoColunas.expressao().accept(this);
+            NoReferenciaMatriz referenciaMatriz = new NoReferenciaMatriz(null, nomeMatriz, linhas, colunas);
+            referenciaMatriz.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ID));
+            return new NoOperacaoAtribuicao(referenciaMatriz, new NoOperacaoSoma(referenciaMatriz, new NoInteiro(1)));
+        }
+        
+        private NoOperacaoAtribuicao criaDecrementoUnario(TerminalNode ID, IndiceArrayContext contextoExpressao) {
+            NoExpressao expressao = (NoExpressao)contextoExpressao.expressao().accept(this);
+            String nomeVetor = ID.getText();
+            NoReferenciaVetor referenciaVetor = new NoReferenciaVetor(null, nomeVetor, expressao);
+            referenciaVetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ID));
+            return new NoOperacaoAtribuicao(referenciaVetor, new NoOperacaoSubtracao(referenciaVetor, new NoInteiro(1)));
+        }
+        
+        private NoOperacaoAtribuicao criaDecrementoUnario(TerminalNode ID, IndiceArrayContext contextoLinhas, IndiceArrayContext contextoColunas) {
+            String nomeMatriz = ID.getText();
+            NoExpressao linhas = (NoExpressao)contextoLinhas.expressao().accept(this);
+            NoExpressao colunas = (NoExpressao)contextoColunas.expressao().accept(this);
+            NoReferenciaMatriz referenciaMatriz = new NoReferenciaMatriz(null, nomeMatriz, linhas, colunas);
+            referenciaMatriz.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ID));
+            return new NoOperacaoAtribuicao(referenciaMatriz, new NoOperacaoSubtracao(referenciaMatriz, new NoInteiro(1)));
+        }
+        
         @Override
         public No visitIncrementoUnarioPosfixado(IncrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutura do incremento prefixado
-            String nomeVariavel = ctx.ID().getText();
-            return GeradorNoOperacao.geraIncrementoUnario(nomeVariavel);
+            if (ctx.indiceArray().size() == 1) { // é um vetor?
+                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0));
+            }
+            else if (ctx.indiceArray().size() == 2) { // é uma matriz?
+                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
+            }
+            return GeradorNoOperacao.geraIncrementoUnario(ctx.ID().getText());
         }
 
         @Override
         public No visitIncrementoUnarioPrefixado(IncrementoUnarioPrefixadoContext ctx) {
-            String nomeVariavel = ctx.ID().getText();
-            return GeradorNoOperacao.geraIncrementoUnario(nomeVariavel);
+            if (ctx.indiceArray().size() == 1) { // é um vetor?
+                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0));
+            }
+            else if (ctx.indiceArray().size() == 2) { // é uma matriz?
+                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
+            }
+            return GeradorNoOperacao.geraIncrementoUnario(ctx.ID().getText());
         }
 
         @Override
         public No visitDecrementoUnarioPosfixado(DecrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutuar do decremento prefixado
-            String nomeVariavel = ctx.ID().getText();
-            return GeradorNoOperacao.geraDecrementoUnario(nomeVariavel);
+            if (ctx.indiceArray().size() == 1) { // é um vetor?
+                return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0));
+            }
+            else if (ctx.indiceArray().size() == 2) { // é uma matriz?
+                return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
+            }
+            return GeradorNoOperacao.geraDecrementoUnario(ctx.ID().getText());
         }
 
         @Override
         public No visitDecrementoUnarioPrefixado(DecrementoUnarioPrefixadoContext ctx) {
-            String nomeVariavel = ctx.ID().getText();
-            return GeradorNoOperacao.geraDecrementoUnario(nomeVariavel);
+            if (ctx.indiceArray().size() == 1) { // é um vetor?
+                return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0));
+            }
+            else if (ctx.indiceArray().size() == 2) { // é uma matriz?
+                return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
+            }
+            return GeradorNoOperacao.geraDecrementoUnario(ctx.ID().getText());
         }
         
         @Override
@@ -661,7 +717,7 @@ public class GeradorASA {
             
             String nomeArray = ctx.ID().getText();
 
-            NoReferenciaVetor noReferenciaVetor = new NoReferenciaVetor(escopo, nomeArray, (NoExpressao)ctx.expressao().accept(this));
+            NoReferenciaVetor noReferenciaVetor = new NoReferenciaVetor(escopo, nomeArray, (NoExpressao)ctx.indiceArray().expressao().accept(this));
             
             noReferenciaVetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
             noReferenciaVetor.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(), ctx.getText().length()));
@@ -690,8 +746,8 @@ public class GeradorASA {
             
             String nomeMatriz = ctx.ID().getText();
 
-            NoExpressao expressaoLinha = (NoExpressao)ctx.expressao(0).accept(this);
-            NoExpressao expressaoColuna = (NoExpressao)ctx.expressao(1).accept(this);
+            NoExpressao expressaoLinha = (NoExpressao)ctx.indiceArray(0).expressao().accept(this);
+            NoExpressao expressaoColuna = (NoExpressao)ctx.indiceArray(1).expressao().accept(this);
             
             NoReferenciaMatriz matriz = new NoReferenciaMatriz(escopo, nomeMatriz, expressaoLinha, expressaoColuna);
             

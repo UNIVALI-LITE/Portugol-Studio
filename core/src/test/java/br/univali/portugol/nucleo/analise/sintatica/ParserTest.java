@@ -18,8 +18,23 @@ import org.junit.Test;
  */
 public class ParserTest {
 
-    // 
-    
+    @Test
+    public void testReferenciaArray() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  funcao inicio(){                                           "
+                + "     player2[PONTUACAO]++                                    "
+                + "     player2[PONTUACAO]--                                    "
+                + "     ++player2[PONTUACAO]                                    "
+                + "     --player2[PONTUACAO]                                    "
+                + "  }                                                          "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+
     @Test
     public void testListaDeclaracaoMatrizes() throws Exception {
 

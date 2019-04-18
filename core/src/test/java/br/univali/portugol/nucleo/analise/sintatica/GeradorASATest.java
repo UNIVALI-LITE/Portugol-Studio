@@ -23,6 +23,36 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testReferenciaArray() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  funcao inicio(){                                           "
+                + "     inteiro player2[] = {0}                                 "
+                + "     player2[PONTUACAO]++                                    "
+                + "     player2[PONTUACAO]--                                    "
+                + "     ++player2[PONTUACAO]                                    "
+                + "     --player2[PONTUACAO]                                    "
+                + "  }                                                          "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        List<NoBloco> blocos = inicio.getBlocos();
+        
+        assertNoDeclaracaoVetor((NoDeclaracaoVetor)blocos.get(0), "player2", new Object[]{0});
+        
+        for (int i = 0; i < 4; i++) {
+            NoOperacaoAtribuicao atribuicao = (NoOperacaoAtribuicao)blocos.get(1 + i);
+            Assert.assertEquals("player2", ((NoReferenciaVetor)atribuicao.getOperandoEsquerdo()).getNome());
+        }
+    }
+    
+    @Test
     public void testListaDeclaracaoMatrizes() throws Exception {
 
         PortugolParser parser = novoParser(
