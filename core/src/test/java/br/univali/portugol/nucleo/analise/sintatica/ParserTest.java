@@ -119,11 +119,11 @@ public class ParserTest {
                 "programa {                                                     "
                 + "	inteiro x = 0xFFFFFF                                    \n"
                 + "     inteiro a = 0Xababab                                    \n"
-                + "     inteiro a = 0Xababa                                     \n"
-                + "     inteiro a = 0Xabab                                      \n"
-                + "     inteiro a = 0Xaba                                       \n"
-                + "     inteiro a = 0Xab                                        \n"
-                + "     inteiro a = 0Xa                                         \n"                        
+                + "     inteiro b = 0Xababa                                     \n"
+                + "     inteiro c = 0Xabab                                      \n"
+                + "     inteiro d = 0Xaba                                       \n"
+                + "     inteiro e = 0Xab                                        \n"
+                + "     inteiro f = 0Xa                                         \n"                        
                 + "}                                                            "
         );
         
