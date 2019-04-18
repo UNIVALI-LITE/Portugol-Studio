@@ -19,6 +19,25 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testOperadoresBitwise() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  funcao inicio(){                                           "
+                + "     inteiro x = 0                                           "
+                + "     x = x << 1                                              "
+                + "     x = x >> 1                                              "
+                + "     x = x & 1                                               "                        
+                + "     x = x | 1                                               "
+                + "     x = x ^ 1                                               "                                                
+                + "  }                                                          "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testReferenciaArray() throws Exception {
 
         PortugolParser parser = novoParser(
@@ -500,13 +519,6 @@ public class ParserTest {
 
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
     }
-
-    /*
-    cadeia c = "teste" + " concatenacao"                
-    inteiro i = ((10 + 2 * 4/1) << 1)                       
-    logico l = verdadeiro e verdadeiro ou falso            
-    real r = 53.23 + 0.01           
-    */
     
     @Test
     public void testDeclaracaoVariavelGlobal() throws IOException, RecognitionException {

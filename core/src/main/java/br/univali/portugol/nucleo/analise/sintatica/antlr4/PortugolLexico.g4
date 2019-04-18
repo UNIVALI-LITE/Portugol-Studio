@@ -6,7 +6,6 @@ ABRE_COLCHETES:             '[' ;
 FECHA_COLCHETES:            ']' ;
 ABRE_CHAVES:                '{' ;
 FECHA_CHAVES:               '}' ; 
-PARAMETRO_POR_REFERENCIA:   '&' ;
 
 TIPO:           'real' | 'inteiro' | 'vazio' | 'logico' | 'cadeia' | 'caracter' ; 
 
@@ -23,12 +22,12 @@ CASO:           'caso' ;
 CONTRARIO:      'contrario' ;
 PARE:           'pare' ;
 RETORNE:        'retorne';
-OP_NAO:         'nao' ;
-OP_E_LOGICO:    'e' ;
-OP_OU_LOGICO:   'ou';
 INCLUA:         'inclua' ;
 BIBLIOTECA:     'biblioteca' ;
 
+OP_NAO:                 'nao' ;
+OP_E_LOGICO:            'e' ;
+OP_OU_LOGICO:           'ou' ;
 OP_SUBTRACAO:           '-' ;
 OP_ADICAO:              '+' ;
 OP_MULTIPLICACAO:       '*' ;
@@ -46,7 +45,9 @@ OP_DECREMENTO_UNARIO:   '--' ;
 OP_SHIFT_LEFT:          '<<' ;
 OP_SHIFT_RIGHT:         '>>' ;
 OP_XOR:                 '^' ;
+OP_OU_BITWISE:          '|' ;
 OP_ALIAS_BIBLIOTECA:    '-->' ;
+E_COMERCIAL:            '&' ;
 
 OP_MAIS_IGUAL:          '+=' ;
 OP_MENOS_IGUAL:         '-=' ;

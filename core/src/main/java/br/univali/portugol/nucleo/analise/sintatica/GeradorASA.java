@@ -305,11 +305,6 @@ public class GeradorASA {
             return new NoOperacaoAtribuicao(opEsquerdo, new NoOperacaoMultiplicacao(opEsquerdo, opDireito));
         }
 
-        @Override
-        public No visitOperacaoXor(OperacaoXorContext ctx) {
-            return criaNoOperacao(ctx, this, NoOperacaoBitwiseXOR.class, ctx.OP_XOR());
-        }
-        
         private List<NoBloco> getBlocos(List<ComandoContext> ctx) {
             List<NoBloco> blocos = new ArrayList<>();
             for (ComandoContext comando : ctx) {
@@ -697,7 +692,7 @@ public class GeradorASA {
                 quantificador = Quantificador.MATRIZ;
             }
             
-            ModoAcesso modoAcesso = ctx.PARAMETRO_POR_REFERENCIA() != null ? ModoAcesso.POR_REFERENCIA : ModoAcesso.POR_VALOR;
+            ModoAcesso modoAcesso = ctx.E_COMERCIAL()!= null ? ModoAcesso.POR_REFERENCIA : ModoAcesso.POR_VALOR;
             
             NoDeclaracaoParametro parametro = new NoDeclaracaoParametro(nome, tipo, quantificador, modoAcesso);
             
@@ -898,7 +893,22 @@ public class GeradorASA {
         public No visitOperacaoShiftRight(OperacaoShiftRightContext ctx) {
             return criaNoOperacao(ctx, this, NoOperacaoBitwiseRightShift.class, ctx.OP_SHIFT_RIGHT());
         }
+        
+        @Override
+        public No visitOperacaoXor(OperacaoXorContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoBitwiseXOR.class, ctx.OP_XOR());
+        }
 
+        @Override
+        public No visitOperacaoAndBitwise(OperacaoAndBitwiseContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoBitwiseE.class, ctx.E_COMERCIAL());
+        }
+
+        @Override
+        public No visitOperacaoOrBitwise(OperacaoOrBitwiseContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoBitwiseOu.class, ctx.OP_OU_BITWISE());
+        }
+        
         @Override
         public No visitOperacaoELogico(OperacaoELogicoContext ctx) {
             return criaNoOperacao(ctx, this, NoOperacaoLogicaE.class, ctx.OP_E_LOGICO());

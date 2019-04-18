@@ -48,7 +48,7 @@ listaParametros
     :   parametro (',' parametro)* ;
 
 parametro
-    :   TIPO PARAMETRO_POR_REFERENCIA? ID (parametroArray | parametroMatriz)? ;
+    :   TIPO E_COMERCIAL? ID (parametroArray | parametroMatriz)? ;
 
 parametroArray
     :   ABRE_COLCHETES FECHA_COLCHETES ;
@@ -149,6 +149,8 @@ expressao
     |   expressao OP_XOR expressao                                                              #operacaoXor
     |   expressao OP_SHIFT_LEFT expressao                                                       #operacaoShiftLeft
     |   expressao OP_SHIFT_RIGHT expressao                                                      #operacaoShiftRight
+    |   expressao E_COMERCIAL expressao                                                         #operacaoAndBitwise
+    |   expressao OP_OU_BITWISE expressao                                                       #operacaoOrBitwise
     |   escopoBiblioteca? ID                                                                    #referenciaParaVariavel           // referência para variável
     |   (INT | HEXADECIMAL)                                                                     #numeroInteiro 
     |   REAL                                                                                    #numeroReal  

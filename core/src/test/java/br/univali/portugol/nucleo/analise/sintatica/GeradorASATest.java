@@ -23,6 +23,47 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testOperadoresBitwise() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  funcao inicio(){                                           "
+                + "     inteiro x = 0                                           "
+                + "     x = x << 1                                              "
+                + "     x = x >> 1                                              "
+                + "     x = x & 1                                               "                        
+                + "     x = x | 1                                               "
+                + "     x = x ^ 1                                               "                                                
+                + "  }                                                          "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO, 0);
+        
+        Class operacoes[] = {
+            NoOperacaoBitwiseLeftShift.class, 
+            NoOperacaoBitwiseRightShift.class,
+            NoOperacaoBitwiseE.class,
+            NoOperacaoBitwiseOu.class,
+            NoOperacaoBitwiseXOR.class
+        };
+        
+        for (int i = 0; i < operacoes.length; i++) {
+            NoOperacaoAtribuicao atribuicao = (NoOperacaoAtribuicao)inicio.getBlocos().get(1 + i);
+        
+            NoReferenciaVariavel x = (NoReferenciaVariavel)atribuicao.getOperandoEsquerdo();
+            Assert.assertEquals("x", x.getNome());
+
+            Assert.assertEquals(atribuicao.getOperandoDireito().getClass().getName(), operacoes[i].getName());
+        }
+    }
+    
+    @Test
     public void testReferenciaArray() throws Exception {
 
         PortugolParser parser = novoParser(
