@@ -580,10 +580,6 @@ public class GeradorASA {
             PortugolParser.InicializacaoParaContext inicializacaoPara = contexto.inicializacaoPara();
             PortugolParser.CondicaoContext condicao = contexto.condicao();
             PortugolParser.IncrementoParaContext incrementoPara = contexto.incrementoPara();
-
-            for (int i = 0; i < 10; i++) {
-                
-            }
             
             NoPara noPara = new NoPara();
 

@@ -107,8 +107,8 @@ inicializacaoPara
 condicao
     :   expressao ;
 
-incrementoPara
-    :   expressao | atribuicaoComposta;
+incrementoPara  // TODO essa estrutura se repete na lista de expressões
+    :   expressao | atribuicaoComposta | atribuicao;
 
 escolha
     :   ESCOLHA ABRE_PARENTESES expressao FECHA_PARENTESES ABRE_CHAVES caso* FECHA_CHAVES ;   
@@ -161,9 +161,7 @@ expressao
     ;
 
 listaExpressoes
-    :   (atribuicaoComposta | expressao) (',' atribuicaoComposta | expressao)* ; 
-    // aceitando atribuição composta na lista de expressões para permitir invocar
-    // funções dessa maneira: teste(x, x += 3)
+    :   (expressao | atribuicaoComposta | atribuicao) (',' (expressao | atribuicaoComposta | atribuicao))* ; 
      
 escopoBiblioteca
     :   (ID '.') ;
