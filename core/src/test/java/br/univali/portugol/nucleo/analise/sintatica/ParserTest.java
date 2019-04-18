@@ -119,9 +119,14 @@ public class ParserTest {
                 "programa {                                                     "
                 + "	inteiro x = 0xFFFFFF                                    \n"
                 + "     inteiro a = 0Xababab                                    \n"
+                + "     inteiro a = 0Xababa                                     \n"
+                + "     inteiro a = 0Xabab                                      \n"
+                + "     inteiro a = 0Xaba                                       \n"
+                + "     inteiro a = 0Xab                                        \n"
+                + "     inteiro a = 0Xa                                         \n"                        
                 + "}                                                            "
         );
-
+        
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
     }
     
