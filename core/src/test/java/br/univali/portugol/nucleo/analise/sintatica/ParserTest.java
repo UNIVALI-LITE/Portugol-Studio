@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import java.util.Arrays;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Recognizer;
@@ -18,6 +19,22 @@ import org.junit.Test;
  */
 public class ParserTest {
 
+    @Test
+    public void testOperacaoSendoUsadaComoParametro() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  funcao inicio(){                                           "
+                + "         inteiro x = 0                                       "                        
+                + "         teste(x += 2)                                       "
+                + "  }                                                          "
+                + "  funcao teste(inteiro x) {}                                 "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+        
     @Test
     public void testOperadoresBitwise() throws Exception {
 
@@ -571,9 +588,10 @@ public class ParserTest {
 
         });
 
-        //System.out.println(lexer.getAllTokens());
-        String tree = parser.arquivo().toStringTree(parser);  // invoca a regra inicial da gramática
-        System.out.println(tree);
+        //String tree = parser.arquivo().toStringTree(parser);  // invoca a regra inicial da gramática
+        //System.out.println(tree);
+        PortugolParser.ArquivoContext tree = parser.arquivo();
+        System.out.println(TreeUtils.toPrettyTree(tree, Arrays.asList(parser.getRuleNames())));
 
         return parser;
     }
