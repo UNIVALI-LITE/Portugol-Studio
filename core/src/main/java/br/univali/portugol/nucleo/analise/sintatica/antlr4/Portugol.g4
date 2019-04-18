@@ -161,7 +161,9 @@ expressao
     ;
 
 listaExpressoes
-    :   expressao (',' expressao)* ;
+    :   (atribuicaoComposta | expressao) (',' atribuicaoComposta | expressao)* ; 
+    // aceitando atribuição composta na lista de expressões para permitir invocar
+    // funções dessa maneira: teste(x, x += 3)
      
 escopoBiblioteca
     :   (ID '.') ;

@@ -666,7 +666,7 @@ public class GeradorASA {
             
             if (ctx.listaExpressoes() != null) { // se existem parâmetros sendo passados para a função
                 List<NoExpressao> parametros = new ArrayList<>();
-                for (ExpressaoContext expressaoContext : ctx.listaExpressoes().expressao()) {
+                for (ParserRuleContext expressaoContext : ctx.listaExpressoes().getRuleContexts(ParserRuleContext.class)) {
                     parametros.add((NoExpressao)expressaoContext.accept(this));
                 }
                 noChamadaFuncao.setParametros(parametros);

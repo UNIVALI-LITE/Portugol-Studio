@@ -26,7 +26,7 @@ public class ParserTest {
                 " programa {                                                    "
                 + "  funcao inicio(){                                           "
                 + "         inteiro x = 0                                       "                        
-                + "         teste(x += 2)                                       "
+                + "         teste(x, x += 2)                                       "
                 + "  }                                                          "
                 + "  funcao teste(inteiro x) {}                                 "
                 + "}                                                            "
