@@ -54,27 +54,6 @@ public final class NoMatriz extends NoExpressao
     }
 
     /**
-     * Define o trecho do código fonte no qual este vetor se encontra.
-     *
-     * @param trechoCodigoFonte o trecho do código fonte no qual este vetor se
-     * encontra.
-     * @since 1.0
-     */
-    public void setTrechoCodigoFonte(TrechoCodigoFonte trechoCodigoFonte)
-    {
-        this.trechoCodigoFonte = trechoCodigoFonte;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        return trechoCodigoFonte;
-    }
-
-    /**
      * {@inheritDoc }
      */
     @Override

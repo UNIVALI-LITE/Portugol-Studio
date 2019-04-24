@@ -73,24 +73,7 @@ public final class NoReferenciaMatriz extends NoReferencia<NoDeclaracaoMatriz>
         return coluna;
     }
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        int tamanhoTexto = 0;
-
-        int mLinha = getTrechoCodigoFonteNome().getLinha();
-        int mColuna = getTrechoCodigoFonteNome().getColuna();
-
-        tamanhoTexto = tamanhoTexto + getTrechoCodigoFonteNome().getTamanhoTexto() + linha.getTrechoCodigoFonte().getTamanhoTexto();
-        tamanhoTexto = tamanhoTexto + 4 + coluna.getTrechoCodigoFonte().getTamanhoTexto();
-
-        return new TrechoCodigoFonte(mLinha, mColuna, tamanhoTexto);
-    }
-
-    /**
+     /**
      * {@inheritDoc }
      */
     @Override

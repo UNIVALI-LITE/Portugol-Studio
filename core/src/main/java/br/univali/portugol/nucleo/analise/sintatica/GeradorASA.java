@@ -216,23 +216,27 @@ public class GeradorASA {
             return noNao;
         }
         
-        // referência para variável
+        
+        private NoReferenciaVariavel criaNoReferenciaVariavel(TerminalNode id, String escopo, int trechoCodigoFonteLenght) {
+            String nome = id.getText();
+            NoReferenciaVariavel no = new NoReferenciaVariavel(escopo, nome);
+            
+            no.setTrechoCodigoFonteNome(getTrechoCodigoFonte(id));
+            no.setTrechoCodigoFonte(getTrechoCodigoFonte(id, trechoCodigoFonteLenght));
+            
+            return no;
+        }
+        
         @Override
         public No visitReferenciaParaVariavel(PortugolParser.ReferenciaParaVariavelContext ctx) {
-            String nomeVariavel = ctx.ID().getText();
-
+   
             String escopo = null;
             PortugolParser.EscopoBibliotecaContext escopoBiblioteca = ctx.escopoBiblioteca();
             if (escopoBiblioteca != null) {
                 escopo = escopoBiblioteca.ID().getText();
             }
 
-            NoReferenciaVariavel no = new NoReferenciaVariavel(escopo, nomeVariavel);
-            
-            no.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
-            no.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(), ctx.getText().length()));
-            
-            return no;
+            return criaNoReferenciaVariavel(ctx.ID(), escopo, ctx.getText().length());
         }
 
         @Override
@@ -337,6 +341,22 @@ public class GeradorASA {
             return new NoOperacaoAtribuicao(referenciaVetor, new NoOperacaoSoma(referenciaVetor, new NoInteiro(1)));
         }
         
+        private NoOperacaoAtribuicao criaIncrementoUnario(TerminalNode id, List<IndiceArrayContext> indiceArrayCtx, int ctxLenght) {
+             if (indiceArrayCtx.size() == 1) { // é um vetor?
+                return criaIncrementoUnario(id, indiceArrayCtx.get(0));
+            }
+            else if (indiceArrayCtx.size() == 2) { // é uma matriz?
+                return criaIncrementoUnario(id, indiceArrayCtx.get(0), indiceArrayCtx.get(1));
+            }
+            
+            // é uma variável
+            NoReferenciaVariavel referenciaVariavel = criaNoReferenciaVariavel(id, null, ctxLenght);
+            NoOperacaoAtribuicao atribuicao = new NoOperacaoAtribuicao(referenciaVariavel, new NoOperacaoSoma(referenciaVariavel, new NoInteiro(1)));
+            atribuicao.setTrechoCodigoFonte(new TrechoCodigoFonte(referenciaVariavel.getTrechoCodigoFonte(), ctxLenght));
+            
+            return atribuicao;
+        }
+        
         private NoOperacaoAtribuicao criaIncrementoUnario(TerminalNode ID, IndiceArrayContext contextoLinhas, IndiceArrayContext contextoColunas) {
             String nomeMatriz = ID.getText();
             NoExpressao linhas = (NoExpressao)contextoLinhas.expressao().accept(this);
@@ -363,39 +383,43 @@ public class GeradorASA {
             return new NoOperacaoAtribuicao(referenciaMatriz, new NoOperacaoSubtracao(referenciaMatriz, new NoInteiro(1)));
         }
         
+        private NoOperacaoAtribuicao criaDecrementoUnario(TerminalNode id, List<IndiceArrayContext> indiceArrayCtx, int ctxLenght) {
+             if (indiceArrayCtx.size() == 1) { // é um vetor?
+                return criaIncrementoUnario(id, indiceArrayCtx.get(0));
+            }
+            else if (indiceArrayCtx.size() == 2) { // é uma matriz?
+                return criaIncrementoUnario(id, indiceArrayCtx.get(0), indiceArrayCtx.get(1));
+            }
+            
+            // é uma variável
+            NoReferenciaVariavel referenciaVariavel = criaNoReferenciaVariavel(id, null, ctxLenght);
+            NoOperacaoAtribuicao atribuicao = new NoOperacaoAtribuicao(referenciaVariavel, new NoOperacaoSubtracao(referenciaVariavel, new NoInteiro(1)));
+            atribuicao.setTrechoCodigoFonte(new TrechoCodigoFonte(referenciaVariavel.getTrechoCodigoFonte(), ctxLenght));
+            
+            return atribuicao;
+        }
+        
+        
         @Override
         public No visitIncrementoUnarioPosfixado(IncrementoUnarioPosfixadoContext ctx) {
-            // gerando a mesma estrutura do incremento prefixado
-            if (ctx.indiceArray().size() == 1) { // é um vetor?
-                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0));
-            }
-            else if (ctx.indiceArray().size() == 2) { // é uma matriz?
-                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
-            }
-            return GeradorNoOperacao.geraIncrementoUnario(ctx.ID().getText());
+            return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(), ctx.getText().length());
         }
 
         @Override
         public No visitIncrementoUnarioPrefixado(IncrementoUnarioPrefixadoContext ctx) {
-            if (ctx.indiceArray().size() == 1) { // é um vetor?
-                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0));
-            }
-            else if (ctx.indiceArray().size() == 2) { // é uma matriz?
-                return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
-            }
-            return GeradorNoOperacao.geraIncrementoUnario(ctx.ID().getText());
+            return criaIncrementoUnario(ctx.ID(), ctx.indiceArray(), ctx.getText().length());
         }
 
         @Override
         public No visitDecrementoUnarioPosfixado(DecrementoUnarioPosfixadoContext ctx) {
-            // gerando a mesma estrutuar do decremento prefixado
             if (ctx.indiceArray().size() == 1) { // é um vetor?
                 return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0));
             }
             else if (ctx.indiceArray().size() == 2) { // é uma matriz?
                 return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
             }
-            return GeradorNoOperacao.geraDecrementoUnario(ctx.ID().getText());
+            
+            return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(), ctx.getText().length());
         }
 
         @Override
@@ -406,11 +430,13 @@ public class GeradorASA {
             else if (ctx.indiceArray().size() == 2) { // é uma matriz?
                 return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(0), ctx.indiceArray(1));
             }
-            return GeradorNoOperacao.geraDecrementoUnario(ctx.ID().getText());
+            
+            return criaDecrementoUnario(ctx.ID(), ctx.indiceArray(), ctx.getText().length());
         }
         
         @Override
         public No visitAtribuicao(PortugolParser.AtribuicaoContext ctx) {
+            
             NoOperacaoAtribuicao atribuicao = GeradorNoOperacao.gera(ctx, this, NoOperacaoAtribuicao.class);
             
             NoExpressao esquerda = (NoExpressao)ctx.expressao(0).accept(this);

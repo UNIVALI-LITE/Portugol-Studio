@@ -89,30 +89,6 @@ public abstract class NoOperacao extends NoExpressao
         return trechoCodigoFonteOperador;
     }
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        TrechoCodigoFonte trechoFonteEsq = operandoEsquerdo.getTrechoCodigoFonte();
-        TrechoCodigoFonte trechoFonteDir = operandoDireito.getTrechoCodigoFonte();
-        if (trechoFonteDir == null || trechoFonteEsq == null)
-        {
-            return TRECHO_NULO;
-        }
-        int linha = trechoFonteEsq.getLinha();
-        int inicioOpEsquerdo = trechoFonteEsq.getColuna();
-        
-        int colunaOpDireito = trechoFonteDir.getColuna();
-        int tamanhoOpDireito = trechoFonteDir.getTamanhoTexto();
-        int terminoOpDireito = colunaOpDireito + tamanhoOpDireito;
-        
-        int tamanhoTexto = terminoOpDireito - inicioOpEsquerdo;
-
-        return new TrechoCodigoFonte(linha, inicioOpEsquerdo, tamanhoTexto);
-    }
-    
     private TipoDado geraTipoResultante()
     {
         TipoDado tipoOpEsquerdo = operandoEsquerdo.getTipoResultante();

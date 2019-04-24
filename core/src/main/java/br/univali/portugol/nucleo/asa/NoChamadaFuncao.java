@@ -83,30 +83,6 @@ public final class NoChamadaFuncao extends NoReferencia<NoDeclaracaoFuncao>
      * {@inheritDoc }
      */
     @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        int tamanhoTexto = 0;
-
-        int linha = getTrechoCodigoFonteNome().getLinha();
-        int coluna = getTrechoCodigoFonteNome().getColuna();
-
-        tamanhoTexto = tamanhoTexto + getTrechoCodigoFonteNome().getTamanhoTexto() + 2;
-
-        if (parametros != null)
-        {
-            for (NoExpressao parametro : parametros)
-            {
-                tamanhoTexto = tamanhoTexto + parametro.getTrechoCodigoFonte().getTamanhoTexto();
-            }
-        }
-
-        return new TrechoCodigoFonte(linha, coluna, tamanhoTexto);
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
     public Object aceitar(VisitanteASA visitante) throws ExcecaoVisitaASA
     {
         return visitante.visitar(this);

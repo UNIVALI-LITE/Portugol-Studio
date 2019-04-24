@@ -52,16 +52,7 @@ public final class NoNao extends NoExpressao
         return expressao;
     }
     
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        return expressao.getTrechoCodigoFonte();
-    }
-
-    /**
+     /**
      * {@inheritDoc }
      */
     @Override

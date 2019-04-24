@@ -37,15 +37,12 @@ public abstract class NoBloco extends No
 {
     private static final Logger LOGGER = Logger.getLogger(NoBloco.class.getName());
     
-    protected static final TrechoCodigoFonte TRECHO_NULO = new TrechoCodigoFonte(-1, -1, 0);
-    protected TrechoCodigoFonte trechoCodigoFonte = TRECHO_NULO;
+    private static final TrechoCodigoFonte TRECHO_NULO = new TrechoCodigoFonte(-1, -1, 0);
+    private TrechoCodigoFonte trechoCodigoFonte = TRECHO_NULO;
     
     
     public TrechoCodigoFonte getTrechoCodigoFonte()
     {
-        if(trechoCodigoFonte == TRECHO_NULO){
-            //LOGGER.warning("trechoDoCodigo fonte NULO em " + getClass().getName());
-        }
         return trechoCodigoFonte;
     }
 
