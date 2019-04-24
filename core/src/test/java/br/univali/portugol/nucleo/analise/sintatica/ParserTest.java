@@ -18,7 +18,22 @@ import org.junit.Test;
  * @author Elieser
  */
 public class ParserTest {
+    
+    @Test
+    public void testLoco() throws Exception {
 
+        PortugolParser parser = novoParser(
+                " programa \n{                                                                "
+                + "funcao cadeia obter_titulo_musica(cadeia caminho){           \n"
+                + "		cadeia teste = \"\\\"                           \n"
+                //+ "		cadeia toste = \"\"                             \n"
+                + "}"
+                + "}                                                                        "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
     @Test
     public void testOperacaoSendoUsadaComoParametro() throws Exception {
 
@@ -106,6 +121,7 @@ public class ParserTest {
         PortugolParser parser = novoParser(
                 " programa {                                                    "
                 + "   cadeia x = \"A posição do texto \\\"CA\\\" \""
+                //+ "   cadeia x = \" A posição \\\" do texto \" "
                 + "}                                                            "
         );
 
