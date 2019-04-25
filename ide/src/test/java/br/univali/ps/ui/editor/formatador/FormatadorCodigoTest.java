@@ -465,7 +465,6 @@ public class FormatadorCodigoTest
                 + "     inclua biblioteca Graficos\n"
                 + "     inclua biblioteca Matematica --> m\n"
                 + "\n"
-                + "\n"
                 + "     funcao inicio()\n"
                 + "     {\n"
                 + "\n"

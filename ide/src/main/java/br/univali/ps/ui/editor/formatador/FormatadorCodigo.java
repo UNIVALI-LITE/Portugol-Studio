@@ -141,15 +141,6 @@ public class FormatadorCodigo
             saida.println("programa");
             saida.println("{");
 
-            List<NoInclusaoBiblioteca> bibliotecas = asap.getListaInclusoesBibliotecas();
-            for (NoInclusaoBiblioteca biblioteca : bibliotecas) {
-                biblioteca.aceitar(this);
-            }
-            
-            if (!bibliotecas.isEmpty()) {
-                pulaLinha();
-            }
-
             declarandoVariaveisGlobais = true; // vira false quando encontra a primeira função (inicio)
 
             for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
