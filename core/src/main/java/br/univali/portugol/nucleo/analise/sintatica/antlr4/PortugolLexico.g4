@@ -73,7 +73,7 @@ fragment DIGIT_HEX: ('0'..'9'|'a'..'f'|'A'..'F') ;
 
 STRING : '"' ( SEQ_ESC | . )*? '"' ;
 
-ID:             LETRA (LETRA | [0-9] | '_')* ;
+ID:             (LETRA | '_') (LETRA | [0-9] | '_')* ;
 
 fragment LETRA: [a-zA-Z] ;
 
