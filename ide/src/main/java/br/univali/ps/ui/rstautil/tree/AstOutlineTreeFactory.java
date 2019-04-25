@@ -112,14 +112,12 @@ class AstOutlineTreeFactory implements VisitanteASA
         ProgramaTreeNode programa = new ProgramaTreeNode();
         List<SourceTreeNode> nos = new ArrayList<>();
 
-        for (Iterator<NoDeclaracao> i = asap.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
+        for (NoDeclaracao no : asap.getListaDeclaracoesGlobais())
         {
-            NoDeclaracao td = i.next();
-            PortugolTreeNode dmtn = (PortugolTreeNode) td.aceitar(this);
-
-            if (dmtn != null)
+            SourceTreeNode treeNode = (SourceTreeNode) no.aceitar(this);
+            if (treeNode != null && treeNode instanceof PortugolTreeNode)
             {
-                nos.add(dmtn);
+                nos.add(treeNode);
             }
         }
 
@@ -134,6 +132,7 @@ class AstOutlineTreeFactory implements VisitanteASA
 
         return null;
     }
+
 
     @Override
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
