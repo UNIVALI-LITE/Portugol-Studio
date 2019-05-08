@@ -23,6 +23,31 @@ import org.junit.Test;
 public class GeradorASATest {
 
      @Test
+    public void testExpressaoComoParametro() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  funcao inicio(){                                           "
+                + "         inteiro x = 10                                       "                        
+                + "         teste(10 - 1)                                       "
+                + "  }                                                          "
+                + "  funcao teste(inteiro x) {}                                 "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO, 0);
+         
+        NoChamadaFuncao teste = (NoChamadaFuncao)inicio.getBlocos().get(1);
+         
+        Assert.assertEquals(NoOperacaoAtribuicao.class.getName(), teste.getParametros().get(0).getClass().getName());
+    }
+    
+     @Test
     public void testOperacaoSendoUsadaComoParametro() throws Exception {
 
         PortugolParser parser = novoParser(

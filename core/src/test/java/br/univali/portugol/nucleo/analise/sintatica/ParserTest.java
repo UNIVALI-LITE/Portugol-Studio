@@ -20,15 +20,15 @@ import org.junit.Test;
 public class ParserTest {
     
     @Test
-    public void testLoco() throws Exception {
+    public void testCaracteresScape() throws Exception {
 
         PortugolParser parser = novoParser(
-                " programa \n{                                                                "
-                + "funcao cadeia obter_titulo_musica(cadeia caminho){           \n"
-                + "		cadeia teste = \"\\\"                           \n"
-                //+ "		cadeia toste = \"\"                             \n"
-                + "}"
-                + "}                                                                        "
+                " programa {                                                    "
+                + "   funcao cadeia obter_titulo_musica(cadeia caminho){        \n"
+                + "	 cadeia teste = \"a\\z\"                                \n"
+                + "	 escreva(\"\\nteste\n\")                                "
+                + "   }                                                         "
+                + "}                                                            "
         );
 
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
@@ -520,12 +520,12 @@ public class ParserTest {
     public void testVariaveisLocais() throws IOException, RecognitionException {
         PortugolParser parser = novoParser("programa { "
                 + " funcao inicio() {                               "
-                + "     inteiro x                                "
-                + "     real a = 10.0                               "
-                + "     cadeia teste = \"teste\"                    "
-                + "     cadeia concat = \"conca\" + \"tenação\"     "
-                + "     caracter c = 'a'                            "
-                + "     logico l = verdadeiro                       "
+//                + "     inteiro x                                "
+//                + "     real a = 10.0                               "
+//                + "     cadeia teste = \"teste\"                    "
+//                + "     cadeia concat = \"conca\" + \"tenação\"     "
+//                + "     caracter c = 'a'                            "
+//                + "     logico l = verdadeiro                       "
                 + "     inteiro soma = -(10 + 2)                    "
                 + "     inteiro soma2 = 10 + 2 * x / a              "
                 + "     inteiro vetor[3]                            "

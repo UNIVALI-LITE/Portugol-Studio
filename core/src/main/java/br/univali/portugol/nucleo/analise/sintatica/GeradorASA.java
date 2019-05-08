@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
+import br.univali.portugol.nucleo.StringUtils;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolBaseVisitor;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.asa.*;
@@ -891,6 +892,11 @@ public class GeradorASA {
             return criaNoOperacao(ctx, this, NoOperacaoSoma.class, ctx.OP_ADICAO());
         }
 
+        @Override
+        public No visitSubtracao(SubtracaoContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoSubtracao.class, ctx.OP_SUBTRACAO());
+        }
+        
         @Override
         public No visitDivisao(DivisaoContext ctx) {
             return criaNoOperacao(ctx, this, NoOperacaoDivisao.class, ctx.OP_DIVISAO());
