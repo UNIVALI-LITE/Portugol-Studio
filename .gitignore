@@ -28,10 +28,6 @@ ide/src/main/assets/plugins/
 
 #ignore Antlr4 generated files
 
-core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/antlr4/*.java
-
-core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/antlr4/*.class
-
 core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/antlr4/*.interp
 
 core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/antlr4/*.tokens

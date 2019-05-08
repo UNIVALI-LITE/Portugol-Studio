@@ -48,3 +48,6 @@ task compileGrammar(type: JavaExec){
     
 }
 
+compileJava{
+    dependsOn compileGrammar
+}

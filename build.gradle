@@ -78,4 +78,4 @@ task buildAll(){
 apply from: rootProject.file('dist.gradle')
 
 clean.dependsOn cleanAll
-build.dependsOn buildAll
+build.dependsOn buildAll 
