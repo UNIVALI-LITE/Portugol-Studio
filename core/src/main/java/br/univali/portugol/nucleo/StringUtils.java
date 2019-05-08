@@ -5,9 +5,8 @@ package br.univali.portugol.nucleo;
  * @author Elieser
  */
 public class StringUtils {
-    
-    public static String preservaCaracteresEspeciais(String string)
-    {
+
+    public static String preservaCaracteresEspeciais(String string) {
         return string
                 .replaceAll("\\\\\n", "\\\\\\n") // preserva \n nas string do código Portugol
                 .replaceAll("\\\\\t", "\\\\\\t") // preserva \n nas string do código Portugol
@@ -23,5 +22,23 @@ public class StringUtils {
                 .replaceAll("\'", "\\\\'") // preserva \' nas string do código Portugol
                 .replaceAll("\"", "\\\\\""); // preserva aspas duplas com scape (\") nas string do código Portugol 
     }
+
+    public static String traduzirSequenciasEscape(String valor) {
+        valor = valor.replace("\\b", "\b");
+        valor = valor.replace("\\t", "\t");
+        valor = valor.replace("\\n", "\n");
+        valor = valor.replace("\f", "\f");
+        valor = valor.replace("\\r", "\r");
+        valor = valor.replace("\\\"", "\"");
+        valor = valor.replace("\\\'", "\'");
+        valor = valor.replace("\\\"", "\"");
+        valor = valor.replace("\\\\", "\\");
+
+        return valor;
+    }
     
+    public static String removerAspasCircundantes(String string) {
+        return string.substring(1, string.length()- 1);
+    }
+
 }

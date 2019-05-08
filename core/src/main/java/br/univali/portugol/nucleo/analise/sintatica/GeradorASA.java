@@ -828,7 +828,8 @@ public class GeradorASA {
         @Override
         public No visitString(StringContext ctx) {
             String texto = ctx.STRING().getText();
-            NoCadeia noCadeia = new NoCadeia(texto.substring(1, texto.length()- 1)); //ignora as aspas que circundam a string
+            String substring = StringUtils.removerAspasCircundantes(texto);
+            NoCadeia noCadeia = new NoCadeia(StringUtils.traduzirSequenciasEscape(substring)); //ignora as aspas que circundam a string
             noCadeia.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.STRING()));
             return noCadeia;
         }
