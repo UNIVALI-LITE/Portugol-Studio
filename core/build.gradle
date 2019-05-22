@@ -4,6 +4,10 @@ dependencies {
 
     antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
     
+    // https://mvnrepository.com/artifact/org.antlr/antlr4-runtime
+    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.7.2'
+
+    
     // https://mvnrepository.com/artifact/org.apache.commons/commons-exec
     compile group: 'org.apache.commons', name: 'commons-exec', version: '1.3'
     
