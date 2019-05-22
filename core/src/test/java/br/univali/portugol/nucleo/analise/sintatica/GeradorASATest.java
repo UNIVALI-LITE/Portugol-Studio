@@ -1187,19 +1187,7 @@ public class GeradorASATest {
 
     private PortugolParser novoParser(String testString) throws IOException {
 
-        PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(testString));
-
-        final PortugolParser parser = new PortugolParser(new CommonTokenStream(lexer));
-
-        lexer.addErrorListener(new BaseErrorListener() {
-            @Override
-            public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-                Assert.fail(e.toString());
-            }
-
-        });
-
-        return parser;
+        return TestUtils.novoParser(testString);
     }
 
 }
