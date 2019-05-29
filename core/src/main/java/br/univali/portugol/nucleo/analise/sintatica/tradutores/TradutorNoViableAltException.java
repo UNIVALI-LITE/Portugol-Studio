@@ -10,10 +10,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncomplet
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import java.util.Stack;
 import org.antlr.v4.runtime.NoViableAltException;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaNoContexto;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaEmUmComando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
@@ -42,14 +39,14 @@ public final class TradutorNoViableAltException
      * @return                   o erro sintático traduzido.
      * @since 1.0
      */
-    public ErroSintatico traduzirErroParsing(NoViableAltException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
+    public ErroSintatico traduzirErroParsing(NoViableAltException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
         Token token = erro.getOffendingToken();
         
         int linha = token.getLine();
         int coluna = token.getCharPositionInLine();
         
-        String contextoAtual = pilhaContexto.peek();
+        String contextoAtual = "";//TODO pilhaContexto.peek();
         
 //        System.out.println("TESTE NUCLEO: " + erro.grammarDecisionDescription);
         //if(erro.grammarDecisionDescription.contains("INT-OVERFLOW")){
@@ -60,27 +57,32 @@ public final class TradutorNoViableAltException
         {
             case "declaracaoTipoDado": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
             case "listaBlocos": return new ErroComandoEsperado(linha, coluna);
-            case "expressao7": return traduzirErrosExpressao(linha, coluna, erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-            case "expressao5": return traduzirErrosExpressao(linha, coluna, erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
+            case "expressao7": return traduzirErrosExpressao(linha, coluna, erro, mensagemPadrao, codigoFonte);
+            case "expressao5": return traduzirErrosExpressao(linha, coluna, erro, mensagemPadrao, codigoFonte);
             case "referencia": return new ErroCaracterInvalidoReferencia(linha, coluna, token.getText());
         }
         
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
 
-    private ErroSintatico traduzirErrosExpressao(int linha, int coluna, NoViableAltException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
+    private static boolean estaNoContexto(String s) 
+    {
+        return true; // TODO
+    }
+    
+    private ErroSintatico traduzirErrosExpressao(int linha, int coluna, NoViableAltException erro, String mensagemPadrao, String codigoFonte)
     {
         String alternativa = erro.getOffendingToken().getText();
         
-         if (estaNoContexto("vetor", pilhaContexto) || estaNoContexto("matriz", pilhaContexto))
+         if (estaNoContexto("vetor") || estaNoContexto("matriz"))
          {
             switch (alternativa)
             {
                 case "}":
-                case ",": return new ErroExpressaoEsperada(linha, coluna, pilhaContexto);
+                case ",": return new ErroExpressaoEsperada(linha, coluna);
             }
          }
-         else if (estaEmUmComando(pilhaContexto) && !alternativa.equals(")"))
+         else if (Utils.estaEmUmComando() && !alternativa.equals(")"))
          {
             return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
          }
@@ -89,18 +91,18 @@ public final class TradutorNoViableAltException
              return new ErroExpressaoInesperada(linha, coluna, alternativa);
          }
         
-        return criarErroExpressaoIncompleta(erro, pilhaContexto, linha, coluna, mensagemPadrao);
+        return criarErroExpressaoIncompleta(erro, linha, coluna, mensagemPadrao);
     }    
     
-    private ErroSintatico criarErroExpressaoIncompleta(NoViableAltException erro, Stack<String> pilhaContexto, int linha, int coluna, String mensagemPadrao)
+    private ErroSintatico criarErroExpressaoIncompleta(NoViableAltException erro, int linha, int coluna, String mensagemPadrao)
     {
         if (erro.getOffendingToken().getText().equals("<EOF>"))
         {
             return new ErroCadeiaIncompleta(linha, coluna, mensagemPadrao);
         }
-        else if (estaEmUmComando(pilhaContexto))
+        else if (Utils.estaEmUmComando())
         {
-            return new ErroExpressaoEsperada(linha, coluna, pilhaContexto);
+            return new ErroExpressaoEsperada(linha, coluna);
         }
         
         return new ErroExpressaoIncompleta(linha, coluna);

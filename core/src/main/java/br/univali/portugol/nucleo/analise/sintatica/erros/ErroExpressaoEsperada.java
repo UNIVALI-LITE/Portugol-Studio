@@ -3,9 +3,6 @@ package br.univali.portugol.nucleo.analise.sintatica.erros;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.Stack;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaNoContexto;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaEmUmComando;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.extrairComando;
 
 /**
  * Erro gerado pelo analisador sintático quando uma construção espera uma expressão
@@ -38,7 +35,6 @@ import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.e
  */
 public final class ErroExpressaoEsperada extends ErroSintatico
 {
-    private Stack<String> pilhaContexto;   
     private String codigo = "ErroSintatico.ErroExpressaoEsperada.";
     /**
      * 
@@ -46,10 +42,9 @@ public final class ErroExpressaoEsperada extends ErroSintatico
      * @param coluna     a coluna onde o erro ocorreu.
      * @since 1.0
      */
-    public ErroExpressaoEsperada(int linha, int coluna, Stack<String> pilhaContexto)
+    public ErroExpressaoEsperada(int linha, int coluna)
     {
         super(linha, coluna);
-        this.pilhaContexto = pilhaContexto;
     }
 
     /**
@@ -58,42 +53,42 @@ public final class ErroExpressaoEsperada extends ErroSintatico
     @Override
     protected String construirMensagem()
     {
-        if (estaNoContexto("listaListaExpressoes", pilhaContexto))
-        {
-            super.setCodigo(codigo += "1");
-            return "A linha da matriz não foi informada ou a expressão informada não é uma linha de matriz";
-            
-        }
-        else if (estaNoContexto("vetor", pilhaContexto))
-        {
-            super.setCodigo(codigo += "2");
-            return "O elemento do vetor não foi informado, insira um valor ou uma expressão para corrigir o problema";
-        }
-        else if (estaNoContexto("matriz", pilhaContexto))
-        {
-            super.setCodigo(codigo += "3");
-            return "O elemento não foi informado na linha da matriz, insira um valor ou uma expressão para corrigir o problema";
-        }
-        else if (estaEmUmComando(pilhaContexto))
-        {   
-            String comando = extrairComando(pilhaContexto);
-
-            switch (comando)
-            {
-                case "se": 
-                    super.setCodigo(codigo += "4");                  
-                    return "O comando \"se\" espera uma expressão do tipo lógico entre os parêntesis";
-                case "enquanto": 
-                    super.setCodigo(codigo += "5");
-                    return "O comando \"enquanto\" espera uma expressão do tipo lógico entre os parêntesis";
-                case "facaEnquanto": 
-                    super.setCodigo(codigo += "6");                
-                    return "O comando \"faca-enquanto\" espera uma expressão do tipo lógico entre os parêntesis";
-                case "escolha": 
-                    super.setCodigo(codigo += "7");
-                    return "O comando \"escolha\" espera um valor ou uma expressão";
-            }
-        }
+//        if (estaNoContexto("listaListaExpressoes", pilhaContexto))
+//        {
+//            super.setCodigo(codigo += "1");
+//            return "A linha da matriz não foi informada ou a expressão informada não é uma linha de matriz";
+//            
+//        }
+//        else if (estaNoContexto("vetor", pilhaContexto))
+//        {
+//            super.setCodigo(codigo += "2");
+//            return "O elemento do vetor não foi informado, insira um valor ou uma expressão para corrigir o problema";
+//        }
+//        else if (estaNoContexto("matriz", pilhaContexto))
+//        {
+//            super.setCodigo(codigo += "3");
+//            return "O elemento não foi informado na linha da matriz, insira um valor ou uma expressão para corrigir o problema";
+//        }
+//        else if (estaEmUmComando(pilhaContexto))
+//        {   
+//            String comando = extrairComando(pilhaContexto);
+//
+//            switch (comando)
+//            {
+//                case "se": 
+//                    super.setCodigo(codigo += "4");                  
+//                    return "O comando \"se\" espera uma expressão do tipo lógico entre os parêntesis";
+//                case "enquanto": 
+//                    super.setCodigo(codigo += "5");
+//                    return "O comando \"enquanto\" espera uma expressão do tipo lógico entre os parêntesis";
+//                case "facaEnquanto": 
+//                    super.setCodigo(codigo += "6");                
+//                    return "O comando \"faca-enquanto\" espera uma expressão do tipo lógico entre os parêntesis";
+//                case "escolha": 
+//                    super.setCodigo(codigo += "7");
+//                    return "O comando \"escolha\" espera um valor ou uma expressão";
+//            }
+//        }
         
         super.setCodigo(codigo += "8");
         return "Era esperada uma expressão";

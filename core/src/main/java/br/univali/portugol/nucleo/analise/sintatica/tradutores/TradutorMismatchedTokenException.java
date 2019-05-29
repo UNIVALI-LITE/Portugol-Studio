@@ -1,18 +1,13 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import java.util.Stack;
 import org.antlr.runtime.MismatchedTokenException;
-import org.antlr.v4.runtime.InputMismatchException;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
 
 
@@ -39,20 +34,22 @@ public final class TradutorMismatchedTokenException
      * @return                   o erro sintático traduzido.
      * @since 1.0
      */
-    public ErroSintatico traduzirErroParsing(InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
+    public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
         Token token = erro.getOffendingToken();
         
-        int linha = token.getLine();
-        int coluna = token.getCharPositionInLine();
         
-        String contextoAtual = pilhaContexto.peek();
+        
+        int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();// token.getLine();
+        int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
+        
+        String contextoAtual = erro.getCtx().getText(); //TODO
         //String tokenEsperado = erro.get;// AnalisadorSintatico.getToken(tokens, erro.expecting);
         
-//        switch (contextoAtual)
-//        {
-//            case "para": return traduzirErrosPara(linha, coluna, erro, tokens, pilhaContexto, codigoFonte);
-//        }
+        switch (contextoAtual)
+        {
+            case "para": return traduzirErrosPara(linha, coluna, erro, tokens);
+        }
         
 //        switch (tokenEsperado)
 //        {            
@@ -81,27 +78,28 @@ public final class TradutorMismatchedTokenException
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
     
-//    private ErroSintatico traduzirErrosPara(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte)
-//    {
-//        String tokenEsperado = AnalisadorSintatico.getToken(tokens, erro.expecting);
-//        String tokenEncontrado = AnalisadorSintatico.getToken(tokens, erro.getUnexpectedType());
-//        
-//        switch (tokenEsperado)
-//        {
-//            case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-//            case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-//            case ";":
-//            {
-//                if (!tokenEncontrado.equals(")"))
-//                {
-//                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-//                }
-//            }
-//        }
-//        
-//        return new ErroParaEsperaCondicao(linha, coluna);
-//    }
-//
+    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, String[] tokens)
+    {
+       
+        String tokenEsperado = erro.getRecognizer().getVocabulary().getLiteralName(erro.getExpectedTokens().get(0)) ;// AnalisadorSintatico.getToken(tokens, erro.);
+        String tokenEncontrado = erro.getOffendingToken() != null ? erro.getOffendingToken().getText() : "";
+        
+        switch (tokenEsperado)
+        {
+            case "')'": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+            case "'('": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
+            case "';'":
+            {
+                if (!tokenEncontrado.equals("')'"))
+                {
+                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+                }
+            }
+        }
+        
+        return new ErroParaEsperaCondicao(linha, coluna);
+    }
+
 //    private ErroSintatico traduzirErrosPrograma(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte, String mensagemPadrao)
 //    {
 //        String contextoAtual = pilhaContexto.peek();
