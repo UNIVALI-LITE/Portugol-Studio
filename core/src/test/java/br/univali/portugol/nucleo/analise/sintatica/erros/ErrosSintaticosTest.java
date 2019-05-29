@@ -13,6 +13,24 @@ import org.junit.Test;
 public class ErrosSintaticosTest {
 
     @Test
+    public void testParaSemCondicaoParada() throws Exception {
+        String codigoFonte
+                = " programa {                                                  "
+                + "  funcao inicio(){                                           "
+                + "         para (inteiro x=0; ; x++) {}                    "
+                + "  }                                                          "
+                + "}                                                            ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroParaEsperaCondicao);
+    }
+    
+    @Test
     public void testParaSemAbrirParenteses() throws Exception {
         String codigoFonte
                 = " programa {                                                  "

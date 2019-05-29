@@ -88,13 +88,13 @@ public final class TradutorMismatchedTokenException
         {
             case "')'": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
             case "'('": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-            case "';'":
-            {
-                if (!tokenEncontrado.equals("')'"))
-                {
-                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-                }
-            }
+//            case "';'":
+//            {
+//                if (!tokenEncontrado.equals("')'"))
+//                {
+//                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+//                }
+//            }
         }
         
         return new ErroParaEsperaCondicao(linha, coluna);
