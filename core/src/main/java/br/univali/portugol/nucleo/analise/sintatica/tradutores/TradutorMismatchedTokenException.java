@@ -46,9 +46,9 @@ public final class TradutorMismatchedTokenException
         String contextoAtual = erro.getCtx().getText(); //TODO
         //String tokenEsperado = erro.get;// AnalisadorSintatico.getToken(tokens, erro.expecting);
         
-        switch (contextoAtual)
+        if (contextoAtual.startsWith("para"))
         {
-            case "para": return traduzirErrosPara(linha, coluna, erro, tokens);
+            return traduzirErrosPara(linha, coluna, erro, tokens);
         }
         
 //        switch (tokenEsperado)
