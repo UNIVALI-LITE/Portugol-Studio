@@ -2,6 +2,7 @@ package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
@@ -58,7 +59,7 @@ public final class TradutorMismatchedTokenException
                 case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
                 case "ABRE_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
                 case "FECHA_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-                //case ":": return new ErroFaltaDoisPontos(linha, coluna);
+                case "':'": return new ErroFaltaDoisPontos(linha, coluna);
                 case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
             }        
     //        
