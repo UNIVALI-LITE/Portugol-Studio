@@ -25,6 +25,9 @@ public class ErrosSintaticosTest {
         
         ErroSintatico erro = analise.getErrosSintaticos().get(0);
         Assert.assertTrue(erro instanceof ErroEscopo);
+        
+        ErroEscopo erroEscopo = (ErroEscopo)erro;
+        Assert.assertTrue(erroEscopo.getMensagem().contains("programa"));
     }
     
     @Test
