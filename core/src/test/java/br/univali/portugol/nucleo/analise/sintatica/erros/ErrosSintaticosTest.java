@@ -13,6 +13,25 @@ import org.junit.Test;
 public class ErrosSintaticosTest {
 
     @Test
+    public void testParaSemInicializacao() throws Exception {
+        String codigoFonte
+                = " programa {                                                  "
+                + "  funcao inicio(){                                           "
+                + "     inteiro i=0                                             "
+                + "     para (inteiro i=0;   i++) {}                    "
+                + "  }                                                          "
+                + "}                                                            ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroTokenFaltando);
+    }
+    
+    @Test
     public void testParaSemCondicaoParada() throws Exception {
         String codigoFonte
                 = " programa {                                                  "

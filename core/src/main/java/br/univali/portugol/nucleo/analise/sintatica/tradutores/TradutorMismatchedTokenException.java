@@ -4,10 +4,12 @@ import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
 
 
@@ -25,40 +27,42 @@ import org.antlr.v4.runtime.Token;
  */
 public final class TradutorMismatchedTokenException
 {
-    /**
-     * 
-     * @param erro               o erro de parsing gerado pelo ANTLR, sem nenhum tratamento.
-     * @param tokens             a lista de tokens envolvidos no erro.
-     * @param pilhaContexto      a pilha de contexto do analisador sintático.
-     * @param mensagemPadrao     a mensagem de erro padrão para este tipo de erro.
-     * @return                   o erro sintático traduzido.
-     * @since 1.0
-     */
+
+
+    private boolean estaNoContextoDoPara(RecognitionException erro) 
+    {
+        String contextoAtual = erro.getCtx().getText();
+        
+        RuleContext parent = erro.getCtx().getParent().getParent();
+        
+        String parentContext = (parent != null) ? parent.getText() : "";
+        
+        return contextoAtual.startsWith("para") || parentContext.startsWith("para");
+    }
+    
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
-        Token token = erro.getOffendingToken();
-        
-        
-        
+      
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();// token.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
-        String contextoAtual = erro.getCtx().getText(); //TODO
-        //String tokenEsperado = erro.get;// AnalisadorSintatico.getToken(tokens, erro.expecting);
+        String contextoAtual = erro.getCtx().getText();
+        String tokenEsperado = getTokenEsperado(erro);
         
-        if (contextoAtual.startsWith("para"))
+        if (estaNoContextoDoPara(erro))
         {
             return traduzirErrosPara(linha, coluna, erro, tokens);
         }
         
-//        switch (tokenEsperado)
-//        {            
-//            case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
-//            case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
-//            case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-//            case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-//            case ":": return new ErroFaltaDoisPontos(linha, coluna);
-//        }        
+        switch (tokenEsperado)
+        {            
+            //case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
+            //case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
+            //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
+            //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+            //case ":": return new ErroFaltaDoisPontos(linha, coluna);
+            case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
+        }        
 //        
 //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
 //        {
@@ -78,26 +82,35 @@ public final class TradutorMismatchedTokenException
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
     
+    private String getTokenEsperado(RecognitionException erro) {
+        return erro.getRecognizer().getVocabulary().getLiteralName(erro.getExpectedTokens().get(0));
+    }
+    
     private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, String[] tokens)
     {
        
-        String tokenEsperado = erro.getRecognizer().getVocabulary().getLiteralName(erro.getExpectedTokens().get(0)) ;// AnalisadorSintatico.getToken(tokens, erro.);
+        String tokenEsperado = getTokenEsperado(erro) ;// AnalisadorSintatico.getToken(tokens, erro.);
         String tokenEncontrado = erro.getOffendingToken() != null ? erro.getOffendingToken().getText() : "";
         
-        switch (tokenEsperado)
-        {
-            case "')'": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-            case "'('": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-//            case "';'":
-//            {
-//                if (!tokenEncontrado.equals("')'"))
-//                {
-//                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-//                }
-//            }
+        if (erro.getCause() == null) {
+            boolean faltandoAbrirParenteses = tokenEsperado.equals("'('");
+            boolean faltandoFecharParenteses = tokenEsperado.equals("')'");
+            if (faltandoAbrirParenteses || faltandoFecharParenteses) {
+                ErroParentesis.Tipo tipo = faltandoAbrirParenteses ? ErroParentesis.Tipo.ABERTURA : ErroParentesis.Tipo.FECHAMENTO;
+                return new ErroParentesis(linha, coluna, tipo);
+            }
+        }
+        
+        int numeroPontoVirgulaNoContexto = numeroPontoVirgula(erro.getCtx().getText());
+        if (numeroPontoVirgulaNoContexto == 1) {
+            return new ErroTokenFaltando(linha, coluna, tokenEsperado);
         }
         
         return new ErroParaEsperaCondicao(linha, coluna);
+    }
+    
+    private int numeroPontoVirgula(String string) {
+        return string.split(";", -1).length-1;
     }
 
 //    private ErroSintatico traduzirErrosPrograma(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte, String mensagemPadrao)

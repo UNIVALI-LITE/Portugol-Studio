@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.antlr.v4.runtime.*;
@@ -233,6 +232,7 @@ public final class AnalisadorSintatico
             TradutorMismatchedTokenException tradutor = new TradutorMismatchedTokenException();
             return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);
         } else {
+            
             String contexto = erro.getCtx().getText(); // TODO
             return new ErroParsingNaoTratado(erro, mensagemPadrao, contexto);
         }
