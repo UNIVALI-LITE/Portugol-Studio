@@ -67,7 +67,7 @@ public final class ErroEscopo extends ErroSintatico
                 construtorTexto.append(" da função ");                 
                 codigo += "2";
                 break;
-            case "vetor": 
+            case "inicializacaoArray": 
                 construtorTexto.append(" do vetor "); 
                 codigo += "3";
                 break;
