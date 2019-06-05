@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
@@ -61,6 +62,7 @@ public final class TradutorMismatchedTokenException
                 case "FECHA_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
                 case "':'": return new ErroFaltaDoisPontos(linha, coluna);
                 case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
+                case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
             }        
     //        
     //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))

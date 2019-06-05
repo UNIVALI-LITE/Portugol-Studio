@@ -12,6 +12,28 @@ import org.junit.Test;
  */
 public class ErrosSintaticosTest {
 
+     @Test
+    public void testFacaEnquantoSemEnquanto() throws Exception {
+         String codigoFonte
+                = "programa {                                                   "
+                + "   funcao inicio(){                                          "
+                + "      faca {                                                 "
+                + "      }                                                      "
+                + "   }                                                         "
+                + "}                                                            ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroPalavraReservadaEstaFaltando);
+        
+         ErroPalavraReservadaEstaFaltando erroPalavraReservada = (ErroPalavraReservadaEstaFaltando)erro;
+         Assert.assertTrue(erroPalavraReservada.getMensagem().contains("enquanto"));
+    }
+    
     @Test
     public void testCasoSemDoisPontos() throws Exception {
          String codigoFonte

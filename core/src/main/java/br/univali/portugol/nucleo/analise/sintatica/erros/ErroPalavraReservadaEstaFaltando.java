@@ -26,8 +26,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
  */
 public final class ErroPalavraReservadaEstaFaltando extends ErroSintatico
 {
-    private String palavraReservada;
-    private String contexto;
+    private final String palavraReservada;
 
     /**
      * 
@@ -35,10 +34,9 @@ public final class ErroPalavraReservadaEstaFaltando extends ErroSintatico
      * @param coluna               a coluna onde o erro ocorreu.
      * @param palavraReservada     a palavra reservada que está faltando.
      */
-    public ErroPalavraReservadaEstaFaltando(int linha, int coluna, String palavraReservada, String contexto)
+    public ErroPalavraReservadaEstaFaltando(int linha, int coluna, String palavraReservada)
     {
         super(linha, coluna,"ErroSintatico.ErroPalavraReservadaEstaFaltando");
-        this.contexto = contexto;
         this.palavraReservada = palavraReservada;
     }
 
