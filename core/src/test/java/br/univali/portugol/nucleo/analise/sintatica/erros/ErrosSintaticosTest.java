@@ -13,6 +13,25 @@ import org.junit.Test;
 public class ErrosSintaticosTest {
 
     @Test
+    public void testFuncaoDeclaradaSemNome() throws Exception {
+        String codigoFonte
+                = " programa {                                                  "
+                + "  funcao (){}                                                "
+                + "}                                                            ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroNomeSimboloEstaFaltando);
+        
+        ErroNomeSimboloEstaFaltando erroSimboloFaltando = (ErroNomeSimboloEstaFaltando)erro;
+        Assert.assertTrue(erroSimboloFaltando.getMensagem().contains("função"));
+    }
+    
+    @Test
     public void testVariavelDeclaradaSemNome() throws Exception {
         String codigoFonte
                 = " programa {                                                  "
@@ -28,6 +47,9 @@ public class ErrosSintaticosTest {
         
         ErroSintatico erro = analise.getErrosSintaticos().get(0);
         Assert.assertTrue(erro instanceof ErroNomeSimboloEstaFaltando);
+        
+        ErroNomeSimboloEstaFaltando erroSimboloFaltando = (ErroNomeSimboloEstaFaltando)erro;
+        Assert.assertTrue(erroSimboloFaltando.getMensagem().contains("variável"));
     }
     
     @Test

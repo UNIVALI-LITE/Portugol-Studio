@@ -8,6 +8,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import org.antlr.runtime.MismatchedTokenException;
+import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.RuleContext;
@@ -54,9 +55,11 @@ public final class TradutorMismatchedTokenException
             return traduzirErrosPara(linha, coluna, erro, tokens);
         }
         
-       
-        //erro.get
-        
+        // função declarada sem nome
+        if (contextoAtual.equals("funcao") && erro.getMessage().contains("ID")) {
+            return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
+        }
+                
         switch (tokenEsperado)
         {            
             case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);

@@ -56,7 +56,7 @@ public final class ErroNomeSimboloEstaFaltando extends ErroSintatico
             super.setCodigo(codigo+"1");
             return "O nome do parâmetro da função não foi informado";
         }
-        else if (contexto.equals("declaracaoFuncao"))
+        else if (contexto.equals("funcao"))
         {
             super.setCodigo(codigo+"2");
             return "O nome da função não foi informado";
