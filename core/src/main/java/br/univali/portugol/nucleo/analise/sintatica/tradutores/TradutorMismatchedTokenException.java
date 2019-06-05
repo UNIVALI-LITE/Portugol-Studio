@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
@@ -10,7 +11,6 @@ import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.RuleContext;
-import org.antlr.v4.runtime.Token;
 
 
 /**
@@ -54,9 +54,12 @@ public final class TradutorMismatchedTokenException
             return traduzirErrosPara(linha, coluna, erro, tokens);
         }
         
+       
+        //erro.get
+        
         switch (tokenEsperado)
         {            
-            //case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
+            case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             //case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
             //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
             //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
@@ -83,7 +86,7 @@ public final class TradutorMismatchedTokenException
     }
     
     private String getTokenEsperado(RecognitionException erro) {
-        return erro.getRecognizer().getVocabulary().getLiteralName(erro.getExpectedTokens().get(0));
+        return erro.getRecognizer().getVocabulary().getSymbolicName(erro.getExpectedTokens().get(0));
     }
     
     private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, String[] tokens)
@@ -93,8 +96,8 @@ public final class TradutorMismatchedTokenException
         String tokenEncontrado = erro.getOffendingToken() != null ? erro.getOffendingToken().getText() : "";
         
         if (erro.getCause() == null) {
-            boolean faltandoAbrirParenteses = tokenEsperado.equals("'('");
-            boolean faltandoFecharParenteses = tokenEsperado.equals("')'");
+            boolean faltandoAbrirParenteses = tokenEsperado.equals("ABRE_PARENTESES");
+            boolean faltandoFecharParenteses = tokenEsperado.equals("FECHA_PARENTESES");
             if (faltandoAbrirParenteses || faltandoFecharParenteses) {
                 ErroParentesis.Tipo tipo = faltandoAbrirParenteses ? ErroParentesis.Tipo.ABERTURA : ErroParentesis.Tipo.FECHAMENTO;
                 return new ErroParentesis(linha, coluna, tipo);
