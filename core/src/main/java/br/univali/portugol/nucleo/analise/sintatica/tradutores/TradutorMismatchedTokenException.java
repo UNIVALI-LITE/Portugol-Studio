@@ -8,6 +8,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEs
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.HashSet;
@@ -63,6 +64,7 @@ public final class TradutorMismatchedTokenException
                 case "':'": return new ErroFaltaDoisPontos(linha, coluna);
                 case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
                 case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
+                case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
             }        
     //        
     //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
