@@ -11,7 +11,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
  */
 public final class ErroTokenFaltando extends ErroSintatico
 {
-    private String token;
+    private final String token;
     private String codigo = "ErroSintatico.ErroTokenFaltando.";
     
     public ErroTokenFaltando(int linha, int coluna, String token)

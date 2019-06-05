@@ -8,10 +8,13 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
+import java.util.HashSet;
+import java.util.Set;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.RuleContext;
+import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.misc.IntervalSet;
 
 
 /**
@@ -36,10 +39,10 @@ public final class TradutorMismatchedTokenException
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
         String contextoAtual = erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];//  erro.getCtx().getText();
-        String tokenEsperado = getTokenEsperado(erro);
+        Set<String> tokensEsperados = getTokensEsperados(erro);
         
         if (contextoAtual.equals("para")) {
-            return traduzirErrosPara(linha, coluna, erro, tokens);
+            return traduzirErrosPara(linha, coluna, erro, tokensEsperados);
         }
         
         // função, variável ou parâmetro sem nome
@@ -49,46 +52,57 @@ public final class TradutorMismatchedTokenException
             }
         }
                 
-        switch (tokenEsperado)
-        {            
-            case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
-            //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-            //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-            //case ":": return new ErroFaltaDoisPontos(linha, coluna);
-            case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
-        }        
-//        
-//        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
-//        {
-//            case PALAVRA_RESERVADA: 
-//            {
-//                if (tokenEsperado.equals("PR_PROGRAMA"))
-//                {
-//                    return traduzirErrosPrograma(linha, coluna, erro, tokens, pilhaContexto, codigoFonte, mensagemPadrao);
-//                }
-//                else
-//                {            
-//                    return new ErroPalavraReservadaEstaFaltando(linha, coluna, tokenEsperado.replace("PR_", "").toLowerCase(), contextoAtual);
-//                }
-//            }
-//        }        
+        for (String tokenEsperado : tokensEsperados) {
+            switch (tokenEsperado)
+            {            
+                case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
+                //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
+                //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+                //case ":": return new ErroFaltaDoisPontos(linha, coluna);
+                case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
+            }        
+    //        
+    //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
+    //        {
+    //            case PALAVRA_RESERVADA: 
+    //            {
+    //                if (tokenEsperado.equals("PR_PROGRAMA"))
+    //                {
+    //                    return traduzirErrosPrograma(linha, coluna, erro, tokens, pilhaContexto, codigoFonte, mensagemPadrao);
+    //                }
+    //                else
+    //                {            
+    //                    return new ErroPalavraReservadaEstaFaltando(linha, coluna, tokenEsperado.replace("PR_", "").toLowerCase(), contextoAtual);
+    //                }
+    //            }
+    //        }        
+        }
 
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
     
-    private String getTokenEsperado(RecognitionException erro) {
-        return erro.getRecognizer().getVocabulary().getSymbolicName(erro.getExpectedTokens().get(0));
+    private Set<String> getTokensEsperados(RecognitionException erro) {
+        Vocabulary vocabulario = erro.getRecognizer().getVocabulary();
+        IntervalSet expectedTokens = erro.getExpectedTokens();
+        Set<String> tokens = new HashSet<>();
+        for (int i = 0; i < expectedTokens.size(); i++) {
+            String token = vocabulario.getSymbolicName(expectedTokens.get(i));
+            if (token == null) {
+                token = vocabulario.getLiteralName(expectedTokens.get(i));
+            }
+            tokens.add(token);
+        }
+        return tokens;
     }
     
-    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, String[] tokens)
+    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, Set<String> tokensEsperados)
     {
        
-        String tokenEsperado = getTokenEsperado(erro) ;// AnalisadorSintatico.getToken(tokens, erro.);
         String tokenEncontrado = erro.getOffendingToken() != null ? erro.getOffendingToken().getText() : "";
         
         if (erro.getCause() == null) {
-            boolean faltandoAbrirParenteses = tokenEsperado.equals("ABRE_PARENTESES");
-            boolean faltandoFecharParenteses = tokenEsperado.equals("FECHA_PARENTESES");
+            boolean faltandoAbrirParenteses = tokensEsperados.contains("ABRE_PARENTESES");
+            boolean faltandoFecharParenteses = tokensEsperados.contains("FECHA_PARENTESES");
             if (faltandoAbrirParenteses || faltandoFecharParenteses) {
                 ErroParentesis.Tipo tipo = faltandoAbrirParenteses ? ErroParentesis.Tipo.ABERTURA : ErroParentesis.Tipo.FECHAMENTO;
                 return new ErroParentesis(linha, coluna, tipo);
@@ -97,7 +111,7 @@ public final class TradutorMismatchedTokenException
         
         int numeroPontoVirgulaNoContexto = numeroPontoVirgula(erro.getCtx().getText());
         if (numeroPontoVirgulaNoContexto == 1) {
-            return new ErroTokenFaltando(linha, coluna, tokenEsperado);
+            return new ErroTokenFaltando(linha, coluna, tokensEsperados.iterator().next());
         }
         
         return new ErroParaEsperaCondicao(linha, coluna);
