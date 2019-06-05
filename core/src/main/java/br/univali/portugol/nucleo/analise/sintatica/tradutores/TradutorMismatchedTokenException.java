@@ -56,8 +56,8 @@ public final class TradutorMismatchedTokenException
             switch (tokenEsperado)
             {            
                 case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
-                //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-                //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+                case "ABRE_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
+                case "FECHA_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
                 //case ":": return new ErroFaltaDoisPontos(linha, coluna);
                 case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
             }        
