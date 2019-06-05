@@ -2,6 +2,7 @@ package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEstaFaltando;
@@ -65,6 +66,7 @@ public final class TradutorMismatchedTokenException
                 case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
                 case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
                 case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
+                case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(erro.getCtx().getText(), coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
             }        
     //        
     //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
