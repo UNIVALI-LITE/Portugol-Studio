@@ -47,7 +47,7 @@ public final class TradutorMismatchedTokenException
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();// token.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
-        String contextoAtual = erro.getCtx().getText();
+        String contextoAtual = erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];//  erro.getCtx().getText();
         String tokenEsperado = getTokenEsperado(erro);
         
         if (estaNoContextoDoPara(erro))
@@ -55,14 +55,15 @@ public final class TradutorMismatchedTokenException
             return traduzirErrosPara(linha, coluna, erro, tokens);
         }
         
-        // função declarada sem nome
-        if (contextoAtual.equals("funcao") && erro.getMessage().contains("ID")) {
-            return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
+        // função, variável ou parâmetro sem nome
+        if (contextoAtual.startsWith("declaracao") || contextoAtual.equals("parametro")) {
+            if (erro.getMessage().contains("ID")){
+                return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
+            }
         }
                 
         switch (tokenEsperado)
         {            
-            case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             //case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
             //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
             //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);

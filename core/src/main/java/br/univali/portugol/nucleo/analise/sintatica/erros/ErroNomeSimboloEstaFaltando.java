@@ -51,12 +51,12 @@ public final class ErroNomeSimboloEstaFaltando extends ErroSintatico
     @Override
     protected String construirMensagem()
     {
-        if (contexto.equals("declaracaoParametro"))
+        if (contexto.equals("parametro"))
         {
             super.setCodigo(codigo+"1");
             return "O nome do parâmetro da função não foi informado";
         }
-        else if (contexto.equals("funcao"))
+        else if (contexto.equals("declaracaoFuncao"))
         {
             super.setCodigo(codigo+"2");
             return "O nome da função não foi informado";
