@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
@@ -8,7 +9,6 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import org.antlr.runtime.MismatchedTokenException;
-import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.RuleContext;
@@ -29,18 +29,6 @@ import org.antlr.v4.runtime.RuleContext;
 public final class TradutorMismatchedTokenException
 {
 
-
-    private boolean estaNoContextoDoPara(RecognitionException erro) 
-    {
-        String contextoAtual = erro.getCtx().getText();
-        
-        RuleContext parent = erro.getCtx().getParent().getParent();
-        
-        String parentContext = (parent != null) ? parent.getText() : "";
-        
-        return contextoAtual.startsWith("para") || parentContext.startsWith("para");
-    }
-    
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
       
@@ -50,8 +38,7 @@ public final class TradutorMismatchedTokenException
         String contextoAtual = erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];//  erro.getCtx().getText();
         String tokenEsperado = getTokenEsperado(erro);
         
-        if (estaNoContextoDoPara(erro))
-        {
+        if (contextoAtual.equals("para")) {
             return traduzirErrosPara(linha, coluna, erro, tokens);
         }
         
@@ -64,7 +51,7 @@ public final class TradutorMismatchedTokenException
                 
         switch (tokenEsperado)
         {            
-            //case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
+            case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
             //case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
             //case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
             //case ":": return new ErroFaltaDoisPontos(linha, coluna);
