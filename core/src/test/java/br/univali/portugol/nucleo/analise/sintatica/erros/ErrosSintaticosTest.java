@@ -13,6 +13,27 @@ import org.junit.Test;
 public class ErrosSintaticosTest {
 
     @Test
+    public void testExpressaoDepoisDoPrograma() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "    }                                                        "
+                + " }                                                           "
+                + " inteiro x                                                   ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroExpressoesForaEscopoPrograma);
+        
+        ErroExpressoesForaEscopoPrograma erroExpressaoNoFinal = (ErroExpressoesForaEscopoPrograma)erro;
+        Assert.assertEquals(ErroExpressoesForaEscopoPrograma.Local.DEPOIS, erroExpressaoNoFinal.getLocal());
+    }
+    
+    @Test
     public void testExpressaoAntesDoPrograma() throws Exception {
          String codigoFonte
                 = " inteiro x                                                   "
@@ -28,6 +49,9 @@ public class ErrosSintaticosTest {
         
         ErroSintatico erro = analise.getErrosSintaticos().get(0);
         Assert.assertTrue(erro instanceof ErroExpressoesForaEscopoPrograma);
+        
+        ErroExpressoesForaEscopoPrograma erroExpressaoNoInicio = (ErroExpressoesForaEscopoPrograma)erro;
+        Assert.assertEquals(ErroExpressoesForaEscopoPrograma.Local.ANTES, erroExpressaoNoInicio.getLocal());
     }
     
     @Test

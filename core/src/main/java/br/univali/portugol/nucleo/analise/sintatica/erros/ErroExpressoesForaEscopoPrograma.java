@@ -10,9 +10,9 @@ public final class ErroExpressoesForaEscopoPrograma extends ErroSintatico
 {
     public static enum Local { ANTES, DEPOIS };
     
-    private int posicao;
-    private String expressoes;
-    private Local local;
+    private final int posicao;
+    private final String expressoes;
+    private final Local local;
     
     public ErroExpressoesForaEscopoPrograma(String expressoes, int posicao, String codigoFonte, Local local)
     {
@@ -20,6 +20,10 @@ public final class ErroExpressoesForaEscopoPrograma extends ErroSintatico
         this.posicao = posicao;
         this.expressoes = expressoes;
         this.local = local;
+    }
+
+    public Local getLocal() {
+        return local;
     }
 
     public int getPosicao()

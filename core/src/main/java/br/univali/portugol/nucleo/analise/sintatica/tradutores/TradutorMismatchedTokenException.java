@@ -29,6 +29,7 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  * 
  * 
  * @author Luiz Fernando Noschang
+ * @author Elieser A. de Jesus
  * @version 1.0
  * 
  * @see AnalisadorSintatico
@@ -39,10 +40,10 @@ public final class TradutorMismatchedTokenException
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
       
-        int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();// token.getLine();
+        int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
-        String contextoAtual = erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];//  erro.getCtx().getText();
+        String contextoAtual = erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];
         Set<String> tokensEsperados = getTokensEsperados(erro);
         
         if (contextoAtual.equals("para")) {
@@ -104,9 +105,6 @@ public final class TradutorMismatchedTokenException
     
     private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, Set<String> tokensEsperados)
     {
-       
-        String tokenEncontrado = erro.getOffendingToken() != null ? erro.getOffendingToken().getText() : "";
-        
         if (erro.getCause() == null) {
             boolean faltandoAbrirParenteses = tokensEsperados.contains("ABRE_PARENTESES");
             boolean faltandoFecharParenteses = tokensEsperados.contains("FECHA_PARENTESES");
