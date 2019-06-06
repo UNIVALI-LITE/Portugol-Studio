@@ -12,6 +12,25 @@ import org.junit.Test;
  */
 public class ErrosSintaticosTest {
 
+//    @Test
+//    public void testInteiroMuitoGrande() throws Exception {
+//         String codigoFonte
+//                = " programa {                                                  "
+//                + "    funcao inicio(){                                         "
+//                + "       inteiro x = 11111111111                               "
+//                + "    }                                                        "
+//                + " }                                                           ";
+//
+//        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+//        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+//                
+//        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+//        
+//        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+//        Assert.assertTrue(erro instanceof ErroInteiroForaDoIntervalo);
+//
+//    }
+    
     @Test
     public void testExpressaoDepoisDoPrograma() throws Exception {
          String codigoFonte
