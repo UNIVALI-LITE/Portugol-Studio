@@ -39,6 +39,7 @@ public final class ErroExpressaoEsperada extends ErroSintatico
 {
     private String codigo = "ErroSintatico.ErroExpressaoEsperada.";
     private final String contextoPai;
+    private final String contextoAvo;
     /**
      * 
      * @param linha      a linha ond eo erro ocorreu.
@@ -46,10 +47,11 @@ public final class ErroExpressaoEsperada extends ErroSintatico
      * @param contexto
      * @since 1.0
      */
-    public ErroExpressaoEsperada(int linha, int coluna, String contextoPai)
+    public ErroExpressaoEsperada(int linha, int coluna, String contextoPai, String contextoAvo)
     {
         super(linha, coluna);
         this.contextoPai = contextoPai;
+        this.contextoAvo = contextoAvo;
     }
 
     /**
@@ -58,21 +60,15 @@ public final class ErroExpressaoEsperada extends ErroSintatico
     @Override
     protected String construirMensagem()
     {
-        if (contextoPai.equals("listaListaExpressoes"))
+        if (contextoAvo.equals("inicializacaoMatriz"))
         {
-            super.setCodigo(codigo += "1");
-            return "A linha da matriz não foi informada ou a expressão informada não é uma linha de matriz";
-            
+            super.setCodigo(codigo += "3");
+            return "O elemento não foi informado na linha da matriz, insira um valor ou uma expressão para corrigir o problema";
         }
         else if (contextoPai.equals("inicializacaoArray"))
         {
             super.setCodigo(codigo += "2");
             return "O elemento do vetor não foi informado, insira um valor ou uma expressão para corrigir o problema";
-        }
-        else if (contextoPai.equals("inicializacaoMatriz"))
-        {
-            super.setCodigo(codigo += "3");
-            return "O elemento não foi informado na linha da matriz, insira um valor ou uma expressão para corrigir o problema";
         }
         else if (estaEmUmComando(contextoPai))
         {   

@@ -13,6 +13,26 @@ import org.junit.Test;
 public class ErrosSintaticosTest {
 
     @Test
+    public void testMatrizComInicializacaoIncompleta() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "       inteiro v[][] = {{1, }}                               "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroExpressaoEsperada);
+        
+        Assert.assertTrue(erro.getMensagem().startsWith("O elemento não foi informado na linha da matriz"));
+    } 
+    
+    @Test
     public void testVetorComInicializacaoIncompleta() throws Exception {
          String codigoFonte
                 = " programa {                                                  "
@@ -30,7 +50,6 @@ public class ErrosSintaticosTest {
         Assert.assertTrue(erro instanceof ErroExpressaoEsperada);
         
         Assert.assertTrue(erro.getMensagem().startsWith("O elemento do vetor não foi informado"));
-
     }  
     
     @Test
