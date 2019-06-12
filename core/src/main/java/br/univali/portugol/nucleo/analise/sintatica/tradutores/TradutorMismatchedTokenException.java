@@ -3,6 +3,7 @@ package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
@@ -18,6 +19,7 @@ import java.util.Set;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
@@ -38,13 +40,27 @@ import org.antlr.v4.runtime.misc.IntervalSet;
 public final class TradutorMismatchedTokenException
 {
 
+    private String getContexto(RecognitionException erro) {
+        return erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];
+    }
+    
+    private String getContextoPai(RecognitionException erro) {
+        RuleContext ctx = erro.getCtx();
+        if (ctx.getParent() != null) {
+            RuleContext parentCtx = ctx.getParent();
+            return erro.getRecognizer().getRuleNames()[parentCtx.getRuleIndex()];
+        }
+        
+        return "";
+    }
+    
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
       
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
-        String contextoAtual = erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];
+        String contextoAtual = getContexto(erro);
         Set<String> tokensEsperados = getTokensEsperados(erro);
         
         if (contextoAtual.equals("para")) {
@@ -60,6 +76,11 @@ public final class TradutorMismatchedTokenException
         
         if (contextoAtual.equals("listaComandos")) {
             return new ErroComandoEsperado(linha, coluna);
+        }
+        
+        if (contextoAtual.equals("listaExpressoes")) {
+            String contextoPai = getContextoPai(erro);
+            return new ErroExpressaoEsperada(linha, coluna, contextoPai);
         }
                 
         for (String tokenEsperado : tokensEsperados) {

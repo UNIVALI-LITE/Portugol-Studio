@@ -79,7 +79,7 @@ public final class TradutorNoViableAltException
             switch (alternativa)
             {
                 case "}":
-                case ",": return new ErroExpressaoEsperada(linha, coluna);
+                case ",": return new ErroExpressaoEsperada(linha, coluna, "TODO");
             }
          }
          else if (Utils.estaEmUmComando() && !alternativa.equals(")"))
@@ -102,7 +102,7 @@ public final class TradutorNoViableAltException
         }
         else if (Utils.estaEmUmComando())
         {
-            return new ErroExpressaoEsperada(linha, coluna);
+            return new ErroExpressaoEsperada(linha, coluna, "TODO");
         }
         
         return new ErroExpressaoIncompleta(linha, coluna);
