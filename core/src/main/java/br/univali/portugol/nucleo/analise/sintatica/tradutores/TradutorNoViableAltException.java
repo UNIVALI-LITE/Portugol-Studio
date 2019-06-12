@@ -14,6 +14,8 @@ import org.antlr.v4.runtime.NoViableAltException;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -39,12 +41,12 @@ public final class TradutorNoViableAltException
      * @return                   o erro sintático traduzido.
      * @since 1.0
      */
-    public ErroSintatico traduzirErroParsing(NoViableAltException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
+    public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
         Token token = erro.getOffendingToken();
         
-        int linha = token.getLine();
-        int coluna = token.getCharPositionInLine();
+        int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
+        int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
         String contextoAtual = "";//TODO pilhaContexto.peek();
         
@@ -70,7 +72,7 @@ public final class TradutorNoViableAltException
         return true; // TODO
     }
     
-    private ErroSintatico traduzirErrosExpressao(int linha, int coluna, NoViableAltException erro, String mensagemPadrao, String codigoFonte)
+    private ErroSintatico traduzirErrosExpressao(int linha, int coluna, RecognitionException erro, String mensagemPadrao, String codigoFonte)
     {
         String alternativa = erro.getOffendingToken().getText();
         
@@ -82,7 +84,7 @@ public final class TradutorNoViableAltException
                 case ",": return new ErroExpressaoEsperada(linha, coluna, "PAI", "AVO");
             }
          }
-         else if (Utils.estaEmUmComando() && !alternativa.equals(")"))
+         else if (TradutorUtils.estaEmUmComando() && !alternativa.equals(")"))
          {
             return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
          }
@@ -94,13 +96,13 @@ public final class TradutorNoViableAltException
         return criarErroExpressaoIncompleta(erro, linha, coluna, mensagemPadrao);
     }    
     
-    private ErroSintatico criarErroExpressaoIncompleta(NoViableAltException erro, int linha, int coluna, String mensagemPadrao)
+    private ErroSintatico criarErroExpressaoIncompleta(RecognitionException erro, int linha, int coluna, String mensagemPadrao)
     {
         if (erro.getOffendingToken().getText().equals("<EOF>"))
         {
             return new ErroCadeiaIncompleta(linha, coluna, mensagemPadrao);
         }
-        else if (Utils.estaEmUmComando())
+        else if (TradutorUtils.estaEmUmComando())
         {
             return new ErroExpressaoEsperada(linha, coluna, "PAI", "AVO");
         }

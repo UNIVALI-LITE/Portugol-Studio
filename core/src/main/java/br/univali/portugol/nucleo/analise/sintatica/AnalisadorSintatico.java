@@ -5,6 +5,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorNoViableAltException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTokenException;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
@@ -102,9 +103,17 @@ public final class AnalisadorSintatico
      */
     public synchronized ASA analisar(String codigoFonte)
     {
+        
         this.codigoFonte = codigoFonte;
 
         PortugolLexer portugolLexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+
+        portugolLexer.addErrorListener(new BaseErrorListener() {
+            @Override
+            public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+                notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
+            }
+        });
 
         PortugolParser portugolParser = new PortugolParser(new CommonTokenStream(portugolLexer));
         portugolParser.setErrorHandler(new DefaultErrorStrategy() {
@@ -186,7 +195,7 @@ public final class AnalisadorSintatico
         }
     }
 
-    public void tratarErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao) {
+    private void tratarErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao) {
         notificarErroSintatico(traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte));
     }
 
@@ -225,9 +234,9 @@ public final class AnalisadorSintatico
          * uma alternativa é o uso de reflection para carregar a instanciar a classe correta.
          *
          */
-        if (erro instanceof NoViableAltException) {
+        if (erro instanceof NoViableAltException || erro instanceof LexerNoViableAltException) {
             TradutorNoViableAltException tradutor = new TradutorNoViableAltException();
-            return tradutor.traduzirErroParsing((NoViableAltException) erro, tokens, mensagemPadrao, codigoFonte);
+            return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);
         } else if (erro != null) {
             TradutorMismatchedTokenException tradutor = new TradutorMismatchedTokenException();
             return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);
@@ -237,6 +246,11 @@ public final class AnalisadorSintatico
             return new ErroParsingNaoTratado(erro, mensagemPadrao, contexto);
         }
     }
+    
+     public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, int linha, int coluna) {
+         String token = "";//erro.getOffendingToken().getText();
+         return new ErroExpressaoInesperada(linha, coluna, token);
+     }
 
     /**
      * Permite adicionar um observador à análise sintática. Os observadores

@@ -17,10 +17,8 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.HashSet;
 import java.util.Set;
 import org.antlr.runtime.MismatchedTokenException;
-import org.antlr.v4.codegen.model.Recognizer;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
@@ -40,37 +38,13 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  */
 public final class TradutorMismatchedTokenException
 {
-    private String getContexto(RecognitionException erro) {
-        return erro.getRecognizer().getRuleNames()[erro.getCtx().getRuleIndex()];
-    }
-    
-    private String getContextoPai(RecognitionException erro) {
-        RuleContext ctx = erro.getCtx();
-        if (ctx.getParent() != null) {
-            RuleContext parentCtx = ctx.getParent();
-            return erro.getRecognizer().getRuleNames()[parentCtx.getRuleIndex()];
-        }
-        
-        return "";
-    }
-    
-    private String getContextoAvo(RecognitionException erro) {
-        RuleContext ctx = erro.getCtx();
-        if (ctx.getParent() != null && ctx.getParent().getParent() != null) {
-            RuleContext parentCtx = ctx.getParent().getParent();
-            return erro.getRecognizer().getRuleNames()[parentCtx.getRuleIndex()];
-        }
-        
-        return "";
-    }
-    
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
     {
       
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
-        String contextoAtual = getContexto(erro);
+        String contextoAtual = TradutorUtils.getContexto(erro);
         Set<String> tokensEsperados = getTokensEsperados(erro);
         
         if (contextoAtual.equals("para")) {
@@ -89,8 +63,8 @@ public final class TradutorMismatchedTokenException
         }
         
         if (contextoAtual.equals("listaExpressoes")) {
-            String contextoPai = getContextoPai(erro);
-            String contextoAvo = getContextoAvo(erro);
+            String contextoPai = TradutorUtils.getContextoPai(erro);
+            String contextoAvo = TradutorUtils.getContextoAvo(erro);
             return new ErroExpressaoEsperada(linha, coluna, contextoPai, contextoAvo);
         }
                 
