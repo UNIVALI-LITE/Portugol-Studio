@@ -46,6 +46,7 @@ OP_SHIFT_LEFT:          '<<' ;
 OP_SHIFT_RIGHT:         '>>' ;
 OP_XOR:                 '^' ;
 OP_OU_BITWISE:          '|' ;
+OP_NOT_BITWISE:         '~' ;
 OP_ALIAS_BIBLIOTECA:    '-->' ;
 E_COMERCIAL:            '&' ;
 

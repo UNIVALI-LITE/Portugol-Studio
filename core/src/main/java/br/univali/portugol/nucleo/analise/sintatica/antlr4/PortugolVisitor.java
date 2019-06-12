@@ -245,6 +245,13 @@ public interface PortugolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitString(PortugolParser.StringContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code negacaoBitwise}
+	 * labeled alternative in {@link PortugolParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNegacaoBitwise(PortugolParser.NegacaoBitwiseContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code referenciaArray}
 	 * labeled alternative in {@link PortugolParser#expressao}.
 	 * @param ctx the parse tree

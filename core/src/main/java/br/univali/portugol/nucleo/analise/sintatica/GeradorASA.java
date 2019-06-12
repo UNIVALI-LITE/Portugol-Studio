@@ -209,6 +209,15 @@ public class GeradorASA {
         }
 
         @Override
+        public No visitNegacaoBitwise(NegacaoBitwiseContext ctx) 
+        {
+            NoBitwiseNao no = new NoBitwiseNao((NoExpressao)ctx.expressao().accept(this));
+            no.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.OP_NOT_BITWISE(), ctx.getText().length()));
+            
+            return no;
+        }
+
+        @Override
         public No visitNegacao(NegacaoContext ctx) {
             NoNao noNao = new NoNao((NoExpressao)ctx.expressao().accept(this));
             

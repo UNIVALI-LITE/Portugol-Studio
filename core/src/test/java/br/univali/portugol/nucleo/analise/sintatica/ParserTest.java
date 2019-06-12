@@ -56,7 +56,7 @@ public class ParserTest {
         PortugolParser parser = novoParser(
                 " programa {                                                    "
                 + "  funcao inicio(){                                           "
-                + "     inteiro x = 0                                           "
+                + "     inteiro x = ~1                                           "
                 + "     x = x << 1                                              "
                 + "     x = x >> 1                                              "
                 + "     x = x & 1                                               "                        

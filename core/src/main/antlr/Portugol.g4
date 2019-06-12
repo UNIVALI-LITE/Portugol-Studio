@@ -129,6 +129,7 @@ expressao
     |   escopoBiblioteca? ID indiceArray indiceArray?                                           #referenciaMatriz // a[i][j]
     |   OP_SUBTRACAO expressao                                                                  #menosUnario 
     |   OP_NAO expressao                                                                        #negacao
+    |   OP_NOT_BITWISE expressao                                                                 #negacaoBitwise
     |   ID (indiceArray indiceArray?)? OP_INCREMENTO_UNARIO                                     #incrementoUnarioPosfixado // x++
     |   ID (indiceArray indiceArray?)? OP_DECREMENTO_UNARIO                                     #decrementoUnarioPosfixado // x--    
     |   OP_INCREMENTO_UNARIO ID (indiceArray indiceArray?)?                                     #incrementoUnarioPrefixado // ++x

@@ -53,7 +53,7 @@ public class GeradorASATest {
         PortugolParser parser = novoParser(
                 " programa {                                                    "
                 + "  funcao inicio(){                                           "
-                + "     inteiro x = 0                                           "
+                + "     inteiro x = ~1                                          "
                 + "     x = x << 1                                              "
                 + "     x = x >> 1                                              "
                 + "     x = x & 1                                               "                        
@@ -68,7 +68,10 @@ public class GeradorASATest {
         
         NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
         
-        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO);
+        
+        NoDeclaracaoVariavel declaracao = (NoDeclaracaoVariavel)inicio.getBlocos().get(0);
+        Assert.assertTrue(declaracao.getInicializacao() instanceof NoBitwiseNao);
         
         Class operacoes[] = {
             NoOperacaoBitwiseLeftShift.class, 

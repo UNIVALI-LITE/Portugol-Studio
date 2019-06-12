@@ -283,6 +283,13 @@ public class PortugolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitNegacaoBitwise(PortugolParser.NegacaoBitwiseContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitReferenciaArray(PortugolParser.ReferenciaArrayContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
