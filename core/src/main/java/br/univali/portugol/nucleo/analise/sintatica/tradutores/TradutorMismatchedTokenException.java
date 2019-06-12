@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
@@ -55,6 +56,10 @@ public final class TradutorMismatchedTokenException
             if (erro.getMessage().contains("ID")){
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             }
+        }
+        
+        if (contextoAtual.equals("listaComandos")) {
+            return new ErroComandoEsperado(linha, coluna);
         }
                 
         for (String tokenEsperado : tokensEsperados) {
