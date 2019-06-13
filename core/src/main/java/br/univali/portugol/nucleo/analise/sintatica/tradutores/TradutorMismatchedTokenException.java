@@ -105,7 +105,7 @@ public final class TradutorMismatchedTokenException
                 case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
                 case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
                 case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
-                case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(erro.getCtx().getText(), coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
+                case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
             }        
     //        
     //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
@@ -126,7 +126,7 @@ public final class TradutorMismatchedTokenException
 
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
-    
+
     private List<String> getTokensEsperados(RecognitionException erro) {
         Vocabulary vocabulario = erro.getRecognizer().getVocabulary();
         IntervalSet expectedTokens = erro.getExpectedTokens();

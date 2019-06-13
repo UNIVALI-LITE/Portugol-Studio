@@ -200,7 +200,7 @@ public final class AnalisadorSintatico
                     tempTexto = tempTexto.trim();
 
                     if (!tempTexto.startsWith("/*") && !tempTexto.endsWith("*/")) {
-                        notificarErroSintatico(new ErroExpressoesForaEscopoPrograma(texto, posicao, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.DEPOIS));
+                        notificarErroSintatico(new ErroExpressoesForaEscopoPrograma(posicao, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.DEPOIS));
                     }
                 }
             }
