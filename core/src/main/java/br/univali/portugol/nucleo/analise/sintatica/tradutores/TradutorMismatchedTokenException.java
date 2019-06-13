@@ -107,21 +107,6 @@ public final class TradutorMismatchedTokenException
                 case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
                 case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
             }        
-    //        
-    //        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
-    //        {
-    //            case PALAVRA_RESERVADA: 
-    //            {
-    //                if (tokenEsperado.equals("PR_PROGRAMA"))
-    //                {
-    //                    return traduzirErrosPrograma(linha, coluna, erro, tokens, pilhaContexto, codigoFonte, mensagemPadrao);
-    //                }
-    //                else
-    //                {            
-    //                    return new ErroPalavraReservadaEstaFaltando(linha, coluna, tokenEsperado.replace("PR_", "").toLowerCase(), contextoAtual);
-    //                }
-    //            }
-    //        }        
         }
 
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
@@ -166,31 +151,5 @@ public final class TradutorMismatchedTokenException
     private int numeroPontoVirgula(String string) {
         return string.split(";", -1).length-1;
     }
-    
-//    private ErroSintatico traduzirErrosPrograma(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte, String mensagemPadrao)
-//    {
-//        String contextoAtual = pilhaContexto.peek();
-//        
-//        if (codigoFonte.indexOf("programa") >= 0)
-//        {
-//            String expressoes = codigoFonte.substring(0, codigoFonte.indexOf("programa"));
-//
-//            return new ErroExpressoesForaEscopoPrograma(expressoes, 0, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
-//        }
-//        else if (codigoFonte.indexOf("{") >= 0)
-//        {
-//            final String expressoes = codigoFonte.substring(0, codigoFonte.indexOf("{"));
-//
-//            return new ErroSintatico(linha, coluna)
-//            {
-//                @Override
-//                protected String construirMensagem()
-//                {
-//                    return String.format("A estrutura do algoritmo está incorreta. Para corrigir o problema, substitua o seguinte trecho de código \"%s\" pela palavra reservada \"programa\"", expressoes);
-//                }
-//            };
-//        }
-//        
-//        return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
-//    }
+ 
 }

@@ -2,7 +2,6 @@ package br.univali.portugol.nucleo.analise.sintatica;
 
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorNoViableAltException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
@@ -223,27 +222,7 @@ public final class AnalisadorSintatico
      * @since 1.0
      */
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte) {
-        /*
-         * @TODO @author manoelcampos O código viola o Open/Closed Principle (OCP),
-         * uma vez que para nova exceção, um novo if precisará ser inserido.
-         * O código não utiliza polimorfismo para traduzir o erro de uma forma independente de qual classe seja.
-         * Muitas das classes como TradutorEarlyExitException e TradutorFailedPredicateException
-         * possuem exatamente o mesmo código.
-         * Além disso, todos os parâmetros são exatamente o mesmo, o que sugere que
-         * uma instância do tradutor poderia ser obtida automaticamente.
-         *
-         * Uma opção seria usar CDI para Java SE, como mostrado em http://felippepuhle.com.br/cdi-weld-java-se/.
-         * Utilizando Producers a instância correta do tradutor poderia ser obtida,
-         * separando a instanciação do objeto das regras de negócio.
-         *
-         * Mas para não incluir mais uma dependência ao projeto,
-         * uma alternativa é o uso de reflection para carregar a instanciar a classe correta.
-         *
-         */
-        if (erro instanceof NoViableAltException || erro instanceof LexerNoViableAltException) {
-            TradutorNoViableAltException tradutor = new TradutorNoViableAltException();
-            return tradutor.traduzirErroParsing(erro, mensagemPadrao, codigoFonte);
-        } else if (erro != null) {
+        if (erro != null) {
             TradutorMismatchedTokenException tradutor = new TradutorMismatchedTokenException();
             return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);
         } else {
