@@ -107,15 +107,17 @@ public final class AnalisadorSintatico
         this.codigoFonte = codigoFonte;
 
         PortugolLexer portugolLexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
-
-        portugolLexer.addErrorListener(new BaseErrorListener() {
+        portugolLexer.addErrorListener(new BaseErrorListener(){
             @Override
             public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+                //tratarErroParsing(e, recognizer.getTokenNames(), msg);
                 notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
             }
+            
         });
-
+ 
         PortugolParser portugolParser = new PortugolParser(new CommonTokenStream(portugolLexer));
+        
         portugolParser.setErrorHandler(new DefaultErrorStrategy() {
 
             @Override
@@ -236,7 +238,7 @@ public final class AnalisadorSintatico
          */
         if (erro instanceof NoViableAltException || erro instanceof LexerNoViableAltException) {
             TradutorNoViableAltException tradutor = new TradutorNoViableAltException();
-            return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);
+            return tradutor.traduzirErroParsing(erro, mensagemPadrao, codigoFonte);
         } else if (erro != null) {
             TradutorMismatchedTokenException tradutor = new TradutorMismatchedTokenException();
             return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);

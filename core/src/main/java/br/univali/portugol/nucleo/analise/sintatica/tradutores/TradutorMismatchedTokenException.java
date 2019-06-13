@@ -44,16 +44,22 @@ public final class TradutorMismatchedTokenException
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
         
-        String contextoAtual = TradutorUtils.getContexto(erro);
+        ContextSet contextos = new ContextSet(erro);
+        
         Set<String> tokensEsperados = getTokensEsperados(erro);
         
-        if (contextoAtual.equals("para")) {
-            return traduzirErrosPara(linha, coluna, erro, tokensEsperados);
+        if (contextos.contains("para")) { // está em um loop do tipo para?
+            ContextSet contextoPara = contextos;
+            if (erro.getCause() != null) {
+                contextoPara = new ContextSet((RecognitionException)erro.getCause());
+            }
+            return traduzirErrosPara(linha, coluna, erro, tokensEsperados, contextoPara);
         }
         
         // função, variável ou parâmetro sem nome
+        String contextoAtual = contextos.getContextoAtual();
         if (contextoAtual.startsWith("declaracao") || contextoAtual.equals("parametro")) {
-            if (erro.getMessage().contains("ID")){
+            if (tokensEsperados.contains("ID")){
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             }
         }
@@ -63,8 +69,8 @@ public final class TradutorMismatchedTokenException
         }
         
         if (contextoAtual.equals("listaExpressoes")) {
-            String contextoPai = TradutorUtils.getContextoPai(erro);
-            String contextoAvo = TradutorUtils.getContextoAvo(erro);
+            String contextoPai = contextos.getContextoPai();
+            String contextoAvo = contextos.getContextoAvo();
             return new ErroExpressaoEsperada(linha, coluna, contextoPai, contextoAvo);
         }
                 
@@ -114,9 +120,10 @@ public final class TradutorMismatchedTokenException
         return tokens;
     }
     
-    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, Set<String> tokensEsperados)
+    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, Set<String> tokensEsperados, ContextSet contextos)
     {
-        if (erro.getCause() == null) {
+        String contextoAtual = contextos.getContextoAtual();
+        if (contextoAtual.equals("para")) {
             boolean faltandoAbrirParenteses = tokensEsperados.contains("ABRE_PARENTESES");
             boolean faltandoFecharParenteses = tokensEsperados.contains("FECHA_PARENTESES");
             if (faltandoAbrirParenteses || faltandoFecharParenteses) {
@@ -136,7 +143,7 @@ public final class TradutorMismatchedTokenException
     private int numeroPontoVirgula(String string) {
         return string.split(";", -1).length-1;
     }
-
+    
 //    private ErroSintatico traduzirErrosPrograma(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte, String mensagemPadrao)
 //    {
 //        String contextoAtual = pilhaContexto.peek();
