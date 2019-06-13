@@ -13,6 +13,25 @@ import org.junit.Test;
 public class ErrosSintaticosTest {
 
     @Test
+    public void testCadeiaIncompleta() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "       cadeia teste = \"asd                                  "
+                + "    }                                                        "
+                + " }                                                           ";
+
+      
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroCadeiaIncompleta);
+    }
+    
+    @Test
     public void testCaracterBizarroNaFuncaoInicio() throws Exception {
          String codigoFonte
                 = " programa {                                                  "
