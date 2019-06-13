@@ -52,6 +52,12 @@ public final class TradutorMismatchedTokenException
         String contextoAtual = contextos.getContextoAtual();
         
         if (contextoAtual.equals("expressao") ) {
+            
+            String contextoPai = contextos.getContextoPai();
+            if (contextoPai.equals("se") || contextoPai.equals("enquanto") || contextoPai.equals("facaEnquanto")) {
+                return new ErroExpressaoEsperada(linha, coluna, contextoPai, contextos.getContextoAvo());
+            }
+            
             if (erro.getMessage() != null && erro.getMessage().contains("<EOF>")) {
                 return new ErroCadeiaIncompleta(linha, coluna, mensagemPadrao);
             }

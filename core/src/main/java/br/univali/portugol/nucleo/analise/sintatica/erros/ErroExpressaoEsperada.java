@@ -76,13 +76,13 @@ public final class ErroExpressaoEsperada extends ErroSintatico
             {
                 case "se": 
                     super.setCodigo(codigo += "4");                  
-                    return "O comando \"se\" espera uma expressão do tipo lógico entre os parêntesis";
+                    return "O comando \"se\" espera uma expressão do tipo lógico entre os parênteses";
                 case "enquanto": 
                     super.setCodigo(codigo += "5");
-                    return "O comando \"enquanto\" espera uma expressão do tipo lógico entre os parêntesis";
+                    return "O comando \"enquanto\" espera uma expressão do tipo lógico entre os parênteses";
                 case "facaEnquanto": 
                     super.setCodigo(codigo += "6");                
-                    return "O comando \"faca-enquanto\" espera uma expressão do tipo lógico entre os parêntesis";
+                    return "O comando \"faca-enquanto\" espera uma expressão do tipo lógico entre os parênteses";
                 case "escolha": 
                     super.setCodigo(codigo += "7");
                     return "O comando \"escolha\" espera um valor ou uma expressão";
