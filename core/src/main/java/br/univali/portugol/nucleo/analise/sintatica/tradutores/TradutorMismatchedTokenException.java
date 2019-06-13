@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
@@ -48,6 +49,14 @@ public final class TradutorMismatchedTokenException
         
         Set<String> tokensEsperados = getTokensEsperados(erro);
         
+        String contextoAtual = contextos.getContextoAtual();
+        
+        if (contextoAtual.equals("expressao") ) {
+            if (erro.getMessage() != null && erro.getMessage().contains("<EOF>")) {
+                return new ErroCadeiaIncompleta(linha, coluna, mensagemPadrao);
+            }
+        }
+        
         if (contextos.contains("para")) { // está em um loop do tipo para?
             ContextSet contextoPara = contextos;
             if (erro.getCause() != null) {
@@ -57,7 +66,6 @@ public final class TradutorMismatchedTokenException
         }
         
         // função, variável ou parâmetro sem nome
-        String contextoAtual = contextos.getContextoAtual();
         if (contextoAtual.startsWith("declaracao") || contextoAtual.equals("parametro")) {
             if (tokensEsperados.contains("ID")){
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);

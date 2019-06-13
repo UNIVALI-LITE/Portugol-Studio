@@ -25,9 +25,9 @@ public class ErrosSintaticosTest {
         AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
         ResultadoAnalise analise = analisador.analisar(codigoFonte);
                 
-        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        Assert.assertTrue(analise.getErrosSintaticos().size() >= 2);
         
-        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        ErroSintatico erro = analise.getErrosSintaticos().get(1);
         Assert.assertTrue(erro instanceof ErroCadeiaIncompleta);
     }
     

@@ -110,7 +110,6 @@ public final class AnalisadorSintatico
         portugolLexer.addErrorListener(new BaseErrorListener(){
             @Override
             public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-                //tratarErroParsing(e, recognizer.getTokenNames(), msg);
                 notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
             }
             
