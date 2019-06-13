@@ -254,7 +254,7 @@ public final class AnalisadorSintatico
     }
     
      public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, int linha, int coluna) {
-         String token = "";//erro.getOffendingToken().getText();
+         String token = mensagemPadrao.replace("token recognition error at: ", "");
          return new ErroExpressaoInesperada(linha, coluna, token);
      }
 

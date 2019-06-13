@@ -103,6 +103,9 @@ public class ErrosSintaticosTest {
         
         ErroSintatico erro = analise.getErrosSintaticos().get(0);
         Assert.assertTrue(erro instanceof ErroExpressaoInesperada);
+        
+        ErroExpressaoInesperada erroExpressao = (ErroExpressaoInesperada)erro;
+        Assert.assertEquals("'§'", erroExpressao.getToken());
     }
     
     @Test
