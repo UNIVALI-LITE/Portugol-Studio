@@ -114,7 +114,8 @@ public final class AnalisadorSintatico
             @Override
             public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
                 if (e.getCause() instanceof NumberFormatException) {
-                    notificarErroSintatico(new ErroInteiroForaDoIntervalo(line, charPositionInLine, msg));
+                    String numero = msg.replaceAll("\\D+",""); // delete non-digits
+                    notificarErroSintatico(new ErroInteiroForaDoIntervalo(line, charPositionInLine, numero));
                 } else {
                     notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
                 }
