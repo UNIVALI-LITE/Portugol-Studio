@@ -5,6 +5,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
@@ -56,6 +57,10 @@ public final class TradutorMismatchedTokenException
             String contextoPai = contextos.getContextoPai();
             if (contextoPai.equals("se") || contextoPai.equals("enquanto") || contextoPai.equals("facaEnquanto")) {
                 return new ErroExpressaoEsperada(linha, coluna, contextoPai, contextos.getContextoAvo());
+            }
+            
+            if (contextoPai.equals("expressao")) {
+                return new ErroExpressaoIncompleta(linha, coluna);
             }
             
             if (erro.getMessage() != null && erro.getMessage().contains("<EOF>")) {
