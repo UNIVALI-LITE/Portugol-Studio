@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorNoViableA
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTokenException;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
@@ -17,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.IntervalSet;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 /**
  * Esta classe provê uma fachada (Facade) que abstrai o processo de parsing do
@@ -107,10 +109,15 @@ public final class AnalisadorSintatico
         this.codigoFonte = codigoFonte;
 
         PortugolLexer portugolLexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+        portugolLexer.removeErrorListeners();
         portugolLexer.addErrorListener(new BaseErrorListener(){
             @Override
             public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-                notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
+                if (e.getCause() instanceof NumberFormatException) {
+                    notificarErroSintatico(new ErroInteiroForaDoIntervalo(line, charPositionInLine, msg));
+                } else {
+                    notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
+                }
             }
             
         });
@@ -150,10 +157,14 @@ public final class AnalisadorSintatico
             verificarCaracteresAposEscopoPrograma(codigoFonte);
 
             return asa;
-        } catch (RecognitionException excecao) {
-            tratarErroParsing(excecao, excecao.getRecognizer().getTokenNames(), codigoFonte);
-            return null;
         }
+        catch (RecognitionException excecao) {
+            tratarErroParsing(excecao, excecao.getRecognizer().getTokenNames(), codigoFonte);
+        }
+        catch(ParseCancellationException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     private void verificarCaracteresAposEscopoPrograma(String codigoFonte) {
@@ -211,13 +222,6 @@ public final class AnalisadorSintatico
      * @since 1.0
      */
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte) {
-        String erroClassName = (erro != null) ? erro.getClass().getName() : "";
-        System.out.println("Traduzindo erro sintático: " + erroClassName);
-        System.out.println(mensagemPadrao);
-        String contextoAtual = ""; //TODO
-        System.out.println("Contexto atual: " + contextoAtual);
-        System.out.println();
-
         /*
          * @TODO @author manoelcampos O código viola o Open/Closed Principle (OCP),
          * uma vez que para nova exceção, um novo if precisará ser inserido.

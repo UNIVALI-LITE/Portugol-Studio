@@ -84,7 +84,16 @@ REAL:   DIGITO+ '.' DIGITO*
 
 fragment DIGITO: [0-9] ; 
 
-INT:    DIGITO+ ;
+INT:    DIGITO+ { 
+    try {
+        Integer.parseInt(getText());
+    }
+    catch(NumberFormatException e) {
+        LexerNoViableAltException ex = new LexerNoViableAltException(this, _input, actionIndex, null);
+        ex.initCause(e);
+	throw ex;
+    }
+};
 
 HEXADECIMAL: '0'[xX] SIMBOLO_HEXADECIMAL (SIMBOLO_HEXADECIMAL (SIMBOLO_HEXADECIMAL (SIMBOLO_HEXADECIMAL (SIMBOLO_HEXADECIMAL (SIMBOLO_HEXADECIMAL)?)?)?)?)?; // 3 ou 6 símbolos
 
