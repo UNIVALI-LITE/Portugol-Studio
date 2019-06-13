@@ -55,6 +55,13 @@ public final class TrechoCodigoFonte
         this.tamanhoTexto = tamanhoTexto;
     }
     
+    public TrechoCodigoFonte(TrechoCodigoFonte outroTrecho, int tamanho)
+    {
+        this.linha = outroTrecho.getLinha();
+        this.coluna = outroTrecho.getColuna();
+        this.tamanhoTexto = tamanho;
+    }
+    
     /** Obtém a coluna onde o token inicia.
      * 
      * @return     a coluna onde o token inicia.

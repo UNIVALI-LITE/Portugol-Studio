@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,10 +31,10 @@ import java.util.List;
  * @author Luiz Fernando Noschang
  * @version 1.0
  */
-public final class NoDeclaracaoFuncao extends NoDeclaracao
+public final class NoDeclaracaoFuncao extends NoDeclaracaoBase
 {
     private final Quantificador quantificador;
-    private List<NoBloco> blocos = Collections.EMPTY_LIST;
+    private List<NoBloco> blocos = new ArrayList<>();
     private List<NoDeclaracaoParametro> parametros = Collections.EMPTY_LIST;
 
     /**
@@ -93,6 +94,11 @@ public final class NoDeclaracaoFuncao extends NoDeclaracao
         this.blocos = blocos;
     }
 
+    public void adicionaBloco(NoBloco bloco)
+    {
+        this.blocos.add(bloco);
+    }
+    
     /**
      * Obtém a lista de parâmetros esperados por esta função. A lista poderá
      * estar vazia caso a função não necessite de parâmetros.

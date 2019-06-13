@@ -35,6 +35,8 @@ import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.execucao.gerador.GeradorCodigoJava;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import java.nio.charset.Charset;
 
 /**
  * @author Elieser
@@ -92,7 +94,7 @@ public class IntegracaoGeradorCodigoJavacTest
 		}
 		else
 		{
-                        System.out.println(exemplo);
+                        //System.out.println(exemplo);
 			List<String> ignore = new ArrayList<>();
 			ignore.add("varios.por");
 			ignore.add("logico.por");
@@ -103,15 +105,22 @@ public class IntegracaoGeradorCodigoJavacTest
 
 			if (exemplo.getName().endsWith(".por"))
 			{
-				System.out.println("Testando " + exemplo);
+				System.out.println("\nTestando " + exemplo);
 
-				String codigoPortugol = ResourceHandle.readExternalResourceFile(exemplo);
+				String codigoPortugol = ResourceHandle.readExternalResourceFile(exemplo, "UTF-8");
 				AnalisadorAlgoritmo aa = new AnalisadorAlgoritmo();
 				ResultadoAnalise resultado = aa.analisar(codigoPortugol);
 
 				if (!resultado.getErros().isEmpty())
 				{
-					throw new Exception("Falha ao testar o arquivo: " + exemplo.getCanonicalPath(), new ErroCompilacao(resultado));
+                                    System.out.println("Erros encontrados em " + exemplo);
+                                    System.out.println("");
+                                    
+                                    for (ErroAnalise erro : resultado.getErros()) {
+                                        
+                                        System.out.println("Linha " + erro.getLinha() + ", coluna " + erro.getColuna() + ": " + erro.getMensagem());
+                                    }
+                                    throw new Exception("Falha ao testar o arquivo: " + exemplo.getCanonicalPath(), new ErroCompilacao(resultado));
 				}
 
 				GeradorCodigoJava gerador = new GeradorCodigoJava();
@@ -120,7 +129,7 @@ public class IntegracaoGeradorCodigoJavacTest
 
 				File arquivoJava = new File(TestUtils.getTempDirectory(), nomeClasse + ".java");
 
-				System.out.println(arquivoJava.getCanonicalPath());
+				//System.out.println(arquivoJava.getCanonicalPath());
 				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(arquivoJava)));
 				try
 				{

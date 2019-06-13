@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public abstract class ASA
 {
-    private List<NoDeclaracao> listaDeclaracoesGlobais;
+    private List<NoDeclaracao> listaDeclaracoesGlobais = new ArrayList<>();
 
     public ASA()
     {
@@ -43,6 +44,11 @@ public abstract class ASA
     public void setListaDeclaracoesGlobais(List<NoDeclaracao> listaDeclaracoesGlobais)
     {
         this.listaDeclaracoesGlobais = listaDeclaracoesGlobais;
+    }
+    
+    public void adicionaDeclaracaoGlobal(NoDeclaracao declaracao)
+    {
+        listaDeclaracoesGlobais.add(declaracao);
     }
 
     /**

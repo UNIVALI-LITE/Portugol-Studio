@@ -1,8 +1,8 @@
 package br.univali.ps.dominio;
 
-import br.univali.portugol.nucleo.analise.sintatica.PortugolLexer;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.Token;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.Token;
 
 /**
  *
@@ -13,36 +13,36 @@ public class PortugolHTMLHighlighter {
     public static String getText(String programaPortugol)
     {
         StringBuilder htmlDoPortugol = new StringBuilder();
-        PortugolLexer pl = new PortugolLexer(new ANTLRStringStream(programaPortugol));
-        for (Token token = pl.nextToken(); token.getType() != Token.EOF; token = pl.nextToken())
+        PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(programaPortugol));
+        for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
         {
             switch (token.getType())
             {
                 //Palavras Reservadas
-                case PortugolLexer.ESPACO:
+                case PortugolLexer.WS: // espaço em branco
                     if(token.getText().equalsIgnoreCase("\t")){
                         htmlDoPortugol.append("     ");
                     }else{
                         htmlDoPortugol.append(token.getText());
                     }
                     break;
-                case PortugolLexer.PR_PROGRAMA:
-                case PortugolLexer.PR_INCLUA:
-                case PortugolLexer.PR_BIBLIOTECA:
-                case PortugolLexer.PR_CONST:
-                case PortugolLexer.PR_FUNCAO:
-                case PortugolLexer.PR_RETORNE:
-                case PortugolLexer.PR_SE:
-                case PortugolLexer.PR_SENAO:
-                case PortugolLexer.PR_ESCOLHA:
-                case PortugolLexer.PR_CASO:
-                case PortugolLexer.PR_PARE:
-                case PortugolLexer.PR_FACA:
-                case PortugolLexer.PR_ENQUANTO:
-                case PortugolLexer.PR_PARA:
-                case PortugolLexer.T__77: // e
-                case PortugolLexer.T__78: // ou
-                case PortugolLexer.OPERADOR_NAO:
+                case PortugolLexer.PROGRAMA:
+                case PortugolLexer.INCLUA:
+                case PortugolLexer.BIBLIOTECA:
+                case PortugolLexer.CONSTANTE:
+                case PortugolLexer.FUNCAO:
+                case PortugolLexer.RETORNE:
+                case PortugolLexer.SE:
+                case PortugolLexer.SENAO:
+                case PortugolLexer.ESCOLHA:
+                case PortugolLexer.CASO:
+                case PortugolLexer.PARE:
+                case PortugolLexer.FACA:
+                case PortugolLexer.ENQUANTO:
+                case PortugolLexer.PARA:
+                case PortugolLexer.OP_E_LOGICO: // e
+                case PortugolLexer.OP_OU_LOGICO: // ou
+                case PortugolLexer.OP_NAO:
                     htmlDoPortugol
                             .append("<span class=\"")
                             .append("porPalavraReservada")
@@ -51,12 +51,7 @@ public class PortugolHTMLHighlighter {
                             .append("</span>");
                     break;
                 //Tipos Declaração
-                case PortugolLexer.PR_INTEIRO:
-                case PortugolLexer.PR_REAL:
-                case PortugolLexer.PR_LOGICO:
-                case PortugolLexer.PR_CADEIA:
-                case PortugolLexer.PR_CARACTER:
-                case PortugolLexer.PR_VAZIO:
+                case PortugolLexer.TIPO:
                     htmlDoPortugol
                             .append("<span class=\"")
                             .append("porTipoDeclaracao")
@@ -65,12 +60,12 @@ public class PortugolHTMLHighlighter {
                             .append("</span>");
                     break;
                 //case PortugolLexer.
-                case PortugolLexer.T__47: // (
-                case PortugolLexer.T__48: // )
-                case PortugolLexer.T__73: // [
-                case PortugolLexer.T__74: // ]
-                case PortugolLexer.T__79: // {
-                case PortugolLexer.T__82: // }
+                case PortugolLexer.ABRE_PARENTESES: // (
+                case PortugolLexer.FECHA_PARENTESES: // )
+                case PortugolLexer.ABRE_COLCHETES: // [
+                case PortugolLexer.FECHA_COLCHETES: // ]
+                case PortugolLexer.ABRE_CHAVES: // {
+                case PortugolLexer.FECHA_CHAVES: // }
                     htmlDoPortugol
                             .append("<span class=\"")
                             .append("porAgrupamentos")
@@ -79,7 +74,7 @@ public class PortugolHTMLHighlighter {
                             .append("</span>");
                     break;
                 // Valores Constantes
-                case PortugolLexer.INTEIRO:
+                case PortugolLexer.INT:
                 case PortugolLexer.REAL:
                     htmlDoPortugol
                             .append("<span class=\"")
@@ -96,7 +91,7 @@ public class PortugolHTMLHighlighter {
                             .append(token.getText())
                             .append("</span>");
                     break;
-                case PortugolLexer.CADEIA:
+                case PortugolLexer.STRING:
                 case PortugolLexer.CARACTER:
                     htmlDoPortugol
                             .append("<span class=\"")

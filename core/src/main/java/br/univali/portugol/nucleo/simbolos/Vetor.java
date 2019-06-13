@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.simbolos;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +34,7 @@ public final class Vetor extends Simbolo
      *
      * @since 1.0
      */
-    public Vetor(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem)
+    public Vetor(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem)
     {
         super(nome, tipoDado, declaracaoOrigem);
         setInicializado(true);
@@ -54,7 +54,7 @@ public final class Vetor extends Simbolo
      *
      * @since 1.0
      */
-    public Vetor(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem, int tamanho)
+    public Vetor(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem, int tamanho)
     {
         this(nome, tipoDado, declaracaoOrigem);
         valores = new ArrayList<>(tamanho);
@@ -79,7 +79,7 @@ public final class Vetor extends Simbolo
      *
      * @since 1.0
      */
-    public Vetor(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem, int tamanho, List<Object> valores)
+    public Vetor(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem, int tamanho, List<Object> valores)
     {
         this(nome, tipoDado, declaracaoOrigem, tamanho);
         for (int i = 0; i < this.valores.size(); i++)
@@ -104,7 +104,7 @@ public final class Vetor extends Simbolo
      *
      * @since 1.0
      */
-    public Vetor(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem, List<Object> valores)
+    public Vetor(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem, List<Object> valores)
     {
         this(nome, tipoDado, declaracaoOrigem);
         this.valores = new ArrayList<>(valores);

@@ -19,7 +19,7 @@ package br.univali.portugol.nucleo.asa;
  * @see NoReferenciaVariavel
  * @see NoReferenciaVetor
  */
-public abstract class NoReferencia<T extends NoDeclaracao> extends NoExpressao
+public abstract class NoReferencia<T extends NoDeclaracaoBase> extends NoExpressao
 {
     private String nome;
     private String escopoBiblioteca;
@@ -117,7 +117,7 @@ public abstract class NoReferencia<T extends NoDeclaracao> extends NoExpressao
         this.origemDaReferencia = origemDaReferencia;
     }
     
-    public NoDeclaracao getOrigemDaReferencia()
+    public NoDeclaracaoBase getOrigemDaReferencia()
     {
         return origemDaReferencia;
     }

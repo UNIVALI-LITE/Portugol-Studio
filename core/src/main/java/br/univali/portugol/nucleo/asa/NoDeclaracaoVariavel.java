@@ -37,6 +37,11 @@ public final class NoDeclaracaoVariavel extends NoDeclaracaoInicializavel
     {
         super(nome, tipoDado, constante);
     }
+    
+    public NoDeclaracaoVariavel(String nome, TipoDado tipoDado)
+    {
+        super(nome, tipoDado, false);
+    }
 
     /**
      * {@inheritDoc }
@@ -47,19 +52,19 @@ public final class NoDeclaracaoVariavel extends NoDeclaracaoInicializavel
         return visitante.visitar(this);
     }
 
-    @Override
-    public TrechoCodigoFonte getTrechoCodigoFonte()
-    {
-        if (super.getTrechoCodigoFonte() == TRECHO_NULO)
-        {
-            NoExpressao inicializacao = getInicializacao();
-            if (inicializacao != null)
-            {
-                return inicializacao.getTrechoCodigoFonte();
-            }
-        }
-        return TRECHO_NULO;
-    }
+//    @Override
+//    public TrechoCodigoFonte getTrechoCodigoFonte()
+//    {
+//        if (super.getTrechoCodigoFonte() == TRECHO_NULO)
+//        {
+//            NoExpressao inicializacao = getInicializacao();
+//            if (inicializacao != null)
+//            {
+//                return inicializacao.getTrechoCodigoFonte();
+//            }
+//        }
+//        return TRECHO_NULO;
+//    }
 
     public boolean ehPassadaPorReferencia()
     {

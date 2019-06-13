@@ -34,15 +34,7 @@ public final class NoBitwiseNao extends NoExpressao
     {
         return visitante.visitar(this);
     }
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        return expressao.getTrechoCodigoFonte();
-    }
-
+   
     @Override
     public TipoDado getTipoResultante()
     {

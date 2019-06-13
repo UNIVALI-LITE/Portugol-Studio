@@ -5,7 +5,7 @@
  */
 package br.univali.portugol.nucleo.analise.semantica.avisos;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
@@ -16,12 +16,12 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
  */
 public class AvisoVetorPodeSerVariavel extends AvisoAnalise{
 
-    private NoDeclaracao declaracao;
+    private NoDeclaracaoBase declaracao;
     private NoDeclaracaoParametro noDeclaracaoParametro;
     private int tamanho;
     private String codigo = "AvisoSemantico.AvisoVetorPodeSerVariavel";
     
-    public AvisoVetorPodeSerVariavel(NoDeclaracao declaracao, int tamanho)
+    public AvisoVetorPodeSerVariavel(NoDeclaracaoBase declaracao, int tamanho)
     {
         super(declaracao.getTrechoCodigoFonteNome());
         

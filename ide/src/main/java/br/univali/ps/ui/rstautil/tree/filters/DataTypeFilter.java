@@ -1,7 +1,7 @@
 package br.univali.ps.ui.rstautil.tree.filters;
 
 import br.univali.portugol.nucleo.asa.No;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,9 +117,9 @@ public final class DataTypeFilter implements ASTFilter
     @Override
     public boolean accepts(No no)
     {
-        if (no instanceof NoDeclaracao)
+        if (no instanceof NoDeclaracaoBase)
         {
-            NoDeclaracao noDeclaracao = (NoDeclaracao) no;
+            NoDeclaracaoBase noDeclaracao = (NoDeclaracaoBase) no;
 
             return isAccepting(noDeclaracao.getTipoDado());
         }

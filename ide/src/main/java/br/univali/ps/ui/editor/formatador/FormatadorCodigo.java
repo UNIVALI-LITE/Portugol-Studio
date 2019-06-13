@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
+import br.univali.portugol.nucleo.StringUtils;
 import br.univali.portugol.nucleo.programa.Programa;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -141,15 +142,6 @@ public class FormatadorCodigo
             saida.println("programa");
             saida.println("{");
 
-            List<NoInclusaoBiblioteca> bibliotecas = asap.getListaInclusoesBibliotecas();
-            for (NoInclusaoBiblioteca biblioteca : bibliotecas) {
-                biblioteca.aceitar(this);
-            }
-            
-            if (!bibliotecas.isEmpty()) {
-                pulaLinha();
-            }
-
             declarandoVariaveisGlobais = true; // vira false quando encontra a primeira função (inicio)
 
             for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
@@ -196,7 +188,7 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA
         {
-            String valor = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.preservaCaracteresEspeciais(noCaracter.getValor().toString());
+            String valor = StringUtils.preservaCaracteresEspeciais(noCaracter.getValor().toString());
             valor = "'" + valor + "'";
             saida.append(valor);
             return null;
@@ -218,7 +210,7 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA
         {
-            String valor = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.preservaCaracteresEspeciais(noCadeia.getValor());
+            String valor = StringUtils.preservaCaracteresEspeciais(noCadeia.getValor());
             valor = '\"' + valor + '\"';
             saida.append(valor);
             return null;

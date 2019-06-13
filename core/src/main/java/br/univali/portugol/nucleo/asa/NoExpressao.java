@@ -49,38 +49,8 @@ public abstract class NoExpressao extends NoBloco
         return this.entreParentes;
     }
     
-//    public void setTipoResultante(TipoDado tipo)
-//    {
-//        this.tipoResultante = tipo;
-//    }
-    
     public abstract TipoDado getTipoResultante();
     
-    /**
-     * Obtém o trecho do código fonte no qual esta expressão se encontra.
-     *
-     * @return o trecho do código fonte no qual esta expressão se encontra.
-     * @since 1.0
-     */
-    @Override
-    public final TrechoCodigoFonte getTrechoCodigoFonte()
-    {
-        if (trechoCodigoFonte == null || trechoCodigoFonte == TRECHO_NULO)
-        {
-            trechoCodigoFonte = montarTrechoCodigoFonte();
-        }
-
-        return trechoCodigoFonte;
-    }
-
-    /**
-     * Este método cria e retorna um objeto contendo as informações referentes à
-     * localização desta expressão no código fonte.
-     *
-     * @return a trecho do código fonte no qual esta expressão se encontra.
-     * @since 1.0
-     */
-    protected abstract TrechoCodigoFonte montarTrechoCodigoFonte();
 
     @Override
     public boolean ehParavel(Estado estado)

@@ -57,22 +57,6 @@ public final class NoReferenciaVetor extends NoReferencia<NoDeclaracaoVetor>
      * {@inheritDoc }
      */
     @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        int tamanhoTexto = 0;
-
-        int linha = getTrechoCodigoFonteNome().getLinha();
-        int coluna = getTrechoCodigoFonteNome().getColuna();
-
-        tamanhoTexto = tamanhoTexto + getTrechoCodigoFonteNome().getTamanhoTexto() + 2 + noIndice.getTrechoCodigoFonte().getTamanhoTexto();
-
-        return new TrechoCodigoFonte(linha, coluna, tamanhoTexto);
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
     public Object aceitar(VisitanteASA visitante) throws ExcecaoVisitaASA
     {
         return visitante.visitar(this);

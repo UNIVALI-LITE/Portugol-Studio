@@ -58,6 +58,11 @@ final class LocalizadorFuncoes extends VisitanteASABasico {
     }
 
     @Override
+    public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA {
+        return null;
+    }
+
+    @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
         return null;
     }

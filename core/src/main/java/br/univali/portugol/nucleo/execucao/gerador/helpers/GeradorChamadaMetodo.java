@@ -207,7 +207,7 @@ public class GeradorChamadaMetodo
             
             visitaParametroPassado(parametroPassado, visitor);
             
-            NoDeclaracao origem = parametroPassado.getOrigemDaReferencia();
+            NoDeclaracaoBase origem = parametroPassado.getOrigemDaReferencia();
             TipoDado tipo = TipoDado.CADEIA;
             if (origem != null) // parece que tem um bug no leia passando 'cadeia' como parametro, a origem do 'leia' é nula
             {

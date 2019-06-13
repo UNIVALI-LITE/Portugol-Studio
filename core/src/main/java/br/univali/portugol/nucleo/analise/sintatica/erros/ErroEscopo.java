@@ -31,8 +31,8 @@ public final class ErroEscopo extends ErroSintatico
 {
     public static enum Tipo { ABERTURA, FECHAMENTO };
     
-    private Tipo tipo;
-    private Stack<String> pilhaContexto;
+    private final Tipo tipo;
+    private final String contexto;
     private String codigo = "ErroSintatico.ErroEscopo.";
 
     /**
@@ -42,11 +42,11 @@ public final class ErroEscopo extends ErroSintatico
      * @param contexto     o contexto/escopo em que o analisador sintático se encontrava quando o erro ocorreu.
      * @since 1.0
      */    
-    public ErroEscopo(int linha, int coluna, Tipo tipo, Stack<String> pilhaContexto)
+    public ErroEscopo(int linha, int coluna, Tipo tipo, String contexto)
     {
         super(linha, coluna);
         this.tipo = tipo;
-        this.pilhaContexto = pilhaContexto;
+        this.contexto = contexto;
     }
     
     /**
@@ -55,13 +55,11 @@ public final class ErroEscopo extends ErroSintatico
     @Override
     protected String construirMensagem()
     {
-        String contexto = pilhaContexto.peek();
-        
         StringBuilder construtorTexto = new StringBuilder("O escopo");
         
         switch (contexto)
         {
-            case "programa": 
+            case "arquivo": 
                 construtorTexto.append(" do programa ");
                 codigo += "1";
                 break;                
@@ -69,11 +67,11 @@ public final class ErroEscopo extends ErroSintatico
                 construtorTexto.append(" da função ");                 
                 codigo += "2";
                 break;
-            case "vetor": 
+            case "inicializacaoArray": 
                 construtorTexto.append(" do vetor "); 
                 codigo += "3";
                 break;
-            case "matriz": 
+            case "inicializacaoMatriz": 
                 construtorTexto.append(" da matriz "); 
                 codigo += "4";
                 break;                

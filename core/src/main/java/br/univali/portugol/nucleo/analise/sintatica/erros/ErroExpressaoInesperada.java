@@ -17,4 +17,9 @@ public class ErroExpressaoInesperada extends ErroSintatico
     {
         return String.format("A expressão '%s' não era esperada neste local, remova a expressão para corrigir o problema", token);
     }    
+
+    public String getToken() {
+        return token;
+    }
+    
 }

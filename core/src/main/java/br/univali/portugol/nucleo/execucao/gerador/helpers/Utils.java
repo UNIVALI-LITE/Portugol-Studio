@@ -209,7 +209,7 @@ public class Utils
         NoExpressao operandoEsquerdo = atribuicao.getOperandoEsquerdo();
         if (operandoEsquerdo instanceof NoReferenciaVariavel) {
             NoReferenciaVariavel referenciaVariavel = (NoReferenciaVariavel) operandoEsquerdo;
-            NoDeclaracao origem = referenciaVariavel.getOrigemDaReferencia();
+            NoDeclaracaoBase origem = referenciaVariavel.getOrigemDaReferencia();
             if (origem instanceof NoDeclaracaoVariavel) {
                 Utils.geraCodigoParaInspecao((NoDeclaracaoVariavel) origem, saida, nivelEscopo, true);
             } else {
@@ -315,7 +315,7 @@ public class Utils
         } else if (no instanceof NoEscolha) {
             trechoCodigoFonte = ((NoEscolha) no).getExpressao().getTrechoCodigoFonte();
         } else if (no instanceof NoDeclaracaoMatriz || no instanceof NoDeclaracaoVetor) {
-            trechoCodigoFonte = ((NoDeclaracao) no).getTrechoCodigoFonteNome();
+            trechoCodigoFonte = ((NoDeclaracaoBase) no).getTrechoCodigoFonteNome();
         }
 
         return trechoCodigoFonte;
@@ -351,24 +351,6 @@ public class Utils
     public static String geraIdentacao(int nivelEscopo)
     {
         return String.format("%" + (nivelEscopo * 5) + "s", " ");
-    }
-
-    public static String preservaCaracteresEspeciais(String string)
-    {
-        return string
-                .replaceAll("\\\\\n", "\\\\\\n") // preserva \n nas string do código Portugol
-                .replaceAll("\\\\\t", "\\\\\\t") // preserva \n nas string do código Portugol
-                .replaceAll("\\\\\r", "\\\\\\r") // preserva \n nas string do código Portugol
-                .replaceAll("\\\\\b", "\\\\\\b") // preserva \n nas string do código Portugol
-                .replaceAll("\\\\\f", "\\\\\\f") // preserva \n nas string do código Portugol
-                .replaceAll("\\\\", "\\\\\\\\") // preserva \\ nas string do código Portugol
-                .replaceAll("\n", "\\\\n") // preserva \n nas string do código Portugol 
-                .replaceAll("\t", "\\\\t") // preserva \t nas string do código Portugol
-                .replaceAll("\r", "\\\\r") // preserva \r nas string do código Portugol
-                .replaceAll("\b", "\\\\b") // preserva \b nas string do código Portugol
-                .replaceAll("\f", "\\\\f") // preserva \f nas string do código Portugol
-                .replaceAll("\'", "\\\\'") // preserva \' nas string do código Portugol
-                .replaceAll("\"", "\\\\\""); // preserva aspas duplas com scape (\") nas string do código Portugol 
     }
 
     public static String getNomeTipoEmCamelCase(TipoDado tipo)

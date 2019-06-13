@@ -41,7 +41,7 @@ public final class NoChamadaFuncao extends NoReferencia<NoDeclaracaoFuncao>
     {
         super(escopo, nome);
     }
-
+    
     @Override  // sobrescrevendo para retornar tipo mais específico (tipo de retorno covariante)
     public NoDeclaracaoFuncao getOrigemDaReferencia()
     {
@@ -77,30 +77,6 @@ public final class NoChamadaFuncao extends NoReferencia<NoDeclaracaoFuncao>
     public void setParametros(List<NoExpressao> parametros)
     {
         this.parametros = parametros;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        int tamanhoTexto = 0;
-
-        int linha = getTrechoCodigoFonteNome().getLinha();
-        int coluna = getTrechoCodigoFonteNome().getColuna();
-
-        tamanhoTexto = tamanhoTexto + getTrechoCodigoFonteNome().getTamanhoTexto() + 2;
-
-        if (parametros != null)
-        {
-            for (NoExpressao parametro : parametros)
-            {
-                tamanhoTexto = tamanhoTexto + parametro.getTrechoCodigoFonte().getTamanhoTexto();
-            }
-        }
-
-        return new TrechoCodigoFonte(linha, coluna, tamanhoTexto);
     }
 
     /**

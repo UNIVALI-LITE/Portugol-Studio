@@ -10,7 +10,7 @@ import br.univali.portugol.nucleo.simbolos.Vetor;
 public final class ErroInicializacaoInvalida extends ErroSemantico
 {
     private final NoExpressao inicializacao;
-    private final NoDeclaracao declaracao;
+    private final NoDeclaracaoBase declaracao;
     private Simbolo simbolo;
     private String codigo = "ErroSemantico.ErroInicializacaoInvalida.";
 

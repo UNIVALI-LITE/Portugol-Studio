@@ -21,7 +21,7 @@ package br.univali.portugol.nucleo.asa;
  * @author Luiz Fernando Noschang
  * @version 1.0
  */
-public final class NoReferenciaVariavel extends NoReferencia<NoDeclaracao>
+public final class NoReferenciaVariavel extends NoReferencia<NoDeclaracaoBase>
 {
     private boolean variavelDeBiblioteca = false;
     private TipoDado tipoBiblioteca = TipoDado.VAZIO;
@@ -40,29 +40,6 @@ public final class NoReferenciaVariavel extends NoReferencia<NoDeclaracao>
     public NoReferenciaVariavel(String escopo, String nome)
     {
         super(escopo, nome);
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-
-        TrechoCodigoFonte trechoCodigoFonteNome = getTrechoCodigoFonteNome();
-        
-        if (trechoCodigoFonteNome == null) {
-            return NoBloco.TRECHO_NULO;
-        }
-        
-        int tamanhoTexto = 0;
-
-        int linha = trechoCodigoFonteNome.getLinha();
-        int coluna = trechoCodigoFonteNome.getColuna();
-
-        tamanhoTexto = tamanhoTexto + trechoCodigoFonteNome.getTamanhoTexto();
-
-        return new TrechoCodigoFonte(linha, coluna, tamanhoTexto);
     }
 
     /**

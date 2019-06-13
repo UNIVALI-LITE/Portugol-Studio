@@ -4,16 +4,77 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroInclusaoBiblioteca;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloRedeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import junit.framework.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 public final class AnalisadorSemanticoTest
 {
 	
+    @Test 
+    public void testInclusaoBibliotecaDuplicada() throws ErroCompilacao {
+        try {
+            Portugol.compilarParaAnalise(
+                    "programa"
+                            + "{"
+                            + "	inclua biblioteca Graficos"
+                            + "	inclua biblioteca Graficos"
+                            + "	"
+                            + "}"
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() > 0);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroInclusaoBiblioteca.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
+        
+    }
+    
+    @Test 
+    public void testFuncaoComNomeDeVariavelGlobal() throws ErroCompilacao {
+        try {
+            Portugol.compilarParaAnalise(""
+                    + "programa {                                               "
+                    + "     inteiro teste                                       "
+                    + "	    funcao teste() {}                                   "
+                    + "}                                                        "
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() > 0);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroSimboloRedeclarado.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
+        
+    }
+    
+    @Test
+    public void testChamadaFuncaoInexistente() throws ErroCompilacao {
+        try {
+        Portugol.compilarParaAnalise(
+                "programa"
+                + "{"
+                + "	funcao inicio() { teste() }"
+                + "}"
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() > 0);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroSimboloNaoDeclarado.class.getName(), resultado.getErros().get(0).getClass().getName());
+         
+        }
+    }
+    
+   
 	@Test (expected = ErroCompilacao.class)
     public void testParaMultideclaradoForaDeEscopo() throws ErroCompilacao{
         Portugol.compilarParaAnalise(
@@ -238,11 +299,15 @@ public final class AnalisadorSemanticoTest
             );
 
             ResultadoAnalise resultado = programa.getResultadoAnalise();
-            
+
             assertTrue("O programa deveria ter compilado sem erros e avisos", !resultado.contemAvisos() && !resultado.contemErros());
         }
-        catch (Exception ex)
+        catch (ErroCompilacao ex)
         {
+            for (ErroAnalise erro : ex.getResultadoAnalise().getErros()) {
+                System.out.println(erro);
+            }
+            
             fail(ex.getMessage());
         }
     }

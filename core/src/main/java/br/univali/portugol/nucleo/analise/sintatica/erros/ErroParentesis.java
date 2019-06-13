@@ -30,7 +30,7 @@ public final class ErroParentesis extends ErroSintatico
 {
     public static enum Tipo { ABERTURA, FECHAMENTO };
     
-    private Tipo tipo;
+    private final Tipo tipo;
     private String codigo = "ErroSintatico.ErroParentesis.";
             
     /**
@@ -45,6 +45,10 @@ public final class ErroParentesis extends ErroSintatico
     {
         super(linha, coluna);
         this.tipo = tipo;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
     }
     
     /**

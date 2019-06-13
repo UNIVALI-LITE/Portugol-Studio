@@ -10,7 +10,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
 
     private int linha;
     private int coluna;
-    private NoDeclaracao declaracaoSimbolo = null;
+    private NoDeclaracaoBase declaracaoSimbolo = null;
 
     public void buscarSimbolo(Programa programa, int linha, int coluna) throws ErroAoRenomearSimbolo {
         try {
@@ -32,7 +32,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
         return declaracaoSimbolo != null;
     }
 
-    public NoDeclaracao getDeclaracaoSimbolo() {
+    public NoDeclaracaoBase getDeclaracaoSimbolo() {
         return declaracaoSimbolo;
     }
 
@@ -645,7 +645,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
 
     @Override
     public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override

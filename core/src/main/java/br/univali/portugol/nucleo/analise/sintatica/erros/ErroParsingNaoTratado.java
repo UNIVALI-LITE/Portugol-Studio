@@ -1,8 +1,11 @@
 package br.univali.portugol.nucleo.analise.sintatica.erros;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorUtils;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import org.antlr.runtime.RecognitionException;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Token;
 
 /**
  * Erro gerado pelo analisador sintatico ao encontrar um erro de parsing que ainda não foi tratado.
@@ -29,12 +32,14 @@ public final class ErroParsingNaoTratado extends ErroSintatico
      */
     public ErroParsingNaoTratado(RecognitionException erro, String mensagemPadrao, String contexto) 
     {
-        super(erro.line, erro.charPositionInLine);
+        super(TradutorUtils.getToken(erro).getLine(), TradutorUtils.getToken(erro).getCharPositionInLine());
         this.erro = erro;
         this.contexto = contexto;
         this.mensagemPadrao = mensagemPadrao;
         super.setCodigo(codigo);
     }
+    
+    
 
     /**
      * {@inheritDoc }

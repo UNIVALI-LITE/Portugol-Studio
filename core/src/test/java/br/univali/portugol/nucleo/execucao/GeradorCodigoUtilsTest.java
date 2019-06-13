@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.execucao;
 
-import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
+import br.univali.portugol.nucleo.StringUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -14,7 +14,7 @@ public class GeradorCodigoUtilsTest
     {
         String string = "\"string com \"aspas\" duplas\"";
         String expResult = "\\\"string com \\\"aspas\\\" duplas\\\"";
-        String result = Utils.preservaCaracteresEspeciais(string);
+        String result = StringUtils.preservaCaracteresEspeciais(string);
         assertEquals(expResult, result);
     }
     
@@ -23,7 +23,7 @@ public class GeradorCodigoUtilsTest
     {
         String string = "string com quebra de linha\n";
         String expResult = "string com quebra de linha\\n";
-        String result = Utils.preservaCaracteresEspeciais(string);
+        String result = StringUtils.preservaCaracteresEspeciais(string);
         assertEquals(expResult, result);
     }
     
@@ -32,7 +32,7 @@ public class GeradorCodigoUtilsTest
     {
         String string = "string com escape de barra \\";
         String expResult = "string com escape de barra \\\\";
-        String result = Utils.preservaCaracteresEspeciais(string);
+        String result = StringUtils.preservaCaracteresEspeciais(string);
         assertEquals(expResult, result);
     }
     
@@ -41,7 +41,7 @@ public class GeradorCodigoUtilsTest
     {
         String string = "string sem aspas ou quebra de linha";
         String expResult = new String(string);
-        String result = Utils.preservaCaracteresEspeciais(string);
+        String result = StringUtils.preservaCaracteresEspeciais(string);
         assertEquals(expResult, result);
     }
     

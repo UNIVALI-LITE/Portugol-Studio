@@ -82,7 +82,7 @@ public class PortugolParser extends AbstractParser
             if (erro instanceof ErroExpressoesForaEscopoPrograma)
             {
                 int posicao = ((ErroExpressoesForaEscopoPrograma) erro).getPosicao();
-                String expressoes = ((ErroExpressoesForaEscopoPrograma) erro).getExpressoes();
+                String expressoes = ((ErroExpressoesForaEscopoPrograma) erro).getCodigoForaDoPrograma();
 
                 DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), 1, posicao, expressoes.length());
                 notice.setShowInEditor(true);

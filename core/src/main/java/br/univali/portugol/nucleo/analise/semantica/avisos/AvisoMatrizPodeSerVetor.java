@@ -5,7 +5,7 @@
  */
 package br.univali.portugol.nucleo.analise.semantica.avisos;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
@@ -16,14 +16,14 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
  */
 public class AvisoMatrizPodeSerVetor extends AvisoAnalise {
 
-    private NoDeclaracao declaracao;
+    private NoDeclaracaoBase declaracao;
     private NoDeclaracaoParametro noDeclaracaoParametro;
     private int tamanhoX;
     private int tamanhoY;
     private int tamanho;
     private String codigo = "AvisoSemantico.AvisoMatrizPodeSerVetor";
     
-    public AvisoMatrizPodeSerVetor(NoDeclaracao declaracao, int tamanho, int tamanhoX, int tamanhoY)
+    public AvisoMatrizPodeSerVetor(NoDeclaracaoBase declaracao, int tamanho, int tamanhoX, int tamanhoY)
     {
         super(declaracao.getTrechoCodigoFonteNome());
         

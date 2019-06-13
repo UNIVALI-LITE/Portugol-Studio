@@ -1,7 +1,7 @@
 package br.univali.ps.ui.rstautil.tree.filters;
 
 import br.univali.portugol.nucleo.asa.No;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,9 +57,9 @@ public final class SymbolNameFilter implements ASTFilter
             return true;
         }
         
-        if (no instanceof NoDeclaracao)
+        if (no instanceof NoDeclaracaoBase)
         {
-            NoDeclaracao declaracao = (NoDeclaracao) no;
+            NoDeclaracaoBase declaracao = (NoDeclaracaoBase) no;
             String name = searchString.trim().toLowerCase();
             String normalizedName = name.replace("*", "");
 

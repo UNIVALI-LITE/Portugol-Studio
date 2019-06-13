@@ -1,7 +1,7 @@
 package br.univali.portugol.nucleo.analise.semantica.avisos;
 
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
@@ -24,11 +24,11 @@ public final class AvisoSimboloGlobalOcultado extends AvisoAnalise
 {
     private Simbolo simboloGlobal;
     private Simbolo simboloLocal;
-    private NoDeclaracao declaracao;
+    private NoDeclaracaoBase declaracao;
     private NoDeclaracaoParametro noDeclaracaoParametro;
     private String codigo = "AvisoSemantico.AvisoSimboloGlobalOcultado";
     
-    public AvisoSimboloGlobalOcultado(Simbolo simboloGlobal, Simbolo simboloLocal, NoDeclaracao declaracao)
+    public AvisoSimboloGlobalOcultado(Simbolo simboloGlobal, Simbolo simboloLocal, NoDeclaracaoBase declaracao)
     {
         super(declaracao.getTrechoCodigoFonteNome());
         

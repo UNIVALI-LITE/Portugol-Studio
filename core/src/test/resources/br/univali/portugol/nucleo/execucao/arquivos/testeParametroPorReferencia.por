@@ -25,9 +25,10 @@ programa
         real r = 1.0
         caracter carac = 'b'
         logico log = falso
-        teste_tipos(x, numero_inteiro, r, carac, log)
+        teste_tipos(x, numero_inteiro, r, carac, log) 
     }                                                       
-    
+  
+ 
     funcao inteiro teste(inteiro & x, inteiro matriz[][], inteiro vetor[], cadeia &texto)                               
     {                                                      
         x = x * 2
@@ -37,7 +38,7 @@ programa
         outro_teste(matriz, vetor, teste)
         retorne 1
     }
-
+ 
     funcao outro_teste(inteiro m[][], inteiro v[], inteiro &ref)
     {
         m[0][0] = v[0]
@@ -51,5 +52,5 @@ programa
         r = 10.0
         car = 'a'
         l = verdadeiro
-    }
+    }  
 }

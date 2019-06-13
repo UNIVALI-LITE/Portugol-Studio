@@ -22,7 +22,7 @@ import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroAoTentarObterDeclaracaoDoSimbolo;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
@@ -49,7 +49,7 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
     private String codigoFonte;
     private int linha;
     private int coluna;
-    private NoDeclaracao declaracaoDoSimbolo;
+    private NoDeclaracaoBase declaracaoDoSimbolo;
 
     private boolean aceitou = false;
     private Timer timer = null;

@@ -23,7 +23,7 @@ package br.univali.portugol.nucleo.asa;
  */
 public final class NoMenosUnario extends NoExpressao
 {
-    private NoExpressao expressao;
+    private final NoExpressao expressao;
     private TrechoCodigoFonte trechoCodigoFonteMenos;
 
     /**
@@ -58,7 +58,7 @@ public final class NoMenosUnario extends NoExpressao
         return trechoCodigoFonteMenos;
     }
 
-    /**
+     /**
      * Define o trecho do código fonte no qual o sinal de menos se encontra.
      * 
      * @param trechoCodigoFonteMenos     Define o trecho do código fonte no qual o sinal de menos se encontra.
@@ -67,15 +67,6 @@ public final class NoMenosUnario extends NoExpressao
     public void setTrechoCodigoFonteMenos(TrechoCodigoFonte trechoCodigoFonteMenos)
     {
         this.trechoCodigoFonteMenos = trechoCodigoFonteMenos;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected TrechoCodigoFonte montarTrechoCodigoFonte()
-    {
-        return expressao.getTrechoCodigoFonte();
     }
 
     /**
