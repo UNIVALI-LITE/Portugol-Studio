@@ -16,7 +16,9 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -48,7 +50,7 @@ public final class TradutorMismatchedTokenException
         
         ContextSet contextos = new ContextSet(erro);
         
-        Set<String> tokensEsperados = getTokensEsperados(erro);
+        List<String> tokensEsperados = getTokensEsperados(erro);
         
         String contextoAtual = contextos.getContextoAtual();
         
@@ -125,10 +127,10 @@ public final class TradutorMismatchedTokenException
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
     
-    private Set<String> getTokensEsperados(RecognitionException erro) {
+    private List<String> getTokensEsperados(RecognitionException erro) {
         Vocabulary vocabulario = erro.getRecognizer().getVocabulary();
         IntervalSet expectedTokens = erro.getExpectedTokens();
-        Set<String> tokens = new HashSet<>();
+        List<String> tokens = new ArrayList<>();
         for (int i = 0; i < expectedTokens.size(); i++) {
             String token = vocabulario.getSymbolicName(expectedTokens.get(i));
             if (token == null) {
@@ -139,15 +141,17 @@ public final class TradutorMismatchedTokenException
         return tokens;
     }
     
-    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, Set<String> tokensEsperados, ContextSet contextos)
+    private ErroSintatico traduzirErrosPara(int linha, int coluna, RecognitionException erro, List<String> tokensEsperados, ContextSet contextos)
     {
         String contextoAtual = contextos.getContextoAtual();
-        if (contextoAtual.equals("para")) {
-            boolean faltandoAbrirParenteses = tokensEsperados.contains("ABRE_PARENTESES");
-            boolean faltandoFecharParenteses = tokensEsperados.contains("FECHA_PARENTESES");
-            if (faltandoAbrirParenteses || faltandoFecharParenteses) {
-                ErroParentesis.Tipo tipo = faltandoAbrirParenteses ? ErroParentesis.Tipo.ABERTURA : ErroParentesis.Tipo.FECHAMENTO;
-                return new ErroParentesis(linha, coluna, tipo);
+        if (contextoAtual.equals("para") && !tokensEsperados.isEmpty()) {
+            if (!tokensEsperados.get(0).equals("';'")) {
+                boolean faltandoAbrirParenteses = tokensEsperados.contains("ABRE_PARENTESES");
+                boolean faltandoFecharParenteses = tokensEsperados.contains("FECHA_PARENTESES");
+                if (faltandoAbrirParenteses || faltandoFecharParenteses) {
+                    ErroParentesis.Tipo tipo = faltandoAbrirParenteses ? ErroParentesis.Tipo.ABERTURA : ErroParentesis.Tipo.FECHAMENTO;
+                    return new ErroParentesis(linha, coluna, tipo);
+                }
             }
         }
         
