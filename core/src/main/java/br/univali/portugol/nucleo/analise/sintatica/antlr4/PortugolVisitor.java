@@ -266,6 +266,13 @@ public interface PortugolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumeroReal(PortugolParser.NumeroRealContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code maisUnario}
+	 * labeled alternative in {@link PortugolParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMaisUnario(PortugolParser.MaisUnarioContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code operacaoDiferenca}
 	 * labeled alternative in {@link PortugolParser#expressao}.
 	 * @param ctx the parse tree

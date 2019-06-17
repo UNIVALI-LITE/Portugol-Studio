@@ -468,7 +468,7 @@ public class GeradorASATest {
     public void testVariaveisLocais() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa { "
                 + " funcao inicio() {                               "
-                + "     inteiro x                                   "
+                + "     inteiro x = +1                              "
                 + "     real a = 10.0                               "
                 + "     cadeia teste = \"teste\"                    "
                 + "     cadeia concat = \"conca\" + \"tenação\"     "
@@ -490,7 +490,7 @@ public class GeradorASATest {
         
         NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
         
-        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO, 1);
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(1), "a", TipoDado.REAL, 10.0);
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(2), "teste", TipoDado.CADEIA, "teste");
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(3), "concat", TipoDado.CADEIA, NoOperacaoSoma.class);// new NoOperacaoSoma(null, null));

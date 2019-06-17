@@ -827,6 +827,12 @@ public class GeradorASA {
         }
 
         @Override
+        public No visitMaisUnario(MaisUnarioContext ctx) {
+            // ignora o operador de '+' e usa apenas a expressão
+            return ctx.expressao().accept(this);
+        }
+
+        @Override
         public No visitMenosUnario(MenosUnarioContext ctx) {
             NoMenosUnario noMenosUnario = new NoMenosUnario((NoExpressao)ctx.expressao().accept(this));
             noMenosUnario.setTrechoCodigoFonteMenos(getTrechoCodigoFonte(ctx.OP_SUBTRACAO()));

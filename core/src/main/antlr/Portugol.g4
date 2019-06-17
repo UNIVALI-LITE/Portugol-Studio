@@ -127,9 +127,10 @@ expressao
         escopoBiblioteca? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES                 #chamadaFuncao    // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
     |   escopoBiblioteca? ID indiceArray                                                        #referenciaArray  // array como a[i]
     |   escopoBiblioteca? ID indiceArray indiceArray?                                           #referenciaMatriz // a[i][j]
-    |   OP_SUBTRACAO expressao                                                                  #menosUnario 
+    |   OP_SUBTRACAO expressao                                                                  #menosUnario
+    |   OP_ADICAO expressao                                                                     #maisUnario
     |   OP_NAO expressao                                                                        #negacao
-    |   OP_NOT_BITWISE expressao                                                                 #negacaoBitwise
+    |   OP_NOT_BITWISE expressao                                                                #negacaoBitwise
     |   ID (indiceArray indiceArray?)? OP_INCREMENTO_UNARIO                                     #incrementoUnarioPosfixado // x++
     |   ID (indiceArray indiceArray?)? OP_DECREMENTO_UNARIO                                     #decrementoUnarioPosfixado // x--    
     |   OP_INCREMENTO_UNARIO ID (indiceArray indiceArray?)?                                     #incrementoUnarioPrefixado // ++x
