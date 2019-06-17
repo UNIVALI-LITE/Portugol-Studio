@@ -1557,9 +1557,12 @@ public final class AnalisadorSemantico implements VisitanteASA
                 if (referencia.getEscopoBiblioteca() == null)
                 {
                     simbolo = memoria.getSimbolo(referencia.getNome());
-
-                    inicializadoAnterior = simbolo.inicializado();
-                    simbolo.setInicializado(true);
+                    
+                    if (simbolo != null) {
+                        inicializadoAnterior = simbolo.inicializado();
+                        simbolo.setInicializado(true);
+                    }
+                    
                     if (simbolo instanceof Variavel)
                     {
 

@@ -17,6 +17,24 @@ import org.junit.Test;
 
 public final class AnalisadorSemanticoTest
 {
+    @Test 
+    public void testVariavelNaoDeclarada() throws ErroCompilacao {
+        try {
+            Portugol.compilarParaAnalise(
+                  " programa {                                                  "
+                + "     funcao inicio() {                                       "
+                + "         x = 1                                               "
+                + "     }                                                       "
+                + " }                                                           "
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() == 1);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroSimboloNaoDeclarado.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
+        
+    }
 	
     @Test 
     public void testInclusaoBibliotecaDuplicada() throws ErroCompilacao {
