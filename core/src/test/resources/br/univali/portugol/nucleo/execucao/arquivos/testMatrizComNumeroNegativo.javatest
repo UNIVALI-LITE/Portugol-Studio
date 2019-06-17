@@ -1,0 +1,24 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.programa.*;
+
+public class testMatrizComNumeroNegativo extends Programa
+{
+
+    private int m[][];
+
+    public testMatrizComNumeroNegativo() throws ErroExecucao, InterruptedException {
+    }
+
+    @Override
+     protected void inicializar() throws ErroExecucao, InterruptedException {
+        super.inicializar();
+        m = new int[][]{{-1}};
+     }
+
+    @Override
+    protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+    {
+    }
+}

@@ -38,6 +38,12 @@ public class GeradorCodigoTest
 		gerador = new GeradorCodigoJava(seed);
 	}
 
+        @Test
+	public void testMatrizComNumeroNegativo() throws Exception
+	{
+		comparaCodigos();
+	}
+        
 	@Test
 	public void testSwitchAninhadoUsandoVariaveis() throws Exception
 	{

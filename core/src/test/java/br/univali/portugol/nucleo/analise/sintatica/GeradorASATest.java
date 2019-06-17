@@ -1,17 +1,12 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
 import java.io.IOException;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
-import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.asa.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.Recognizer;
 import org.junit.Assert;
 
 import org.junit.Test;
@@ -22,6 +17,39 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testMatrizComNumeroNegativo() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "  inteiro m[][] = {{-1}}                                     "
+                + "  funcao inicio(){                                           "
+                + "  }                                                          "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoMatriz declaracaoMatriz = (NoDeclaracaoMatriz) asa.getListaDeclaracoesGlobais().get(0);
+        
+        assertNoDeclaracaoMatriz(declaracaoMatriz, "m", 1, 1);
+        
+        Assert.assertTrue(declaracaoMatriz.temInicializacao());
+                
+        NoMatriz matriz = (NoMatriz) declaracaoMatriz.getInicializacao();
+        
+        Object valor = matriz.getValores().get(0).get(0);
+        
+        Assert.assertTrue(valor instanceof NoMenosUnario);
+        
+        Assert.assertTrue(((NoMenosUnario)valor).getExpressao() instanceof NoExpressaoLiteral);
+        
+        NoExpressaoLiteral<Integer> expressao = (NoExpressaoLiteral) ((NoMenosUnario)valor).getExpressao();
+        
+        Assert.assertEquals(new Integer(1), expressao.getValor());
+    }
+    
      @Test
     public void testOperacaoSendoUsadaComoParametro() throws Exception {
 

@@ -41,7 +41,9 @@ public class GeradorDeclaracaoVariavel
             saida.append("{");
             for (int j = 0; j < totalColunas; j++)
             {
-                saida.append(valoresNaoNulos.get(i).get(j).toString());
+                NoExpressao valor = (NoExpressao) valoresNaoNulos.get(i).get(j);
+                valor.aceitar(visitor);
+
                 if (j < totalColunas - 1)
                 {
                     saida.append(", ");

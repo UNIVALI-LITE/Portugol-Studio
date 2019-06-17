@@ -69,14 +69,13 @@ public final class NoMatriz extends NoExpressao
         if (!valores.isEmpty() && !valores.get(0).isEmpty())
         {
             Object valor = valores.get(0).get(0);
-            if (valor instanceof NoExpressaoLiteral)
-            {
-                return ((NoExpressaoLiteral)valor).getTipoResultante();
-            }
-            else if(valor instanceof NoReferencia){
+            if(valor instanceof NoReferencia){
                 return ((NoReferencia)valor).getOrigemDaReferencia().getTipoDado();
             }
-            
+            else if (valor instanceof NoExpressao)
+            {
+                return ((NoExpressao)valor).getTipoResultante();
+            }
         }
         
         return TipoDado.VAZIO;
