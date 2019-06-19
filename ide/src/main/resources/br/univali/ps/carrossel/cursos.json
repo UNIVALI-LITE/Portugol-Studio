@@ -1,0 +1,104 @@
+[
+    {
+        "titulo": "Programação para Iniciantes usando Portugol Studio",
+        "descricao": "Aprenda a programar usando ferramentas e abordagens criadas para iniciantes!",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Fprogramacao-para-iniciantes%2F",
+        "tempoExibicao": "15000",
+        "caminhoImagem": "programacao-para-iniciantes.jpg"
+    },
+    {
+        "titulo": "Java primeiros passos: Lógica de Programação e Algoritmos",
+        "descricao": "Curso equivalente à disciplina de Lógica de Programação da faculdade, para iniciantes, usando Java como linguagem.",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Fjava-curso-logica-de-programacao%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "java-curso-logica-de-programacao.jpg"
+    },
+    {
+        "titulo": "Aprenda Programação em Python 3 com Facilidade do Zero",
+        "descricao": "Domine os fundamentos básicos do Python. Curso super didático com exercícios e exemplos práticos. Versão Python3.",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Faprenda-a-programar-em-python-com-facilidade-do-zero%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "aprenda-a-programar-em-python-com-facilidade-do-zero.jpg"
+    },
+    {
+        "titulo": "Java: Fundamentos de Programação",
+        "descricao": "Aprenda os principais conceitos de programação utilizando Java, em um curso de extrema qualidade e didática comprovada.",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Ffundamentos-de-programacao-com-java%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "fundamentos-de-programacao-com-java.jpg"
+    },
+    {
+        "titulo": "Aprendendo a programar em Java",
+        "descricao": "Introdução ao paradigma orientado a objetos e os conceitos básicos da linguagem Java.",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Faprendendo-a-programar-em-java%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "aprendendo-a-programar-em-java.jpg"
+    },
+    {
+        "titulo": "Aprenda Unity 2018 e faça seu primeiro jogo",
+        "descricao": "Unity 2D e 3D, da programação em C# até a publicação, crie games Plataforma 2D, RPG 3D (estilo Diablo) e Text-based",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Faprenda-unity-2018-e-faca-seu-primeiro-jogo%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "aprenda-unity-2018-e-faca-seu-primeiro-jogo.jpg"
+    },
+    {
+        "titulo": "Lógica de Programação para Jogos e Aplicativos",
+        "descricao": "Aprenda Lógica de Programação e as 3 Principais Linguagens para Criar Games e Apps em 2018 - Java, Swift e C#-Sharp",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Flogicadeprogramacao%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "logicadeprogramacao.jpg"
+    },
+    {
+        "titulo": "Inglês para Brasileiros : Caminho a Fluência Acelerada 1",
+        "descricao": "Curso completo para alunos iniciantes do Brasil",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Freiniciar-seu-ingles-do-zero%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "reiniciar-seu-ingles-do-zero.jpg"
+    },
+    {
+        "titulo": "Web Fundamentos 2019 - HTML5, CSS3 e JavaScript",
+        "descricao": "Aprenda HTML5, CSS3 e JavaScript do Zero. Construa projetos web reais, e um site responsivo em 50 aulas.",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Fweb-html5-css3-javascript%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "web-html5-css3-javascript.jpg"
+    },
+    {
+        "titulo": "Introdução à linguagem JavaScript",
+        "descricao": "Curso para aprender programação front-end usando a linguagem JavaScript",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Fintroducao-a-linguagem-javascript%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "introducao-a-linguagem-javascript.jpg"
+    },
+    {
+        "titulo": "Iniciando com Javascript",
+        "descricao": "Os principais conceitos da linguagem colocados em prática para você dar os primeiros passos no JS",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Finiciando-com-javascript%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "iniciando-com-javascript.jpg"
+    },
+    {
+        "titulo": "Desenvolvimento Android do Absoluto ZERO para INICIANTES",
+        "descricao": "Curso ensina criar apps com Android Studio em Java | Crud | SQLite | MySQL | API PHP | Bluetooth | JSON | MVC | SMS",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Fdesenvolvimento-android-do-absoluto-zero-para-iniciantes%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "desenvolvimento-android-do-absoluto-zero-para-iniciantes.jpg"
+    },
+    {
+        "titulo": "Aprenda PHP do Zero Com Facilidade e Faça Sites Dinâmicos",
+        "descricao": "PHP básico completo, ligação com MySQL, envio de formulários e um projeto prático completo. Tudo em um só curso!",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Faprenda-e-domine-a-linguagem-php-do-zero-com-facilidade%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "aprenda-e-domine-a-linguagem-php-do-zero-com-facilidade.jpg"
+    },
+    {
+        "titulo": "C# primeiros passos: Lógica de Programação e Algoritmos",
+        "descricao": "Curso equivalente à disciplina de Lógica de Programação da faculdade. Vamos usar C# como linguagem e o Visual Studio.",
+        "link": "https://click.linksynergy.com/deeplink?id=fYpq/jRpw*8&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Flogica-de-programacao-csharp%2F",
+        "tempoExibicao": "8000",
+        "caminhoImagem": "logica-de-programacao-csharp.jpg"
+    }
+    
+    
+]
+
+

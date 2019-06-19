@@ -8,17 +8,20 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.carrossel.CarrosselCursos;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -33,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -41,10 +43,14 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -118,6 +124,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
         }
         
+        
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent ce) {
@@ -150,7 +157,47 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         //areaRecentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
         
         atualizarRecentes();
+       
+        criaCarrossel();
+    }
+    
+    private void criaCarrossel() {
+        try {
+            CarrosselCursos carrossel = new CarrosselCursos();
+            criaDividerCarrossel(carrossel);
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void criaDividerCarrossel(JComponent carrossel) {
+        Container parent = jPanel2.getParent();
         
+        parent.remove(jPanel2);
+        
+        JPanel panel = new JPanel(new BorderLayout(0, 5));
+        panel.setOpaque(false);
+     
+        JLabel labelTitulo = new JLabel("Cursos Recomendados", null, JLabel.CENTER);
+        labelTitulo.setBackground(ColorController.FUNDO_ESCURO);
+        labelTitulo.setForeground(ColorController.COR_LETRA_TITULO);
+        labelTitulo.setOpaque(true);
+        labelTitulo.setMinimumSize(new Dimension(85, 36));
+        labelTitulo.setPreferredSize(labelTitulo.getMinimumSize());
+        labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png")));
+        
+        panel.add(labelTitulo, BorderLayout.NORTH);
+        panel.add(carrossel, BorderLayout.CENTER);
+        
+        carrossel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
+        JSplitPane divider = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        divider.setTopComponent(jPanel2);
+        divider.setBottomComponent(panel);
+        divider.setResizeWeight(0.65);
+        
+        parent.add(divider);
     }
     
     private void configurarAcaoAbrirExemploBuscado()
@@ -233,11 +280,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         buttonNovo.setText("Novo Arquivo");
         if(redimensionouParaBaixaResolucao)
         {
-            jSplitPane1.setDividerLocation(jSplitPane1.getWidth()-200);
+            jSplitPane1.setDividerLocation(jSplitPane1.getWidth()-250);
             textRecentes.setFont(textRecentes.getFont().deriveFont(16f));
             buttonNovo.setIcon(imagemNewlowres);
         }else{
-            jSplitPane1.setDividerLocation(jSplitPane1.getWidth()-300);
+            jSplitPane1.setDividerLocation(jSplitPane1.getWidth()-400);
             textRecentes.setFont(textRecentes.getFont().deriveFont(24f));
             buttonNovo.setIcon(imagemNew);
         }
@@ -663,12 +710,12 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelEsquerda = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        scrollArvoreExemplos = new javax.swing.JScrollPane();
-        arvoreExemplos = new javax.swing.JTree();
         jPanel3 = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         buscaExemplo = new br.univali.ps.ui.rstautil.tree.SearchTextPanel();
+        scrollArvoreExemplos = new javax.swing.JScrollPane();
+        arvoreExemplos = new javax.swing.JTree();
 
         painelRecentesPrincipal.setLayout(new java.awt.BorderLayout());
 
@@ -721,7 +768,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(1920);
+        jSplitPane1.setDividerLocation(500);
         jSplitPane1.setName("splitPainelExemplos"); // NOI18N
 
         painelDireita.setBackground(new java.awt.Color(255, 255, 255));
@@ -782,18 +829,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelEsquerda.setOpaque(false);
         painelEsquerda.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(200, 92));
         jPanel1.setOpaque(false);
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 390));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
-
-        scrollArvoreExemplos.setBorder(null);
-
-        arvoreExemplos.setBackground(new java.awt.Color(240, 240, 240));
-        scrollArvoreExemplos.setViewportView(arvoreExemplos);
-
-        jPanel2.add(scrollArvoreExemplos, java.awt.BorderLayout.CENTER);
 
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -815,6 +857,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.NORTH);
+
+        scrollArvoreExemplos.setBorder(null);
+
+        arvoreExemplos.setBackground(new java.awt.Color(240, 240, 240));
+        scrollArvoreExemplos.setViewportView(arvoreExemplos);
+
+        jPanel2.add(scrollArvoreExemplos, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
