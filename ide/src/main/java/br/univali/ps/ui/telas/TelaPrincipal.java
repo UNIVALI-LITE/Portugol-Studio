@@ -362,10 +362,11 @@ public class TelaPrincipal extends javax.swing.JPanel
                 {
                     Path caminhoArquivoAba = documento.getFile().toPath();
                     Path caminhoArquivoAbrir = arquivo.toPath();
-
-                    if (Files.isSameFile(caminhoArquivoAba, caminhoArquivoAbrir))
-                    {
-                        return abaCodigoFonte;
+                    if (documento.getFile().exists() && arquivo.exists()) {
+                        if (Files.isSameFile(caminhoArquivoAba, caminhoArquivoAbrir))
+                        {
+                            return abaCodigoFonte;
+                        }
                     }
                 }
                 catch (IOException excecao)

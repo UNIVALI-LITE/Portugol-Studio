@@ -885,19 +885,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION) {
                     File arquivo = dialogoSelecaoArquivo.getSelectedFile();
-                    AbaCodigoFonte aba = PortugolStudio.getInstancia().getTelaPrincipal().obterAbaArquivo(arquivo);
-
-                    if (aba == null) {
-                        editor.getPortugolDocumento().setFile(arquivo);
-                        podeSalvar = true;
-                        acaoSalvarArquivo.actionPerformed(e);
-                    }
-                    else
-                    {
-                        QuestionDialog.getInstance().showMessage("Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", JOptionPane.WARNING_MESSAGE);
-                        usuarioCancelouSalvamento = true;
-                    }
-                    Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
+                        AbaCodigoFonte aba = PortugolStudio.getInstancia().getTelaPrincipal().obterAbaArquivo(arquivo);
+                          
+                        if (aba == null || !arquivo.exists()) {
+                            editor.getPortugolDocumento().setFile(arquivo);
+                            podeSalvar = true;
+                            acaoSalvarArquivo.actionPerformed(e);
+                        }
+                        else
+                        {
+                            QuestionDialog.getInstance().showMessage("Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", JOptionPane.WARNING_MESSAGE);
+                            usuarioCancelouSalvamento = true;
+                        }
+                        Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
                 } else {
                     usuarioCancelouSalvamento = true;
                     Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());

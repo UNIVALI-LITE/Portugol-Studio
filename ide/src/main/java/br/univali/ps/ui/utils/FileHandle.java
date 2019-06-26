@@ -18,27 +18,19 @@ public final class FileHandle
     {
         if(file.getParentFile().exists())
         {
-            BufferedWriter writer = null;
-            try
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset)))
             {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
                 writer.write(text);
                 writer.flush();
                 writer.close();
             }
-            catch (IOException ex)
-            {
-                throw new IOException(ex);
-            }
-            finally
-            {
-                try
-                {
-                    writer.close();
+            catch(IOException e) {
+                if (e.getMessage().contains("Permission denied") || e.getMessage().contains("Acesso negado")) {
+                    String pasta = file.getParentFile().getAbsolutePath();
+                    throw new ExcecaoAplicacao("Você não possuí permissão de escrita para a pasta '" + pasta + "'", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
                 }
-                catch (IOException ex)
-                {
-                    throw new IOException(ex);
+                else {
+                    throw e;
                 }
             }
         }
