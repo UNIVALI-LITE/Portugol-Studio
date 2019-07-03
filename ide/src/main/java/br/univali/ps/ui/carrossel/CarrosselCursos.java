@@ -192,6 +192,7 @@ public class CarrosselCursos extends JPanel {
         LOGGER.log(Level.INFO, "Lendo 'cursos.json' do github!");
 
         URL url = new URL(getBaseUrl() + PACOTE_RESOURCES + "cursos.json");
+
         return url.openStream();
     }
 
@@ -257,7 +258,12 @@ public class CarrosselCursos extends JPanel {
 
     private void mostraCurso(Curso curso) throws IOException {
         String caminhoImagem = getBaseUrl() + PACOTE_RESOURCES + curso.getCaminhoImagem();
-        InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(caminhoImagem);
+        
+        InputStream stream = null;
+        if (Configuracoes.rodandoEmDesenvolvimento())
+            stream = ClassLoader.getSystemClassLoader().getResourceAsStream(caminhoImagem);
+        else
+            stream = new URL(caminhoImagem).openStream();
 
         labelTitulo.setText("<html> " + curso.getTitulo() + "</html>");
         labelDescricao.setText("<html> " + curso.getDescricao() + "</html>");
