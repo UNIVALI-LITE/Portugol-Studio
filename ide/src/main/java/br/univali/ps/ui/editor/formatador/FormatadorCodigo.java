@@ -514,11 +514,18 @@ public class FormatadorCodigo
 
                 for (int j = 0; j < totalColunas; j++) {
                     
-                    String valor = linha.get(j).toString();
-                    if (linha.get(j) instanceof NoLogico) {
-                        valor = ((NoLogico)linha.get(j)).getValor() ? "verdadeiro" : "falso";
+                	Object valor = linha.get(j);
+                	if(valor instanceof NoExpressaoLiteral) {
+                		String string = valor.toString();
+                		
+	                    if (linha.get(j) instanceof NoLogico) {
+	                    	string = ((NoLogico)linha.get(j)).getValor() ? "verdadeiro" : "falso";
+	                    }
+	                    
+	                    saida.append(string);
+                	}else {
+                        ((NoExpressao) valor).aceitar(this);
                     }
-                    saida.append(valor);
 
                     if (j < totalColunas - 1) {
                         saida.append(", ");
