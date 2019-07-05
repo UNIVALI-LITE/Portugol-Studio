@@ -264,8 +264,8 @@ public class Lancador {
                 frame = new JFrame(); // a instância do JFrame deve ser criada na thread do Swing
                 resizer.registerComponent(frame);
                 
-                ColetorInteracao coletor = ColetorInteracao.getInstancia();
-                coletor.inspeciona(frame);
+//                ColetorInteracao coletor = ColetorInteracao.getInstancia();
+//                coletor.inspeciona(frame);
             });
 
         }
