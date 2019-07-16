@@ -34,6 +34,31 @@ public abstract class ASA
     {
         return listaDeclaracoesGlobais;
     }
+    
+    public List<NoDeclaracao> getListaDeclaracoesGlobais(boolean ordenada) {
+        if (!ordenada) {
+            return getListaDeclaracoesGlobais();
+        }
+        
+        List<NoDeclaracao> declaracoes = new ArrayList<>();
+        
+        declaracoes.addAll(getDeclaracoes(NoInclusaoBiblioteca.class));
+        declaracoes.addAll(getDeclaracoes(NoDeclaracaoInicializavel.class));
+        declaracoes.addAll(getDeclaracoes(NoDeclaracaoFuncao.class));
+        
+        return declaracoes;
+    }
+    
+    private <T extends NoDeclaracao> List<? extends NoDeclaracao> getDeclaracoes(Class<T> tipo) {
+        List<T> declaracoes = new ArrayList<>();
+        
+        for (NoDeclaracao declaracao : listaDeclaracoesGlobais) {
+            if (tipo.isInstance(declaracao)) {
+                declaracoes.add((T)declaracao);
+            }
+        }
+        return declaracoes;
+    }
 
     /**
      * Define a lista de declarações globais desta ASA.

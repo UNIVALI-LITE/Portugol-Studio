@@ -18,6 +18,25 @@ import org.junit.Test;
 public final class AnalisadorSemanticoTest
 {
     @Test 
+    public void testVariavelDeclaradaNoFinalDoCodigo() throws ErroCompilacao {
+        try {
+            Portugol.compilarParaAnalise(
+                  " programa {                                                  "
+                + "     funcao inicio() {                                       "
+                + "         escreva(x)                                          "
+                + "     }                                                       "
+                + "     inteiro x = 1                                           "
+                + " }                                                           "
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue(resultado.getErros().isEmpty());
+        }
+        
+    }
+    
+    @Test 
     public void testVariavelNaoDeclarada() throws ErroCompilacao {
         try {
             Portugol.compilarParaAnalise(

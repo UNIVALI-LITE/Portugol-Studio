@@ -196,7 +196,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
     {
 
-        List<NoDeclaracao> declaracoes = asap.getListaDeclaracoesGlobais();
+        List<NoDeclaracao> declaracoes = asap.getListaDeclaracoesGlobais(true);
         
         // itera somente nas declarações de funções para colocá-las na tabela de símbolos
         for (NoDeclaracao declaracao : declaracoes) {
