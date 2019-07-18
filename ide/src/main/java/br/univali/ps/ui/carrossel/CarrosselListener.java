@@ -9,5 +9,7 @@ public interface CarrosselListener {
     void cursosCarregados();
 
     void erroNoCarregamentoCursos();
+    
+    void imagensCarregadas();
 
 }

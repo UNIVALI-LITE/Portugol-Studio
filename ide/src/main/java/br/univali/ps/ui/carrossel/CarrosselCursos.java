@@ -21,6 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -58,11 +61,15 @@ public class CarrosselCursos extends JPanel {
 
     private final String PACOTE_RESOURCES = "br/univali/ps/carrossel/";
 
+    private final ExecutorService executor = Executors.newCachedThreadPool();
+
     public CarrosselCursos() {
 
         painelImagem = new ImagePanel();
         labelTitulo = new JLabel();
         labelDescricao = new JLabel();
+
+        ImageIO.setUseCache(false); // usando cache somente em memória - https://docs.oracle.com/javase/7/docs/api/javax/imageio/ImageIO.html#setUseCache(boolean)
 
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -113,15 +120,32 @@ public class CarrosselCursos extends JPanel {
 
         setBackground(ColorController.COR_DESTAQUE);
 
-        try {
-            carregaCursos(getInputStreamCursos());
+        addListener(new CarrosselListener() {
+            @Override
+            public void cursosCarregados() {
+                LOGGER.log(Level.INFO, "Cursos recomendados carregados!");
+            }
 
-            inicializaTimer();
+            @Override
+            public void erroNoCarregamentoCursos() {
+                LOGGER.log(Level.WARNING, "Erro no carregamento dos cursos recomendados!");
+                setVisible(false);
+            }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            setVisible(false);
-        }
+            @Override
+            public void imagensCarregadas() {
+                LOGGER.log(Level.INFO, "Imagens dos cursos recomendados carregadas!");
+                inicializaTimer();
+            }
+        });
+
+        executor.submit(() -> {
+            try {
+                carregaCursos(getInputStreamCursos());
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        });
 
     }
 
@@ -179,10 +203,10 @@ public class CarrosselCursos extends JPanel {
         if (Configuracoes.rodandoEmDesenvolvimento()) {
             return "";
         }
-        
+
         return "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/";
     }
-    
+
     private InputStream getInputStreamCursos() throws Exception {
         if (Configuracoes.rodandoEmDesenvolvimento()) {
             LOGGER.log(Level.INFO, "Lendo 'cursos.json' do JAR!");
@@ -218,12 +242,38 @@ public class CarrosselCursos extends JPanel {
                 listener.cursosCarregados();
             }
 
+            carregaImagens();
+
         } catch (IOException e) {
             for (CarrosselListener listener : listeners) {
                 listener.erroNoCarregamentoCursos();
             }
             e.printStackTrace();
         }
+
+    }
+
+    private void carregaImagens() {
+        if (cursos.isEmpty()) {
+            return;
+        }
+
+        ExecutorService service = Executors.newSingleThreadExecutor();
+
+        service.submit(() -> {
+            try {
+                for (Curso curso : cursos) {
+                    String caminhoImagem = getCaminhoImagem(curso);
+                    ImageIO.read(getStreamImagem(caminhoImagem)); // usa cache em memória da classe ImageIO
+                }
+
+                for (CarrosselListener listener : listeners) {
+                    listener.imagensCarregadas();
+                }
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        });
 
     }
 
@@ -239,7 +289,7 @@ public class CarrosselCursos extends JPanel {
     }
 
     private void mostraCursoAnterior() throws IOException {
-        
+
         cursoAtual = (cursoAtual + cursos.size() - 1) % cursos.size();
 
         Curso curso = cursos.get(cursoAtual);
@@ -248,6 +298,10 @@ public class CarrosselCursos extends JPanel {
     }
 
     private void mostraProximoCurso() throws IOException {
+        if (!isShowing()) {
+            LOGGER.log(Level.INFO, "carrossel não está visível");
+            return;
+        }
 
         cursoAtual = (cursoAtual + 1) % cursos.size();
 
@@ -256,26 +310,41 @@ public class CarrosselCursos extends JPanel {
         mostraCurso(curso);
     }
 
-    private void mostraCurso(Curso curso) throws IOException {
-        String caminhoImagem = getBaseUrl() + PACOTE_RESOURCES + curso.getCaminhoImagem();
-        
-        InputStream stream = null;
-        if (Configuracoes.rodandoEmDesenvolvimento())
-            stream = ClassLoader.getSystemClassLoader().getResourceAsStream(caminhoImagem);
-        else
-            stream = new URL(caminhoImagem).openStream();
+    private InputStream getStreamImagem(String caminhoImagem) throws Exception {
+        if (Configuracoes.rodandoEmDesenvolvimento()) {
+            return ClassLoader.getSystemClassLoader().getResourceAsStream(caminhoImagem);
+        } else {
+            return new URL(caminhoImagem).openStream();
+        }
+    }
 
-        labelTitulo.setText("<html> " + curso.getTitulo() + "</html>");
-        labelDescricao.setText("<html> " + curso.getDescricao() + "</html>");
-        painelImagem.setImagem(ImageIO.read(stream));
+    private String getCaminhoImagem(Curso curso) {
+        return getBaseUrl() + PACOTE_RESOURCES + curso.getCaminhoImagem();
+    }
 
-        //doLayout();
-        if (timer != null) {
-            timer.setDelay(curso.getTempoExibicao());
+    private void mostraCurso(Curso curso) {
+        try {
 
-            if (!timer.isRunning()) {
-                timer.start();
+            String caminhoImagem = getCaminhoImagem(curso);
+
+            InputStream stream = getStreamImagem(caminhoImagem);
+
+            labelTitulo.setText("<html> " + curso.getTitulo() + "</html>");
+            labelDescricao.setText("<html> " + curso.getDescricao() + "</html>");
+            painelImagem.setImagem(ImageIO.read(stream));
+
+            //doLayout();
+            if (timer != null) {
+                timer.setDelay(curso.getTempoExibicao());
+
+                if (!timer.isRunning()) {
+                    timer.start();
+                }
             }
+            
+            LOGGER.log(Level.INFO, "Mostrando curso {0}", curso.getTitulo());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, null, e);
         }
     }
 
