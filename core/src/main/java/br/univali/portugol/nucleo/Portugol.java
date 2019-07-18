@@ -33,7 +33,7 @@ public final class Portugol
         String mensagem = String.format("compilação para %s em %d ms - tamanho código: %d", 
                 (paraExecucao ? "execução": "análise"), tempoCompilacao, codigo.length());
         
-        LOGGER.log(Level.INFO, mensagem);
+        LOGGER.log(Level.CONFIG, mensagem);
         
         return programa;
     }

@@ -299,7 +299,6 @@ public class CarrosselCursos extends JPanel {
 
     private void mostraProximoCurso() throws IOException {
         if (!isShowing()) {
-            LOGGER.log(Level.INFO, "carrossel não está visível");
             return;
         }
 

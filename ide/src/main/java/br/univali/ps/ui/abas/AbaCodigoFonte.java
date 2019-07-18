@@ -1942,12 +1942,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             String codigoFonte = editor.getTextArea().getText();
 
-            LOGGER.log(Level.INFO, "COMPILANDO para execução");
+            LOGGER.log(Level.CONFIG, "COMPILANDO para execução");
 
             String classPath = getClassPathParaCompilacao();
             String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
-            LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
-            LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
+            LOGGER.log(Level.CONFIG, "Compilando no classpath: {0}", classPath);
+            LOGGER.log(Level.CONFIG, "Usando javac em : {0}", caminhoJavac);
 
             Programa programa = null;
             try {
@@ -1955,7 +1955,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     return programa;
                 }
                 programa = Portugol.compilarParaExecucao(codigoFonte, classPath, caminhoJavac);
-                LOGGER.log(Level.INFO, "Compilação finalizada");
+                LOGGER.log(Level.CONFIG, "Compilação finalizada");
             } catch (ErroCompilacao erro) {
                 programa = erro.getResultadoAnalise().getPrograma();
             } finally {
@@ -2022,7 +2022,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static void liberaMemoriaAlocada() {
         Runtime runtime = Runtime.getRuntime();
         long memoriaUsada = runtime.totalMemory() - runtime.freeMemory();
-        LOGGER.log(Level.INFO, "Liberando memoria alocada - Total alocado ({0} MB)", memoriaUsada >> 20);
+        LOGGER.log(Level.CONFIG, "Liberando memoria alocada - Total alocado ({0} MB)", memoriaUsada >> 20);
         System.gc();
     }
 
