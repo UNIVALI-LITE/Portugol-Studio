@@ -91,6 +91,7 @@ public class GeradorOperacao
         }
         else
         {
+            no.getOperandoEsquerdo().aceitar(visitor);
             if (usaOperadorPadrao)
             {
                 saida.format(" %s ", operador);
