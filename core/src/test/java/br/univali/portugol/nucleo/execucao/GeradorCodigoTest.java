@@ -37,6 +37,18 @@ public class GeradorCodigoTest
 		PreCompilador.setSeedGeracaoNomesValidos(seed);
 		gerador = new GeradorCodigoJava(seed);
 	}
+        
+        @Test
+	public void testVetorCadeiaNaoInicializado() throws Exception
+	{
+		comparaCodigos();
+	}
+        
+        @Test
+	public void testMatrizCadeiaNaoInicializada() throws Exception
+	{
+		comparaCodigos();
+	}
 
         @Test
 	public void testMatrizComNumeroNegativo() throws Exception

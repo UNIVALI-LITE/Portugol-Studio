@@ -1,0 +1,30 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.programa.*;
+
+public class testMatrizCadeiaNaoInicializada extends Programa
+{
+
+
+
+     public testMatrizCadeiaNaoInicializada() throws ErroExecucao, InterruptedException {
+         
+     }
+
+
+     @Override
+     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+     {
+     String x[][] = new String[3][3];
+
+     escreva(x[0][0]);
+     if(((x[0][0]!= null)?x[0][0]:"").equals(" X "))
+     {
+
+     }
+
+
+     }
+
+}

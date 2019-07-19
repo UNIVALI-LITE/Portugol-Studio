@@ -1,0 +1,29 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.programa.*;
+
+public class testVetorCadeiaNaoInicializado extends Programa
+{
+
+
+
+     public testVetorCadeiaNaoInicializado() throws ErroExecucao, InterruptedException {
+
+     }
+
+
+     @Override
+     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+     {
+     String vet[] = new String[3];
+
+     if(((vet[0]!= null)?vet[0]:"").equals(" X "))
+     {
+
+     }
+
+
+     }
+
+}

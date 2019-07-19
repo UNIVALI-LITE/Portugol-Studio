@@ -76,18 +76,32 @@ public class GeradorOperacao
         {
             saida.append("!"); // not equals
         }
-
-        no.getOperandoEsquerdo().aceitar(visitor);
-
-        if (usaOperadorPadrao)
+        
+        boolean eVetorMatrizDeString = ((no.getOperandoEsquerdo() instanceof NoReferenciaMatriz || no.getOperandoEsquerdo() instanceof NoReferenciaVetor)&& !usaOperadorPadrao);
+        if(eVetorMatrizDeString)
         {
-            saida.format(" %s ", operador);
+            //se é um vetor ou matriz de cadeia, caso o usuário não tenha inicializado o vetor/matriz é necessário retornar para ele uma cadeia vazia
+            //ex: ((vet[0] != null)? vet[0]:"").equals(" X ")
+            saida.append("((");
+            no.getOperandoEsquerdo().aceitar(visitor);
+            saida.append("!= null)?");
+            no.getOperandoEsquerdo().aceitar(visitor);
+            saida.append(":\"\")");
+            saida.append(".equals(");
         }
         else
         {
-            saida.append(".equals(");
+            no.getOperandoEsquerdo().aceitar(visitor);
+            if (usaOperadorPadrao)
+            {
+                saida.format(" %s ", operador);
+            }
+            else
+            {
+                saida.append(".equals(");
+            }
         }
-
+        
         no.getOperandoDireito().aceitar(visitor);
 
         if (!usaOperadorPadrao)
