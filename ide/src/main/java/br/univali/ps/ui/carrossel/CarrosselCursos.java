@@ -51,6 +51,7 @@ public class CarrosselCursos extends JPanel {
     private final int MARGEM_LAYOUT = 10;
 
     private final ImagePanel painelImagem;
+    private final JPanel painelSetas;
     private final JLabel labelTitulo;
     private final JLabel labelDescricao;
 
@@ -68,6 +69,7 @@ public class CarrosselCursos extends JPanel {
         painelImagem = new ImagePanel();
         labelTitulo = new JLabel();
         labelDescricao = new JLabel();
+        painelSetas = new JPanel();
 
         ImageIO.setUseCache(false); // usando cache somente em memória - https://docs.oracle.com/javase/7/docs/api/javax/imageio/ImageIO.html#setUseCache(boolean)
 
@@ -105,12 +107,15 @@ public class CarrosselCursos extends JPanel {
                 painelImagem.setPreferredSize(tamanho);
             }
         });
-
+        painelSetas.setMinimumSize(new Dimension(getWidth(), (int) (getWidth() * 0.06f)));
+        painelSetas.setPreferredSize(new Dimension(getWidth(), (int) (getWidth() * 0.06f)));
+        painelSetas.setOpaque(false);
         setLayout(new BorderLayout(MARGEM_LAYOUT, MARGEM_LAYOUT));
 
         add(labelTitulo, BorderLayout.NORTH);
         add(labelDescricao, BorderLayout.CENTER);
         add(painelImagem, BorderLayout.EAST);
+        add(painelSetas, BorderLayout.SOUTH);
 
         labelTitulo.setForeground(ColorController.COR_LETRA);
         labelDescricao.setForeground(ColorController.COR_LETRA);
@@ -350,22 +355,22 @@ public class CarrosselCursos extends JPanel {
     private void desenhaSetas(Graphics2D g2d, int larguraBackgroundSetas) {
         final Color arrowsColor = new Color(255, 255, 255, 230);
         final int arrowSize = (int) (larguraBackgroundSetas * 0.5);
-
+        final int yposition = 148;
         g2d.setColor(arrowsColor);
 
         Polygon setaEsquerda = new Polygon();
-        setaEsquerda.addPoint(0, 0);
-        setaEsquerda.addPoint(arrowSize, -arrowSize);
-        setaEsquerda.addPoint(arrowSize, arrowSize);
+        setaEsquerda.addPoint(0, 0+yposition);
+        setaEsquerda.addPoint(arrowSize, -arrowSize+yposition);
+        setaEsquerda.addPoint(arrowSize, arrowSize+yposition);
 
-        setaEsquerda.translate(5, getHeight() / 2);
+        setaEsquerda.translate(5, getHeight() / 5);
 
         Polygon setaDireita = new Polygon();
-        setaDireita.addPoint(getWidth(), 0);
-        setaDireita.addPoint(getWidth() - arrowSize, -arrowSize);
-        setaDireita.addPoint(getWidth() - arrowSize, arrowSize);
+        setaDireita.addPoint(getWidth(), 0+yposition);
+        setaDireita.addPoint(getWidth()- arrowSize, -arrowSize+yposition);
+        setaDireita.addPoint(getWidth()- arrowSize, arrowSize+yposition);
 
-        setaDireita.translate(-5, getHeight() / 2);
+        setaDireita.translate(-5, getHeight() / 5);
 
         g2d.fillPolygon(setaEsquerda);
         g2d.fillPolygon(setaDireita);
@@ -386,7 +391,7 @@ public class CarrosselCursos extends JPanel {
     }
 
     private int getLarguraBackgroundSetas() {
-        return (int) (getWidth() * 0.15f);
+        return (int) (getWidth() * 0.06f);
     }
 
     @Override
@@ -397,7 +402,7 @@ public class CarrosselCursos extends JPanel {
             final int larguraBackgroundSetas = getLarguraBackgroundSetas();
             if (mouseEstaNasBordas(larguraBackgroundSetas)) {
                 Graphics2D g2d = (Graphics2D) g;
-                desenhaBackgroundSetas(g2d, larguraBackgroundSetas);
+                //desenhaBackgroundSetas(g2d, larguraBackgroundSetas);
                 desenhaSetas(g2d, larguraBackgroundSetas);
             }
         }
