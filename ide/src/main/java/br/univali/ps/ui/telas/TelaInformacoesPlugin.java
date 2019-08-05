@@ -13,7 +13,6 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;

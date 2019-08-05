@@ -175,6 +175,8 @@ public final class GeradorDeExemplosDeInicializacao
                     return "verdadeiro";
                 }
             }
+            default:
+                break;
         }
 
         return "?";

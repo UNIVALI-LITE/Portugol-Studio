@@ -21,7 +21,6 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
-import br.univali.ps.nucleo.LogManager;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucaoBasico;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -30,12 +29,10 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
-import br.univali.ps.nucleo.PSAnalytics;
 import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
@@ -1560,7 +1557,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        grupoBotoesPlugins = new javax.swing.ButtonGroup();
         divisorArvoreEditor = new javax.swing.JSplitPane();
         divisorEditorConsole = new javax.swing.JSplitPane();
         painelEditor = new javax.swing.JPanel();
@@ -1646,11 +1642,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExecutar.setName("botaoExecutar"); // NOI18N
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnExecutar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExecutarActionPerformed(evt);
-            }
-        });
         barraFerramentas.add(btnExecutar);
 
         btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/step.png"))); // NOI18N
@@ -1679,11 +1670,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setName("botaoSalvar"); // NOI18N
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
         barraFerramentas.add(btnSalvar);
 
         btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save_as.png"))); // NOI18N
@@ -1700,11 +1686,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAbrir.setName("botaoAbrir"); // NOI18N
         btnAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAbrir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAbrirActionPerformed(evt);
-            }
-        });
         barraFerramentas.add(btnAbrir);
 
         webSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 3));
@@ -1716,11 +1697,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnAjuda.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAjuda.setName("botaoSalvar"); // NOI18N
         btnAjuda.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAjuda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAjudaActionPerformed(evt);
-            }
-        });
         barraFerramentas.add(btnAjuda);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1879,30 +1855,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         add(painelRecuperados, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecutarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExecutarActionPerformed
-
     private void fecharRecuperadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharRecuperadosActionPerformed
         painelRecuperados.setVisible(false);
         desativouRecuperados = true;
     }//GEN-LAST:event_fecharRecuperadosActionPerformed
 
-    private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
-       
-    }//GEN-LAST:event_btnAbrirActionPerformed
-
-    private void btnAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjudaActionPerformed
-        
-    }//GEN-LAST:event_btnAjudaActionPerformed
-
     private void btnFecharPainelTemplatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharPainelTemplatesActionPerformed
         this.getActionMap().get("Exibir Painel Utilitários").actionPerformed(evt);
     }//GEN-LAST:event_btnFecharPainelTemplatesActionPerformed
-
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void interromper()
     {
@@ -2363,7 +2323,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        Configuracoes configuracoes = Configuracoes.getInstancia();
+
     }
 
     @Override
@@ -2820,7 +2780,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JSplitPane divisorEditorConsole;
     private br.univali.ps.ui.editor.Editor editor;
     private com.alee.laf.button.WebButton fecharRecuperados;
-    private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.inspetor.InspetorDeSimbolos inspetorDeSimbolos;
     private javax.swing.JLabel labelRecuperados;
     private javax.swing.JLabel labelTituloUtilitarios;

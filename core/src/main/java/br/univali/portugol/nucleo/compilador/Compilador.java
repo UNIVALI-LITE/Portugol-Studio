@@ -18,7 +18,6 @@ import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
@@ -37,10 +36,7 @@ import org.apache.commons.exec.PumpStreamHandler;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_ESCREVA;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LEIA;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LIMPA;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -309,10 +305,10 @@ public final class Compilador
             
             URLClassLoader classLoader = new URLClassLoader(urlsList.toArray(urls));
             Class<?> loadedClass = classLoader.loadClass(NOME_PACOTE.concat(".").concat(nomeClasseCompilada));
-
+            classLoader.close();
             return (Programa) loadedClass.newInstance();
         }
-        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | RuntimeException ex)
+        catch (ClassNotFoundException | IOException | IllegalAccessException | InstantiationException | RuntimeException ex)
         {
             resultadoAnalise.adicionarErro(new ErroAnaliseNaCompilacao(ex.getMessage()));
 

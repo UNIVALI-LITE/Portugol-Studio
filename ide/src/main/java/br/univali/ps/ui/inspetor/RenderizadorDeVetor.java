@@ -1,6 +1,5 @@
 package br.univali.ps.ui.inspetor;
 
-import static br.univali.ps.ui.inspetor.RenderizadorBase.COR_TEXTO_DESTACADO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;

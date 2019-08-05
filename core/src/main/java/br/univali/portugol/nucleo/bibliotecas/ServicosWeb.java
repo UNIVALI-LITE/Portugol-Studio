@@ -17,8 +17,6 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBibliot
 import br.univali.portugol.nucleo.bibliotecas.web.RestClient;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

@@ -2,7 +2,6 @@ package br.univali.portugol.nucleo.analise.sintatica.erros;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import java.util.Stack;
 
 /**
  * Erro gerado pelo analisador sintático quando um escopo não foi fechado corretamente
@@ -31,7 +30,6 @@ public final class ErroEscopo extends ErroSintatico
 {
     public static enum Tipo { ABERTURA, FECHAMENTO };
     
-    private final Tipo tipo;
     private final String contexto;
     private String codigo = "ErroSintatico.ErroEscopo.";
 
@@ -45,7 +43,6 @@ public final class ErroEscopo extends ErroSintatico
     public ErroEscopo(int linha, int coluna, Tipo tipo, String contexto)
     {
         super(linha, coluna);
-        this.tipo = tipo;
         this.contexto = contexto;
     }
     

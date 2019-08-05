@@ -288,11 +288,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         procurarLabel.setText(" Procurar ");
         findPane.add(procurarLabel, java.awt.BorderLayout.WEST);
 
-        procurarTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                procurarTextFieldActionPerformed(evt);
-            }
-        });
         findPane.add(procurarTextField, java.awt.BorderLayout.CENTER);
 
         findReplaceFieldsPane.add(findPane);
@@ -305,11 +300,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         substituirLabel.setText("Substituir ");
         replacePane.add(substituirLabel, java.awt.BorderLayout.WEST);
 
-        substituirTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                substituirTextFieldActionPerformed(evt);
-            }
-        });
         replacePane.add(substituirTextField, java.awt.BorderLayout.CENTER);
 
         findReplaceFieldsPane.add(replacePane);
@@ -325,11 +315,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         diferenciarCheckBox.setText("Diferenciar maiúsculas/minúsculas");
         diferenciarCheckBox.setBorder(null);
-        diferenciarCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                diferenciarCheckBoxActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -337,11 +322,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         marcarCheckBox.setText("Marcar Todas");
         marcarCheckBox.setBorder(null);
-        marcarCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                marcarCheckBoxActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -361,11 +341,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         expressaoCheckBox.setText("Expressão Regular");
         expressaoCheckBox.setBorder(null);
-        expressaoCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                expressaoCheckBoxActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -409,11 +384,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         substituirTudoButton.setText("Substituir todas");
         substituirTudoButton.setPreferredSize(new java.awt.Dimension(100, 24));
-        substituirTudoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                substituirTudoButtonActionPerformed(evt);
-            }
-        });
         buttonsPane.add(substituirTudoButton);
 
         cancelarButton.setText("Cancelar");
@@ -424,31 +394,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         add(searchPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void substituirTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_substituirTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_substituirTextFieldActionPerformed
-
-    private void procurarTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procurarTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_procurarTextFieldActionPerformed
-
-    private void marcarCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marcarCheckBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_marcarCheckBoxActionPerformed
-
-    private void expressaoCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expressaoCheckBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_expressaoCheckBoxActionPerformed
-
-    private void substituirTudoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_substituirTudoButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_substituirTudoButtonActionPerformed
-
-    private void diferenciarCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diferenciarCheckBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_diferenciarCheckBoxActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton avancarRadioButton;

@@ -64,7 +64,6 @@ import java.util.List;
  */
 class AnalisadorRetornoDeFuncao implements VisitanteASA
 {
-    private NoDeclaracaoFuncao noDeclaracaoFuncao;
 
     /**
      * Analisa se na declaração de função passada existe 100% de chance entrar
@@ -76,7 +75,6 @@ class AnalisadorRetornoDeFuncao implements VisitanteASA
      */
     public boolean possuiRetornoObrigatorio(NoDeclaracaoFuncao noDeclaracaoFuncao) throws ExcecaoVisitaASA
     {
-        this.noDeclaracaoFuncao = noDeclaracaoFuncao;
         return (Boolean) visitar(noDeclaracaoFuncao.getBlocos());
     }
 

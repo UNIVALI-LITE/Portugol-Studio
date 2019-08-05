@@ -7,7 +7,6 @@ package br.univali.portugol.nucleo.asa;
 public class NoVaPara extends NoBloco
 {
     private NoTitulo titulo;
-    private TrechoCodigoFonte trechoCodigoFonte;
     
     public NoVaPara(NoTitulo titulo)
     {

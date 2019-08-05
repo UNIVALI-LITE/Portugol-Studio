@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.DateFormat;
@@ -37,7 +35,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 
-import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import static br.univali.ps.nucleo.PSAnalytics.searchForMac;
 
 public class LogManager {

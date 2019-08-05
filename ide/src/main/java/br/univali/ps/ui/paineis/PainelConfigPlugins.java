@@ -74,11 +74,6 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
             fireDataChanged();
         }
 
-        public void clear() {
-            dados.clear();
-            fireDataChanged();
-        }
-
         public void fireDataChanged() {
             for (ListDataListener listener : listeners) {
                 listener.contentsChanged(null);

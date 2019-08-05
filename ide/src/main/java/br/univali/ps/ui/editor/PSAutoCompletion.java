@@ -12,7 +12,6 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.utils.swing.DocumentChangeListener;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

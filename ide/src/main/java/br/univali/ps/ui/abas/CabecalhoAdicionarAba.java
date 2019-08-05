@@ -5,11 +5,9 @@
  */
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Dimension;
 import javax.swing.border.MatteBorder;

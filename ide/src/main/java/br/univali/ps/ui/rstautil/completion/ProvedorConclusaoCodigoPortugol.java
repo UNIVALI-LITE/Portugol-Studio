@@ -1,6 +1,5 @@
 package br.univali.ps.ui.rstautil.completion;
 
-import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.ui.rstautil.PortugolParser;
@@ -9,8 +8,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
@@ -24,8 +21,6 @@ import org.fife.ui.rsyntaxtextarea.Token;
 
 public final class ProvedorConclusaoCodigoPortugol extends CompletionProviderBase
 {
-    private final static Logger LOGGER = Logger.getLogger(ProvedorConclusaoCodigoPortugol.class.getName());
-
     private final Segment seg = new Segment();
     
     private final ProvedorConclusaoCodigoPrograma provedorConclusaoCodigoPrograma;

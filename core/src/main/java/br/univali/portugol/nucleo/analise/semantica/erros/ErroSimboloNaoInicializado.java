@@ -15,13 +15,11 @@ import br.univali.portugol.nucleo.simbolos.Vetor;
 public class ErroSimboloNaoInicializado extends ErroSemantico
 {
     private final Simbolo simbolo;
-    private final NoReferencia noReferencia;
     private String codigo = "ErroSemantico.ErroSimboloNaoInicializado.";
 
     public ErroSimboloNaoInicializado(NoReferencia noReferencia, Simbolo simbolo)
     {
         super(noReferencia.getTrechoCodigoFonteNome(), "ErroSemantico.ErroSimboloNaoInicializado");
-        this.noReferencia = noReferencia;
         this.simbolo = simbolo;        
     }
 

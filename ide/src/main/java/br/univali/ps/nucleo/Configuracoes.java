@@ -72,7 +72,6 @@ public final class Configuracoes
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
-    private String temaEditor = "Dark";
     private String temaPortugol = "Dark";
     private String icones = "Dark";
     private boolean envio_de_dados = true;
@@ -627,17 +626,5 @@ public final class Configuracoes
         String os = System.getProperty("os.name");
 
         return (os != null && os.toLowerCase().contains("win"));
-    }
-
-    private File extrairCaminho(File arquivo)
-    {
-        try
-        {
-            return arquivo.getCanonicalFile();
-        }
-        catch (IOException ex)
-        {
-            return arquivo.getAbsoluteFile();
-        }
     }
 }

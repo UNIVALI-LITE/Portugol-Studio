@@ -1,8 +1,6 @@
 package br.univali.portugol.nucleo.analise.sintatica.erros;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.TipoToken.OPERADOR;
-import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.TipoToken.TIPO_PRIMITIVO;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 
 /**

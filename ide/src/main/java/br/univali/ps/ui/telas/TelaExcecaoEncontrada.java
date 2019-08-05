@@ -1,15 +1,11 @@
 package br.univali.ps.ui.telas;
 
-import br.univali.portugol.nucleo.Portugol;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.WebConnectionUtils;
-import static com.alee.managers.notification.NotificationOption.no;
-import static java.awt.PageAttributes.MediaType.A;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -19,8 +15,6 @@ import java.awt.event.MouseEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -142,19 +136,6 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
             }
         });
     }
-    
-    public static void main(String[] args) {
-        WeblafUtils.instalaWeblaf();
-        TelaCustomBorder main = new TelaCustomBorder("Erro Encontrado");
-        TelaExcecaoEncontrada tee = new TelaExcecaoEncontrada(main);
-        main.setPanel(tee);
-        tee.areaTextoStackTrace.setText("Exception in thread \"main\" java.lang.NullPointerException\n" +
-"	at br.univali.ps.ui.inspetor.InspetorDeSimbolos.main(InspetorDeSimbolos.java:765)\n" +
-"C:\\Users\\Adson Esteves\\Documents\\Github\\Portugol-Studio\\nbproject\\build-impl.xml:1116: The following error occurred while executing this line:\n" +
-"C:\\Users\\Adson Esteves\\Documents\\Github\\Portugol-Studio\\nbproject\\build-impl.xml:830: Java returned: 1");
-        main.setVisible(true);
-        
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,11 +228,6 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         botaoCopiarErro.setText("Copiar Erro");
 
         botaoReportarBug.setText("Reportar Erro");
-        botaoReportarBug.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoReportarBugActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout painelBotaoLayout = new javax.swing.GroupLayout(painelBotao);
         painelBotao.setLayout(painelBotaoLayout);
@@ -323,11 +299,6 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         scrollStackTrace.setVisible(!scrollStackTrace.isVisible());
         telaCustomBorder.pack();
     }//GEN-LAST:event_botaoAbrirStackActionPerformed
-
-    private void botaoReportarBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoReportarBugActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoReportarBugActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaTextoStackTrace;

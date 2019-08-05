@@ -3,7 +3,6 @@ package br.univali.ps.ui.abas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;

@@ -1,7 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

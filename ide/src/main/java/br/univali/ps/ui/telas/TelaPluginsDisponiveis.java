@@ -26,15 +26,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -65,7 +62,6 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
     String releasedPluginsURI = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/pluginsList.json";
     private List<PainelPluginItem> listaPlugins = new ArrayList<>();
     private static JDialog indicadorProgresso;
-    private String tuto = "";
     
     public TelaPluginsDisponiveis() {
         initComponents();
@@ -284,6 +280,7 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
             ReadableByteChannel rbc = Channels.newChannel(website.openStream());
             FileOutputStream fos = new FileOutputStream(pluginFile);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            fos.close();
         }catch(Exception ex)
         {
             System.out.println(ex);

@@ -14,9 +14,4 @@ public final class TradutorErrosExecucao
     {
         return new ErroExecucaoNaoTratado(excecao);
     }
-    
-    private final class EstrategiaTraducao<T extends Class<? extends RuntimeException>>
-    {
-        
-    }
 }

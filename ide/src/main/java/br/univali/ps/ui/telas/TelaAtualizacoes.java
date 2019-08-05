@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import org.markdown4j.Markdown4jProcessor;
@@ -129,22 +128,7 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
             WeblafUtils.configurarBotao(botaoBaixar, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);            
             WeblafUtils.configuraWebLaf(jScrollPane1);
         }
-    }  
-        
-    public static void main(String argumentos[]) 
-    {
-//        WeblafUtils.instalaWeblaf();
-//        TelaCustomBorder main = new TelaCustomBorder("Erro Encontrado");
-//        TelaAtualizacoes ta = new TelaAtualizacoes();
-//        main.setPanel(ta);
-//        try {
-//            ta.setAtualizacoes("- Erros de interface encontrados agora apresentam tela para reporte de erro  - [Issue #277](https://github.com/UNIVALI-LITE/Portugol-Studio/issues/277)\r\n    \r\n- Erros de compilação tratados:\r\n    - Unreachable Statement - [Issue #271](https://github.com/UNIVALI-LITE/Portugol-Studio/issues/271)\r\n\r\n    - Variable might not be intialized. [Issue #299](https://github.com/UNIVALI-LITE/Portugol-Studio/issues/299)\r\n\r\n    - Cannot find symbol inicio() - [Issue #283](https://github.com/UNIVALI-LITE/Portugol-Studio/issues/283)\r\n\r\n    - Comando escolha-caso não funcionava com variáveis - [Issue #295](https://github.com/UNIVALI-LITE/Portugol-Studio/issues/294)\r\n\r\n    - Pontos de parada dentro de escolhas caso [Issue #294](https://github.com/UNIVALI-LITE/Portugol-Studio/issues/294)\r\n");
-//        } catch (IOException ex) {
-//            Logger.getLogger(TelaAtualizacoes.class.getName()).log(Level.SEVERE, null, ex);
-//        }        
-//        main.setVisible(true);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

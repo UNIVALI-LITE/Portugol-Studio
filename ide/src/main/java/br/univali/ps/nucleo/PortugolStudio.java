@@ -35,11 +35,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -52,7 +50,6 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.Random;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -477,20 +474,20 @@ public final class PortugolStudio
         }
     }
 
-    private void inicializarMecanismoLog()
-    {
-        final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
+    // private void inicializarMecanismoLog()
+    // {
+    //     final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
 
-        try
-        {
-            LogManager.getLogManager().readConfiguration(inputStream);
-        }
-        catch (final IOException excecao)
-        {
-            Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
-            Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
-        }
-    }
+    //     try
+    //     {
+    //         LogManager.getLogManager().readConfiguration(inputStream);
+    //     }
+    //     catch (final IOException excecao)
+    //     {
+    //         Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
+    //         Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
+    //     }
+    // }
 
     private void instalarDetectorExcecoesNaoTratadas()
     {
@@ -1079,34 +1076,12 @@ public final class PortugolStudio
         return null;
     }
 
-    private void exibirParametros(String[] parametros)
-    {
-        for (String parametro : parametros)
-        {
-            LOGGER.log(Level.INFO, "Parametro: {0}", parametro);
-        }
-    }
-    
-    
-    private class MutexNulo extends MutexImpl
-    {
-
-        public MutexNulo()
-        {
-            super(null);
-        }
-
-        @Override
-        public boolean existeUmaInstanciaExecutando()
-        {
-            return false;
-        }
-
-        @Override
-        public void finalizar() { }
-
-        @Override
-        public void inicializar() throws ErroCriacaoMutex { }
+    // private void exibirParametros(String[] parametros)
+    // {
+    //     for (String parametro : parametros)
+    //     {
+    //         LOGGER.log(Level.INFO, "Parametro: {0}", parametro);
+    //     }
+    // }
         
-    }
 }

@@ -376,23 +376,6 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
         }
     }
 
-    private static String[] extrairParametros(String[] args)
-    {
-        if (args.length > 1)
-        {
-            String[] params = new String[args.length - 1];
-
-            for (int i = 1; i < args.length; i++)
-            {
-                params[i - 1] = args[i];
-            }
-
-            return params;
-        }
-
-        return null;
-    }
-
     @Override
     public void execucaoPausada() 
     {
@@ -442,6 +425,8 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
                     armazenador.setValor(valor);
                     return;
                 }
+                default:
+                    break;
             }
         }
         catch (InputMismatchException excecao)
