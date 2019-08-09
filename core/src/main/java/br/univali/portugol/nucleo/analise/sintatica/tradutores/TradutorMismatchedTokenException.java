@@ -17,9 +17,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFalt
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
@@ -42,7 +40,7 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  */
 public final class TradutorMismatchedTokenException
 {
-    public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte)
+    public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, String codigoFonte)
     {
       
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();

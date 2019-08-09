@@ -24,7 +24,7 @@ import org.fife.ui.autocomplete.ParameterizedCompletion;
  * @author 5663296
  */
 public class PSCompletionListCellRenderer extends DefaultListCellRenderer{
-    private boolean colored = false;
+    
     @Override
     public Component getListCellRendererComponent(JList<?> jlist, Object o, int ii, boolean bln, boolean bln1) {
         JLabel renderer = (JLabel) super.getListCellRendererComponent(jlist, o, ii, bln, bln1);

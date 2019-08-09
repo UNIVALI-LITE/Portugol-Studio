@@ -29,18 +29,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -65,7 +62,6 @@ import javax.swing.tree.TreePath;
  */
 public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
-    private static final Logger LOGGER = Logger.getLogger(PainelExemplos.class.getName());
 
     private final Icon imagemPadrao;
     private final Icon imagemPadraolowres;
@@ -82,7 +78,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private final Editor editor;
     
     private boolean redimensionouParaBaixaResolucao = false;
-    private boolean primeiraExibicao = true;
 
     
     private final ImagePanel imagePanel; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
@@ -452,26 +447,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         areaLogo.revalidate();
     }
     
-    
-    
-    private String carregarHTML(String caminho)
-    {
-        StringBuilder contentBuilder = new StringBuilder();
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
-            String str;
-            while ((str = in.readLine()) != null) {
-                contentBuilder.append(str);
-            }
-            in.close();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        String base = contentBuilder.toString();
-        
-        return base;
-    }
-    
     private void configurarResolucao()
     {
         addComponentListener(new ComponentAdapter()
@@ -541,12 +516,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             
         });
 
-    }
-
-    private void expandJTree() {
-        for (int i = 0; i < arvoreExemplos.getRowCount(); i++) {
-            arvoreExemplos.expandRow(i);
-        }
     }
 
     private List<DefaultMutableTreeNode> readIndex(File dir) {
@@ -791,11 +760,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         botaoAbrirExemplo.setVisible(false);
         botaoAbrirExemplo.setText("Explorar Exemplo");
         botaoAbrirExemplo.setName("botaoExplorarExemplo"); // NOI18N
-        botaoAbrirExemplo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoAbrirExemploActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -873,10 +837,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botaoAbrirExemploActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAbrirExemploActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoAbrirExemploActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,7 +7,6 @@ package br.univali.portugol.nucleo.asa;
 public class NoTitulo extends NoBloco
 {
     private String nome;
-    private TrechoCodigoFonte trechoCodigoFonte = null;
 
     public NoTitulo(String nome)
     {

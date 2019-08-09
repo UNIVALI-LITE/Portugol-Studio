@@ -1,7 +1,6 @@
 package br.univali.ps.ui.swing;
 
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
 import javax.swing.JTable;

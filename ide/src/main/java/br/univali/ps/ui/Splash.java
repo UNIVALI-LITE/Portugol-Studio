@@ -1,6 +1,5 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.swing.ColorController;
 import java.awt.Color;
 import java.awt.Font;

@@ -1,9 +1,7 @@
 package br.univali.portugol.nucleo.bibliotecas.graficos.operacoes;
 
-import br.univali.portugol.nucleo.bibliotecas.Graficos;
 import br.univali.portugol.nucleo.bibliotecas.graficos.SuperficieDesenho;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDesenhoElipse;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 
 /**

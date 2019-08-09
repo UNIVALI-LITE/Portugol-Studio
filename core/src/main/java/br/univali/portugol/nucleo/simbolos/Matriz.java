@@ -180,8 +180,6 @@ public final class Matriz extends Simbolo
 
     private void inicializarComDimensoes(int numeroLinhas, int numeroColunas)
     {
-        Object valorPadrao = getTipoDado().getValorPadrao();
-
         this.numeroLinhas = numeroLinhas;
         this.numeroColunas = numeroColunas;
         valores = new Object[numeroLinhas][numeroColunas];

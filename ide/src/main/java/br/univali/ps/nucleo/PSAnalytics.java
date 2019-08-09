@@ -42,11 +42,10 @@ public class PSAnalytics {
     
     boolean pode_enviar_dados = true;
     private static String SERVER_LIST = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/br/univali/ps/nucleo/serverList.json";
-    private static List<String> URL_LIST;
+    private static List<String> URL_LIST = new ArrayList<>();;
     public static String URL_PADRAO = "https://portugol-analytics.herokuapp.com";
     
-    public PSAnalytics() {
-        this.URL_LIST = new ArrayList<>();
+    public PSAnalytics() { 
         findServersURLs();
         pode_enviar_dados = Configuracoes.getInstancia().isEnvio_de_dados();
     }

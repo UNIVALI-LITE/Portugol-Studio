@@ -1,8 +1,5 @@
 package br.univali.ps.ui.swing.weblaf;
 
-import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
-import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.paineis.PSPainelTabulado;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.WebTableHeaderUI;
 import java.awt.BorderLayout;
@@ -13,7 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;

@@ -366,7 +366,6 @@ public final class Sons extends Biblioteca
     private class Reproducao
     {
         private Clip clip;
-        private final Integer endereco; 
         private float volume = 1.0f;
         private float volumeGeral = 1.0f;
         private long clipTime = 0;
@@ -374,7 +373,6 @@ public final class Sons extends Biblioteca
     
         public Reproducao(File som, Integer endereco) throws ErroExecucaoBiblioteca
         {
-            this.endereco = endereco;
             try
             {
                 clip = AudioSystem.getClip();
@@ -428,11 +426,6 @@ public final class Sons extends Biblioteca
         public float getVolume()
         {
             return volume;
-        }
-
-        public int getEndereco()
-        {
-            return endereco;
         }
         
         public long getPosicaoAtualMusica()

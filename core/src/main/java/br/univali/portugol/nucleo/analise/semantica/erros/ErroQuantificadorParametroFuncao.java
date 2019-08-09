@@ -2,9 +2,6 @@ package br.univali.portugol.nucleo.analise.semantica.erros;
 
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.Quantificador;
-import static br.univali.portugol.nucleo.asa.Quantificador.MATRIZ;
-import static br.univali.portugol.nucleo.asa.Quantificador.VALOR;
-import static br.univali.portugol.nucleo.asa.Quantificador.VETOR;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 
 /**

@@ -1,8 +1,6 @@
 package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.swing.ColorController;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -36,7 +34,7 @@ public class PSTreeUI extends BasicTreeUI {
         super.paint(g, c);
         
         if (tree.getLeadSelectionPath() != null) {
-            Rectangle r = tree.getRowBounds(getRowForPath(tree, tree.getLeadSelectionPath()));
+            //Rectangle r = tree.getRowBounds(getRowForPath(tree, tree.getLeadSelectionPath()));
             g.setColor(tree.hasFocus() ? ColorController.FUNDO_MEDIO.brighter(): ColorController.FUNDO_MEDIO);
 //            g.drawRect(0, r.y, tree.getWidth() - 1, r.height - 1);
         }

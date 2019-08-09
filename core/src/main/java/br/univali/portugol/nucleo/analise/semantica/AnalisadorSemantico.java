@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Percorre a {@link ASA} gerada a partir do código fonte para detectar
@@ -33,9 +31,7 @@ import java.util.logging.Logger;
  * @see ObservadorAnaliseSemantica
  */
 public final class AnalisadorSemantico implements VisitanteASA
-{
-    private static final Logger LOGGER = Logger.getLogger(AnalisadorSemantico.class.getName());
-    
+{    
     private static final List<String> FUNCOES_RESERVADAS = getLista();
 
     private final Memoria memoria;

@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO_PROGRAMA;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 

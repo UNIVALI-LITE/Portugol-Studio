@@ -470,11 +470,6 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         jPanel1.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
 
         botaoAceitar.setText("Aceitar");
-        botaoAceitar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoAceitarActionPerformed(evt);
-            }
-        });
         jPanel1.add(botaoAceitar);
 
         botaoCancelar.setText("Cancelar");
@@ -484,10 +479,6 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
 
         add(botoes, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botaoAceitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAceitarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoAceitarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -286,6 +286,8 @@ public class Utils
                 return "boolean";
             case VAZIO:
                 return "void";
+            default:
+                break;
         }
 
         String mensagem = String.format("Não foi possível traduzir o tipo %s do Portugol para um tipo JAva.", tipoPortugol.getNome());

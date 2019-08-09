@@ -194,6 +194,7 @@ public final class CarregadorJar
                     nomes.add(nome);
                 }
             }
+            jar.close();
         }
         catch (IOException excecao)
         {

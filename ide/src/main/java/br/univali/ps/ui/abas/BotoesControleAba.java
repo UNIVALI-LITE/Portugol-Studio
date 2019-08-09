@@ -1,8 +1,6 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
@@ -13,9 +11,7 @@ import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -32,14 +28,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
     private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
 
-    private static final Color corAtivo = new Color(60, 60, 60);
-    private static final Color corInativo = new Color(120, 120, 120);
-
     public static final String ACAO_NOVO_ARQUIVO = "Novo arquivo";
 
     private Action acaoNovoArquivo;
     private Action acaoAbrirArquivo;
-    private Action acaoCarregarPlugin;
     private Action acaoExibirTelaInicial;
 
     private Aba abaAtual;

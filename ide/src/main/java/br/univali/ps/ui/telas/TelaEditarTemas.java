@@ -686,11 +686,6 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
 
         botaoNovoTema.setText("adicionar tema");
-        botaoNovoTema.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoNovoTemaActionPerformed(evt);
-            }
-        });
         jPanel4.add(botaoNovoTema);
 
         botaoRenomear.setText("renomear");
@@ -711,10 +706,6 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
 
         add(jPanel5, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botaoNovoTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoTemaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoNovoTemaActionPerformed
 
     private void listaTemasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaTemasMouseClicked
         final int index = ((JList) evt.getSource()).getSelectedIndex();

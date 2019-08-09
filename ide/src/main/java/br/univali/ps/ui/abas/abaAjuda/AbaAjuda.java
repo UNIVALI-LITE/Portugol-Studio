@@ -58,8 +58,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import org.fit.cssbox.swingbox.util.GeneralEvent;
-import org.fit.cssbox.swingbox.util.GeneralEventListener;
 import org.json.JSONObject;
 
 /**
@@ -70,23 +68,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
 {
     
     private static final Icon iconeBiblioteca = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
-
-    private static String templateRaiz
-            = "   <html>"
-            + "     <head>"
-            + "         <link rel=\"stylesheet\" type=\"text/css\" href=\"file:./ajuda/ajuda.css\"/>"
-            + "     </head>"
-            + "     <body>"
-            + "         <h1>Ajuda</h1>"
-            + "         <p>"
-            + "             Bem vindo à ajuda do Portugol Studio! Selecione um tópico na árvore de navegação ao "
-            + "             lado para visualizar seu conteúdo!"
-            + "         </p>"
-            + "     </body>"
-            + "</html>\"";
     
-    
-     private String conteudoRaizBibliotecas = "<html>\n" +
+    private String conteudoRaizBibliotecas = "<html>\n" +
                                                 "  <head>\n" +
                                                 "<style type=\"text/css\">\n" +
                                                 "/*${css}*/" +
@@ -110,9 +93,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     private final String raizBibliotecaHTML;
     private final String erroHTML;
     private final String funcaoBibliotecaHTML;
-    
-    private DefaultTreeModel modeloArvore;
-
     public AbaAjuda()
     {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
@@ -499,23 +479,23 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     private void configurarSwingbox()
     {
         conteudo.addHyperlinkListener(new SwingBrowserHyperlinkHandler(ajuda, arvore));
-        conteudo.addGeneralEventListener(new GeneralEventListener()
-        {
-            private long time;
+        // conteudo.addGeneralEventListener(new GeneralEventListener()
+        // {
+        //     private long time;
 
-            @Override
-            public void generalEventUpdate(GeneralEvent e)
-            {
-                if (e.event_type == GeneralEvent.EventType.page_loading_begin)
-                {
-                    time = System.currentTimeMillis();
-                }
-                else if (e.event_type == GeneralEvent.EventType.page_loading_end)
-                {
-                    //System.out.println("SwingBox: page loaded in: "+ (System.currentTimeMillis() - time) + " ms");
-                }
-            }
-        });
+        //     @Override
+        //     public void generalEventUpdate(GeneralEvent e)
+        //     {
+        //         if (e.event_type == GeneralEvent.EventType.page_loading_begin)
+        //         {
+        //             time = System.currentTimeMillis();
+        //         }
+        //         else if (e.event_type == GeneralEvent.EventType.page_loading_end)
+        //         {
+        //             //System.out.println("SwingBox: page loaded in: "+ (System.currentTimeMillis() - time) + " ms");
+        //         }
+        //     }
+        // });
     }
 
     private void configurarAcoes()

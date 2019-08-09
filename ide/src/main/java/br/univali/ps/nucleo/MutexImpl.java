@@ -53,13 +53,14 @@ public class MutexImpl implements Mutex
         try
         {
             servidorMutex = new ServerSocket(0);
-
-            canal = new RandomAccessFile(arquivoMutex, "rw").getChannel();
+            RandomAccessFile raf = new RandomAccessFile(arquivoMutex, "rw");
+            canal = raf.getChannel();
 
             canal.write(Charset.forName("UTF-8").encode(Integer.toString(servidorMutex.getLocalPort())));
             canal.force(true);
             
             ouvirConexoes();
+            raf.close();
         }
         catch (IOException excecao)
         {

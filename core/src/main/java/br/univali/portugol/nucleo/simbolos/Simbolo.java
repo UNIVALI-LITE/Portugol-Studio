@@ -36,7 +36,6 @@ public abstract class Simbolo
         {
             return false;
         }
-        final Simbolo other = (Simbolo) obj;
         return true;
     }
     private String nome;

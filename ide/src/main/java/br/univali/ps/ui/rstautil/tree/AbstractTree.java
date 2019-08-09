@@ -11,7 +11,6 @@ public abstract class AbstractTree extends JTree
     public void refresh() {
         Object root = getModel().getRoot();
         if (root instanceof SourceTreeNode) {
-                SourceTreeNode node = (SourceTreeNode)root;
                 //node.refresh();
                 ((DefaultTreeModel)getModel()).reload();                
         }

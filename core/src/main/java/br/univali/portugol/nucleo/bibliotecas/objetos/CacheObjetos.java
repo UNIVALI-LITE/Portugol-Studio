@@ -14,9 +14,6 @@ import java.util.List;
  */
 public class CacheObjetos {
 
-
-    private static final int NUMERO_MAXIMO_OBJETOS = 128;
-
     private final List<Objeto> objetos;
 
     private CacheObjetos()

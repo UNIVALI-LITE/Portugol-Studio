@@ -15,8 +15,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,9 +39,6 @@ public final class GerenciadorBibliotecas
     private final MetaDadosBibliotecas metaDadosBibliotecas;
     private final Map<String, Class<? extends Biblioteca>> bibliotecasCarregadas;
 
-    private final Map<String, Biblioteca> bibliotecasCompartilhadas;
-    private final Map<Programa, Map<String, Biblioteca>> bibliotecasReservadas;
-
     public static GerenciadorBibliotecas getInstance()
     {
         if (instance == null)
@@ -58,21 +53,6 @@ public final class GerenciadorBibliotecas
     {
         bibliotecasCarregadas = new TreeMap<>();
         metaDadosBibliotecas = new MetaDadosBibliotecas();
-
-        bibliotecasCompartilhadas = new TreeMap<>();
-        bibliotecasReservadas = new TreeMap<>(new ComparadorPrograma());
-    }
-
-    private class ComparadorPrograma implements Comparator<Programa>
-    {
-        @Override
-        public int compare(Programa o1, Programa o2)
-        {
-            Integer h1 = System.identityHashCode(o1);
-            Integer h2 = System.identityHashCode(o2);
-
-            return h1.compareTo(h2);
-        }
     }
 
     public List<String> listarBibliotecasDisponiveis()
@@ -571,21 +551,6 @@ public final class GerenciadorBibliotecas
                         TipoDado.REAL.getTipoJava().getName(),
                         Object.class.getName()
                 ));
-    }
-
-    private Class obterTipoReferencia(Type tipo)
-    {
-        if (tipo instanceof ParameterizedType)
-        {
-            Type[] generics = ((ParameterizedType) tipo).getActualTypeArguments();
-
-            if (generics != null && generics.length > 0)
-            {
-                return (Class) generics[0];
-            }
-        }
-
-        return null;
     }
 
     private <T extends Annotation> T obterAnotacaoMetodo(String nomeBiblioteca, Method metodo, Class<T> classeAnotacao) throws ErroCarregamentoBiblioteca
