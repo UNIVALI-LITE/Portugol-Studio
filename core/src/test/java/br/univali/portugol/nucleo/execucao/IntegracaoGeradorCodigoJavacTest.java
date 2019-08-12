@@ -36,7 +36,6 @@ import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.execucao.gerador.GeradorCodigoJava;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
-import java.nio.charset.Charset;
 
 /**
  * @author Elieser

@@ -4,7 +4,6 @@ import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 /**
  *

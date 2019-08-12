@@ -11,7 +11,6 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.utils.IconFactory;
-import com.alee.laf.separator.WebSeparator;
 
 /**
  * @author Luiz Fernando Noschang
@@ -19,7 +18,6 @@ import com.alee.laf.separator.WebSeparator;
 public final class PainelPlugins extends javax.swing.JPanel implements Themeable {
 
     private Plugin plugin;
-    private MetaDadosPlugin metaDadosPlugin;
     private AbaCodigoFonte abaCodigoFonte;
 
     public PainelPlugins() {
@@ -54,7 +52,6 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
             removerPlugin();
 
             this.plugin = plugin;
-            this.metaDadosPlugin = plugin.getMetaDados();
         }
     }
 

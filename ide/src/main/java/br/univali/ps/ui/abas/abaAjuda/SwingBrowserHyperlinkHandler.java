@@ -97,7 +97,6 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
 
     private void tratarPorLocal(HyperlinkEvent evt) throws Exception
     {
-        final JComponent componente = (JComponent) evt.getSource();
         URL fixedURL = new URL(evt.getURL().toString().replace(" ", "%20"));
         File arquivo = new File(fixedURL.toURI());
         String codigoFonte = FileHandle.open(arquivo);

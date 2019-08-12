@@ -9,19 +9,16 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,9 +51,6 @@ public class CarrosselCursos extends JPanel {
     private final JPanel painelSetas;
     private final JLabel labelTitulo;
     private final JLabel labelDescricao;
-
-    private static final Color TRANSPARENT_BLACK = new Color(0, 0, 0, 0);
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 220);
 
     private final Collection<CarrosselListener> listeners = new ArrayList<>();
 
@@ -374,20 +368,6 @@ public class CarrosselCursos extends JPanel {
 
         g2d.fillPolygon(setaEsquerda);
         g2d.fillPolygon(setaDireita);
-    }
-
-    private void desenhaBackgroundSetas(Graphics2D g2d, int larguraBackgroundBotoes) {
-
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        GradientPaint gradienteSetaEsquerda = new GradientPaint(0, 0, BACKGROUND_COLOR, larguraBackgroundBotoes, 0, TRANSPARENT_BLACK);
-        g2d.setPaint(gradienteSetaEsquerda);
-        g2d.fillRect(0, 0, larguraBackgroundBotoes * 2, getHeight());
-
-        GradientPaint gradienteSetaDireita = new GradientPaint(getWidth() - larguraBackgroundBotoes, 0,
-                TRANSPARENT_BLACK, getWidth(), 0, BACKGROUND_COLOR);
-        g2d.setPaint(gradienteSetaDireita);
-        g2d.fillRect(getWidth() - larguraBackgroundBotoes * 2, 0, larguraBackgroundBotoes * 2, getHeight());
     }
 
     private int getLarguraBackgroundSetas() {

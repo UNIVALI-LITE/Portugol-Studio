@@ -111,9 +111,6 @@ public class GeradorChamadaMetodo
     {
         public final TipoDado tipoDado;
         public final ModoAcesso modoAcesso;
-        public final String nome;
-        public final int idInspecao;
-        public final Quantificador quantificador;
 
         public ParametroEsperado(TipoDado tipoDado, ModoAcesso modoAcesso, String nome, Quantificador quantificador)
         {
@@ -124,9 +121,9 @@ public class GeradorChamadaMetodo
         {
             this.tipoDado = tipoDado;
             this.modoAcesso = modoAcesso;
-            this.nome = nome;
-            this.idInspecao = idInspecao;
-            this.quantificador = quantificador;
+            // this.nome = nome;
+            // this.idInspecao = idInspecao;
+            // this.quantificador = quantificador;
         }
     }
 

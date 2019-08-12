@@ -4,7 +4,6 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PSAnalytics;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -223,17 +222,17 @@ public class TelaPrincipal extends javax.swing.JPanel
         //baixarNovasAtualizacoes();
     }
 
-    private void exibirErrosPluginsBibliotecas()
-    {
-        boolean errosPlugins = GerenciadorPlugins.getInstance().getResultadoCarregamento().contemErros();
-        boolean errosBibliotecas = false;
+    // private void exibirErrosPluginsBibliotecas()
+    // {
+    //     boolean errosPlugins = GerenciadorPlugins.getInstance().getResultadoCarregamento().contemErros();
+    //     boolean errosBibliotecas = false;
 
-        if (errosPlugins || errosBibliotecas)
-        {
-            TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = PortugolStudio.getInstancia().getTelaErrosPluginsBibliotecas();
-            telaErrosPluginsBibliotecas.setVisible(true);
-        }
-    }
+    //     if (errosPlugins || errosBibliotecas)
+    //     {
+    //         TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = PortugolStudio.getInstancia().getTelaErrosPluginsBibliotecas();
+    //         telaErrosPluginsBibliotecas.setVisible(true);
+    //     }
+    // }
     
     private JSONObject procurarAtualizacoes()
     {

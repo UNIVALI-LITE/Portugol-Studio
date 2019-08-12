@@ -5,6 +5,7 @@ dist/
 bin/
 **/out/
 **/src/test/tmp
+.vscode
 .project
 .classpath
 .settings

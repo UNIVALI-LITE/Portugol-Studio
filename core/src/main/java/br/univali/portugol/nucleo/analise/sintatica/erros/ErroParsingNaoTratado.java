@@ -3,9 +3,7 @@ package br.univali.portugol.nucleo.analise.sintatica.erros;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorUtils;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Token;
 
 /**
  * Erro gerado pelo analisador sintatico ao encontrar um erro de parsing que ainda não foi tratado.

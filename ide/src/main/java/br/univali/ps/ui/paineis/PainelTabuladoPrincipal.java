@@ -25,6 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -39,7 +40,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     private Action acaoFecharTodasAbas;
     private Action acaoExibirAjuda;
     private Action acaoExibirTelaSobre;
-    private Action acaoExibirDocumentacaoBiblioteca;
 
     private final AbaAjuda abaAjuda;// = new AbaAjuda();    
 
@@ -286,11 +286,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
 
         abaAjuda.selecionar();
     }
-
-    private void exibirAbaDocumentacao() {
-        exibirAbaAjuda();
-    }
-
+    
     public static void main(final String args[]) {
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -298,20 +294,19 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
             public void run() {
 
                 WeblafUtils.instalaWeblaf();
-
-                JFrame frame = new JFrame();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
-                frame.setLayout(new BorderLayout());
-                
                 PainelTabuladoPrincipal painelTabuladoPrincipal = new PainelTabuladoPrincipal();
-                painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
-                painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
-                painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
-                painelTabuladoPrincipal.setAbaAtual(1);
-                frame.add(painelTabuladoPrincipal, BorderLayout.CENTER);
+                painelTabuladoPrincipal.adicionaAba(AbaCodigoFonte.novaAba());
+                painelTabuladoPrincipal.adicionaAba(AbaCodigoFonte.novaAba());
+                painelTabuladoPrincipal.adicionaAba(AbaCodigoFonte.novaAba());
+                painelTabuladoPrincipal.setAbaAtual(0);
+                JPanel panel = new JPanel();
+                panel.add(painelTabuladoPrincipal);
+                JFrame frame = new JFrame();
+                frame.setLayout(new BorderLayout());
+                frame.add(panel, BorderLayout.CENTER);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
                 frame.setVisible(true);
-
             }
         });
     }

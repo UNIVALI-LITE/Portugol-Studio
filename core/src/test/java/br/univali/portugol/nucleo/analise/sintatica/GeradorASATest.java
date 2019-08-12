@@ -979,15 +979,6 @@ public class GeradorASATest {
         Assert.assertEquals("O apelido da biblioteca incluída deveria ser " + apelidoEsperado, apelidoEsperado, biblioteca.getAlias());
     }
     
-    private void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, NoReferenciaVetor vetor, int indiceVetor) {
-        
-        assertNoDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
-        
-        Assert.assertTrue("A variável " + nomeEsperado + " está inicializada com uma referência para vetor", declaracaoVariavel.getInicializacao() instanceof NoReferenciaVetor);
-        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome(), vetor.getNome(), ((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getNome());
-        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome() + " no índice [" + indiceVetor +"]'", new Integer(indiceVetor), ((NoInteiro)((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getIndice()).getValor());        
-    }
-    
     private <T> void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, Class<? extends NoExpressao> classeNoOperacao) {
         assertNoDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
         Assert.assertEquals("Problema na inicialização", classeNoOperacao.getName(), declaracaoVariavel.getInicializacao().getClass().getName());

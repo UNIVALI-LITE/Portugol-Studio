@@ -65,7 +65,6 @@ import br.univali.ps.ui.rstautil.tree.filters.ASTFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 class AstOutlineTreeFactory implements VisitanteASA

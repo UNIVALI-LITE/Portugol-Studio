@@ -54,10 +54,8 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
@@ -104,7 +102,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private int ultimaPosicaoCursor;
     private int ultimaLinhaHighlight = 0;
     private int ultimaColunaHighlight = 0;
-    private AbaCodigoFonte abaCodigoFonte;
 
     private final List<EditorListener> listeners = new ArrayList<>();
     
@@ -123,8 +120,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private Action acaoComentar;
     private Action acaoDescomentar;
-    private Action acaoAlternarModoEditor;
-    private Action acaoCentralizarCodigoFonte;
 
     private Action acaoRenomearSimboloNoCursor;
     
@@ -138,8 +133,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private boolean executandoPrograma = false;
     
     private static final int DESLOCAMENTO_VERTICAL_DOS_COMPONENTES = 32; // quantos pixels os componentes serão empurrados para baixo para dar espaço para a engrenagem de configuração do editor
-    private static final int MARGEM_LATERAL = 10; // margems aplicadas na view port do editor
-
+    
     public Editor()
     {
         this(false);
@@ -842,7 +836,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
     {
-        this.abaCodigoFonte = abaCodigoFonte;
+        //this.abaCodigoFonte = abaCodigoFonte;
     }
 
     /**
@@ -1220,31 +1214,31 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return (PSTextArea) textArea;
     }
 
-    private void configurarAcaoExterna(final JButton botao, final Action acaoExterna)
-    {
-        final String nome = (String) acaoExterna.getValue(Action.NAME);
-        Icon icone = (Icon) acaoExterna.getValue(Action.SMALL_ICON);
+    // private void configurarAcaoExterna(final JButton botao, final Action acaoExterna)
+    // {
+    //     final String nome = (String) acaoExterna.getValue(Action.NAME);
+    //     Icon icone = (Icon) acaoExterna.getValue(Action.SMALL_ICON);
 
-        botao.setAction(new AbstractAction(nome, icone)
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                acaoExterna.actionPerformed(e);
-            }
-        });
+    //     botao.setAction(new AbstractAction(nome, icone)
+    //     {
+    //         @Override
+    //         public void actionPerformed(ActionEvent e)
+    //         {
+    //             acaoExterna.actionPerformed(e);
+    //         }
+    //     });
 
-        botao.getAction().setEnabled(acaoExterna.isEnabled());
+    //     botao.getAction().setEnabled(acaoExterna.isEnabled());
 
-        acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt)
-                -> 
-                {
-                    if (evt.getPropertyName().equals("enabled"))
-                    {
-                        botao.getAction().setEnabled(acaoExterna.isEnabled());
-                    }
-        });
-    }
+    //     acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt)
+    //             -> 
+    //             {
+    //                 if (evt.getPropertyName().equals("enabled"))
+    //                 {
+    //                     botao.getAction().setEnabled(acaoExterna.isEnabled());
+    //                 }
+    //     });
+    // }
 
     @Override
     public void caretUpdate(CaretEvent e)

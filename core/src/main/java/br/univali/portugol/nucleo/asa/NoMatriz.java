@@ -28,7 +28,6 @@ import java.util.List;
 public final class NoMatriz extends NoExpressao
 {
     private List<List<Object>> valores;
-    private TrechoCodigoFonte trechoCodigoFonte;
 
     /**
      *

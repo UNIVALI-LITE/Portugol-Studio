@@ -70,18 +70,18 @@ public final class ConclusaoConstanteBiblioteca extends VariableCompletion {
         }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
     }
-    private static Icon getMatrixIcon(TipoDado tipoDado) {
-        String iconName = "unknown.png";
-        if (tipoDado != null) {
-            iconName ="matriz_" +tipoDado.getNome() + ".png";
-        }
-        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
-    }
-    private static Icon getVectorIcon(TipoDado tipoDado) {
-        String iconName = "unknown.png";
-        if (tipoDado != null) {
-            iconName ="vetor_" +tipoDado.getNome() + ".png";
-        }
-        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
-    }
+    // private static Icon getMatrixIcon(TipoDado tipoDado) {
+    //     String iconName = "unknown.png";
+    //     if (tipoDado != null) {
+    //         iconName ="matriz_" +tipoDado.getNome() + ".png";
+    //     }
+    //     return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+    // }
+    // private static Icon getVectorIcon(TipoDado tipoDado) {
+    //     String iconName = "unknown.png";
+    //     if (tipoDado != null) {
+    //         iconName ="vetor_" +tipoDado.getNome() + ".png";
+    //     }
+    //     return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+    // }
 }

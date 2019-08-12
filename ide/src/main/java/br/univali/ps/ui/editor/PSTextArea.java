@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.swing.GrayFilter;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -32,8 +31,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
  * @author elieser
  */
 public class PSTextArea extends RSyntaxTextArea {
-
-    private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
 
     private static Icon iconePontoDeParadaAtivado = null;
     private static Icon iconePontoDeParadaDesativado = null;
@@ -127,10 +124,6 @@ public class PSTextArea extends RSyntaxTextArea {
             this.gutterInfo = gutterInfo;
             this.ativado = estaAtivado;
             this.offsetOriginal = gutterInfo.getMarkedOffset();
-        }
-
-        boolean markerOffsetMudou() {
-            return gutterInfo.getMarkedOffset() != offsetOriginal;
         }
         
         boolean linhaMudou()

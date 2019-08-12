@@ -15,7 +15,6 @@ import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
@@ -46,9 +45,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     private boolean executandoPrograma = false;
 
     private WebPopOver popupLeia = null;
-    private final ActionListener listener;
     private Timer timerPopupLeia;
-    private boolean removendoPopup = true;
 
     private AbstractAction acaoLimpar;
     private AbstractAction acaoCopiar;
@@ -65,23 +62,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         WeblafUtils.configuraWebLaf(painelRolagem);
         
         console.setDocument(new DocumentoConsole());
-
-        listener = (ActionEvent e) ->
-        {
-            if (removendoPopup)
-            {
-                if (popupLeia != null)
-                {
-                    popupLeia.dispose();
-                    popupLeia = null;
-                }
-            }
-            else
-            {
-                console.requestFocusInWindow();
-                console.setCaretPosition(console.getText().length());
-            }
-        };
 
         console.addComponentListener(new ComponentAdapter()
         {
@@ -463,7 +443,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     {
         timerPopupLeia = new Timer(4000, (ActionEvent e) ->
         {
-            removendoPopup = false;
             exibirPopupLeia();
         });
 
@@ -524,8 +503,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     void removerPopupLeia()
     {
         cancelarPopupLeia();
-
-        removendoPopup = true;
 
         if (popupLeia != null)
         {

@@ -134,7 +134,7 @@ public final class AnalisadorSintatico
             @Override
             public void reportInputMismatch(Parser recognizer, InputMismatchException e) throws RecognitionException {
                 String msg = "mismatched input " + getTokenErrorDisplay(e.getOffendingToken());
-                msg += " expecting one of " + e.getExpectedTokens().toString(recognizer.getTokenNames());
+                msg += " expecting one of " + e.getExpectedTokens().toString(recognizer.getVocabulary());
                 RecognitionException ex = new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
                      ex.initCause(e);
                 throw ex;
@@ -145,7 +145,7 @@ public final class AnalisadorSintatico
                 beginErrorCondition(recognizer);
                 Token t = recognizer.getCurrentToken();
                 IntervalSet expecting = getExpectedTokens(recognizer);
-                String msg = "missing " + expecting.toString(recognizer.getTokenNames()) + " at " + getTokenErrorDisplay(t);
+                String msg = "missing " + expecting.toString(recognizer.getVocabulary()) + " at " + getTokenErrorDisplay(t);
                 throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
             }
         });
@@ -159,7 +159,7 @@ public final class AnalisadorSintatico
             return asa;
         }
         catch (RecognitionException excecao) {
-            tratarErroParsing(excecao, excecao.getRecognizer().getTokenNames(), codigoFonte);
+            tratarErroParsing(excecao, codigoFonte);
         }
         catch(ParseCancellationException e) {
             System.out.println(e);
@@ -207,8 +207,8 @@ public final class AnalisadorSintatico
         }
     }
 
-    private void tratarErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao) {
-        notificarErroSintatico(traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte));
+    private void tratarErroParsing(RecognitionException erro, String mensagemPadrao) {
+        notificarErroSintatico(traduzirErroParsing(erro, mensagemPadrao, codigoFonte));
     }
 
     /**
@@ -221,13 +221,13 @@ public final class AnalisadorSintatico
      * @return o erro sintático traduzido.
      * @since 1.0
      */
-    public ErroSintatico traduzirErroParsing(RecognitionException erro, String[] tokens, String mensagemPadrao, String codigoFonte) {
+    public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, String codigoFonte) {
         if (erro != null) {
             TradutorMismatchedTokenException tradutor = new TradutorMismatchedTokenException();
-            return tradutor.traduzirErroParsing(erro, tokens, mensagemPadrao, codigoFonte);
+            return tradutor.traduzirErroParsing(erro, mensagemPadrao, codigoFonte);
         } else {
             
-            String contexto = erro.getCtx().getText(); // TODO
+            String contexto = "";//erro.getCtx().getText(); // TODO
             return new ErroParsingNaoTratado(erro, mensagemPadrao, contexto);
         }
     }

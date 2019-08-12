@@ -252,7 +252,6 @@ public final class ImagemGif extends Imagem
     
     private BufferedImage lerQuadro(int frameIndex)
     {        
-        boolean hasBackround = false;
         BufferedImage fakeimage = null;
         BufferedImage image = new BufferedImage(metadados.largura, metadados.altura, BufferedImage.TYPE_4BYTE_ABGR);
         
@@ -386,7 +385,6 @@ public final class ImagemGif extends Imagem
                 Graphics2D g2d = (Graphics2D) metadados.master.getGraphics();
                 g2d.setColor(metadados.corFundo);
                 g2d.fillRect(0, 0, metadados.master.getWidth(), metadados.master.getHeight());
-                hasBackround = image.getWidth() == metadados.largura && image.getHeight() == metadados.altura;
                 Graphics2D gr2d = (Graphics2D) image.getGraphics();
                 gr2d.drawImage(fakeimage, 0, 0, null);
                 g2d.drawImage(image, 0, 0, null);

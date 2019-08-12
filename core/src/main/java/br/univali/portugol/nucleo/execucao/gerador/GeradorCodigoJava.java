@@ -22,8 +22,6 @@ import java.util.logging.Logger;
  */
 public class GeradorCodigoJava
 {
-    private static final String PACOTE_DAS_LIBS = "br.univali.portugol.nucleo.bibliotecas.";
-
     private final GeradorChamadaMetodo geradorChamadaMetodo = new GeradorChamadaMetodo();
     private final GeradorSwitchCase geradorSwitchCase = new GeradorSwitchCase();
     private final GeradorDeclaracaoMetodo geradorDeclaracaoMetodo = new GeradorDeclaracaoMetodo();
@@ -308,12 +306,6 @@ public class GeradorCodigoJava
 
             saida.println();
             
-            return this;
-        }
-
-        public VisitorGeracaoCodigo pulaLinha()
-        {
-            saida.println();
             return this;
         }
 
@@ -919,20 +911,6 @@ public class GeradorCodigoJava
             return this;
         }
         
-        private void inicializaBibliotecas()
-        {
-            String identacao = Utils.geraIdentacao(nivelEscopo);
-            for (NoInclusaoBiblioteca no : asa.getListaInclusoesBibliotecas())
-            {
-                saida.append(identacao)
-                        .append("incluirBiblioteca(this.")
-                        .append(no.getNome())
-                        .append(");")
-                        .println();
-            }
-            saida.println();
-        }
-
         private void inicializaVariaveisGlobaisQueSaoPassadasPorReferencia() throws ExcecaoVisitaASA
         {
             List<NoDeclaracao> declaracoes = asa.getListaDeclaracoesGlobais();

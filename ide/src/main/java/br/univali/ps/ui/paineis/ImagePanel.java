@@ -97,9 +97,9 @@ public class ImagePanel extends JComponent {
         System.out.println(new File(".").getAbsolutePath());
         
         String imagens[] = {
-            "../Portugol-Studio-Recursos/exemplos/jogos/corrida.png",
-            "../Portugol-Studio-Recursos/exemplos/jogos/pong_game.png",
-            "../Portugol-Studio-Recursos/exemplos/jogos/serpente.png"
+            "assets/exemplos/jogos/corrida.png",
+            "assets/exemplos/jogos/pong_game.png",
+            "assets/exemplos/jogos/serpente.png"
         };
         
         JButton botao = new JButton("Próxima imagem");

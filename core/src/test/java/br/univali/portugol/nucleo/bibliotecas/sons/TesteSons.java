@@ -1,8 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.sons;
 
 import br.univali.portugol.nucleo.bibliotecas.Sons;
-import java.lang.reflect.Method;
-import org.junit.Test;
 
 /**
  * @author elieser Esta classe não é um teste unitário padrão. É um teste

@@ -37,9 +37,12 @@ public final class EntradaSaidaPadrao implements Entrada, Saida
                 break;
             case REAL:
                 armazenador.setValor(in.nextDouble());
+            default:
+                break;
         }
 
         armazenador.setValor(null);
+        in.close();
     }
 
     

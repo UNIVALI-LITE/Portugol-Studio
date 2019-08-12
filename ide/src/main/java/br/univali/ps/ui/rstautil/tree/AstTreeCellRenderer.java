@@ -60,8 +60,6 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -268,14 +266,6 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
-    }
-
-    private Dimension getSise(String s) {
-
-        FontMetrics fontMetrics = component.getFontMetrics(component.getFont());
-        int width = fontMetrics.stringWidth(s);
-        int height = fontMetrics.getHeight();
-        return new Dimension(width, height);
     }
 
     @Override

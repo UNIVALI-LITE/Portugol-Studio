@@ -2,7 +2,6 @@ package br.univali.portugol.nucleo.asa;
 
 import br.univali.portugol.nucleo.programa.Estado;
 
-import java.util.logging.Logger;
 
 /*
  *  NOTA: o nome NoBloco não está legal. Parecia uma boa idéia no início, mas acho que
@@ -35,7 +34,6 @@ import java.util.logging.Logger;
  */
 public abstract class NoBloco extends No
 {
-    private static final Logger LOGGER = Logger.getLogger(NoBloco.class.getName());
     
     private static final TrechoCodigoFonte TRECHO_NULO = new TrechoCodigoFonte(-1, -1, 0);
     private TrechoCodigoFonte trechoCodigoFonte = TRECHO_NULO;

@@ -153,6 +153,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
             GerenciadorBibliotecas gerenciadorBibliotecas = GerenciadorBibliotecas.getInstance();
             try
             {
+                if(gerenciadorBibliotecas.getBibliotecasDisponiveis()!=null)
                 for (String biblioteca : gerenciadorBibliotecas.getBibliotecasDisponiveis())
                 {
                 
@@ -260,6 +261,8 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
                     return sb.append("[]").toString();
                 case MATRIZ:
                     return sb.append("[][]").toString();
+                default:
+                    break;
             }
 
             return sb.toString();

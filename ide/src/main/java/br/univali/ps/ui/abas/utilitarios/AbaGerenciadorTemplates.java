@@ -11,26 +11,21 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButton;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 
 /**
  *
  * @author 5663296
  */
 public class AbaGerenciadorTemplates extends Aba implements Themeable{
-    private AbaCodigoFonte abaCodigoFonte;
-
     /**
      * Creates new form AbaGerenciadorTemplates
      */
     public AbaGerenciadorTemplates(AbaCodigoFonte abaCodigoFonte) {
         super("Modelos", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "template.png"), false);
-        this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
         configurarCores();
         String[] templates = {"console","grafico", "jogo","arquivos", "internet"};

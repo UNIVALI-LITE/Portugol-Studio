@@ -5,7 +5,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -13,7 +12,6 @@ import javax.swing.border.EmptyBorder;
  */
 public class SearchTextField extends JTextField
 {
-    private int searchDelay = 500;
 
     private final Insets originalInsets;
     private String placeholder = "Localizar (Ctrl + L)";

@@ -1,6 +1,5 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.ui.coletor.ColetorInteracao;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.window.ComponentResizer;
 import java.awt.Dimension;
@@ -54,7 +53,6 @@ public class Lancador {
     private final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
 
     
-    private static ServerSocket socket;
     private static final Logger LOGGER = Logger.getLogger(Lancador.class.getName());
 
     public Lancador() 

@@ -87,7 +87,6 @@ public class PSScrollBarUI extends BasicScrollBarUI {
     @Override
     protected void paintDecreaseHighlight(Graphics g)
     {
-        Insets insets = scrollbar.getInsets();
         Rectangle thumbR = getThumbBounds();
         g.setColor(ColorController.COR_PRINCIPAL);    
         g.fillRect(thumbR.x, thumbR.y, thumbR.width, thumbR.height);
@@ -126,7 +125,6 @@ public class PSScrollBarUI extends BasicScrollBarUI {
         if(thumbBounds.isEmpty() || !scrollbar.isEnabled()){
             return;
         }
-        Insets insets = scrollbar.getInsets();
         Rectangle thumbR = getThumbBounds();
         if(mouseOver || mousePressed){
             g.setColor(ColorController.FUNDO_ESCURO.darker());

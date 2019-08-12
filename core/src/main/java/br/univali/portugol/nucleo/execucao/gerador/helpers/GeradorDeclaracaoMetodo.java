@@ -212,8 +212,9 @@ public class GeradorDeclaracaoMetodo
                 return "[]";
             case MATRIZ:
                 return "[][]";
+            default:
+                return ""; 
         }
-        return "";
     }
 
     private static void geraParametros(NoDeclaracaoFuncao noFuncao, PrintWriter saida)
