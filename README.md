@@ -1,3 +1,5 @@
+# Essa é uma versão Fork veja a original
+
 # Portugol Studio
 [![Build Status](https://travis-ci.org/UNIVALI-LITE/Portugol-Studio.svg?branch=master)](https://travis-ci.org/UNIVALI-LITE/Portugol-Studio)
 [![Discord](https://img.shields.io/badge/chat-on_discord-4bc51d.svg)](https://discord.gg/fRW7Vq2)
