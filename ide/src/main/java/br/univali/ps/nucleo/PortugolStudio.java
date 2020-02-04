@@ -1020,19 +1020,6 @@ public final class PortugolStudio
         return (PSFindReplace) telaPesquisarSubstituir.getPanel();
     }
 
-    public JDialog getTelaRenomearSimbolo()
-    {
-        if (telaRenomearSimbolo == null)
-        {
-            telaRenomearSimbolo = new TelaCustomBorder("renomear");
-            telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
-        }
-        
-        telaRenomearSimbolo.setLocationRelativeTo(Lancador.getInstance().getJFrame());
-        
-        return telaRenomearSimbolo;
-    }
-    
     public TelaRenomearSimbolo getTelaRenomearSimboloPanel()
     {
         if (telaRenomearSimbolo == null)
