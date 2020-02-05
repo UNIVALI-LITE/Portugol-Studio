@@ -69,6 +69,7 @@ public final class FileHandle
         String charset = charsetPadrao;
         charset = detector.detect(inputStream, fileContent);
         String fileText = new String(fileContent, charset);
+        inputStream.close();
         return fileText;
     }
 
@@ -88,7 +89,8 @@ public final class FileHandle
         }
         catch (IOException ex)
         {
-            LOGGER.log(Level.SEVERE, null, ex);
+            throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+            
         }
 
         return reading.toString().replaceAll("\r\n", "\n");
