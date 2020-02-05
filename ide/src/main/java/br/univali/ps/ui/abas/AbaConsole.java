@@ -120,10 +120,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             console.setForeground(fg);
         }
     }
-    
-    
-    
-    
+
+    public JTextArea getConsole() {
+        return console;
+    }
     
     private void exibirPopupLeia()
     {

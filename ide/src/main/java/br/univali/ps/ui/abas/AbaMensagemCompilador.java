@@ -17,6 +17,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
@@ -154,7 +155,9 @@ public final class AbaMensagemCompilador extends Aba
         });
     }
 
-
+    public JTable getTabelaMensagens() {
+        return tabelaMensagens;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
