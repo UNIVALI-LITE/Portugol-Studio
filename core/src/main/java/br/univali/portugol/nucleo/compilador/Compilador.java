@@ -163,8 +163,8 @@ public final class Compilador
             gerador.gera(asa, writerArquivoJava, nomeClasse, opcoes);
             writerArquivoJava.flush();
             
-            byte[] encoded = Files.readAllBytes(Paths.get(arquivoJava.getAbsolutePath()));
-            System.out.println(new String(encoded, "UTF-8"));
+//            byte[] encoded = Files.readAllBytes(Paths.get(arquivoJava.getAbsolutePath()));
+//            System.out.println(new String(encoded, "UTF-8"));
             
             if (Thread.currentThread().isInterrupted())
             {
