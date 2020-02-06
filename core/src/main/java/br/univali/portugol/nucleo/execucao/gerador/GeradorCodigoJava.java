@@ -635,9 +635,45 @@ public class GeradorCodigoJava
         @Override
         public Void visitar(NoEnquanto no) throws ExcecaoVisitaASA
         {
-            geradorLoops.gera(no, saida, this, nivelEscopo, opcoes, seed);
-            
-            return null;
+            boolean loopInfinito = geradorLoops.loopInfinito(no);
+
+            /**
+             * Quando detecta um loop infinito (uma constante sendo usada como
+             * condição) declara uma flag fora do loop para evitar "Unreacheable
+             * statement" no java.
+             */
+            String flag = "flag_" + String.valueOf(seed+nivelEscopo-1);
+            if (loopInfinito) {
+                saida.format("boolean %s =", flag);
+                no.getCondicao().aceitar(this);
+                saida.append(";");
+            }
+
+            saida.append("while(");
+
+            if (!loopInfinito) {
+                no.getCondicao().aceitar(this);
+            } else {
+                saida.append(flag); // usa flag como condição do loop para 'enganar' o java e impedir que ele detecte o 'Unreacheable Stament' error
+            }
+
+            saida.append(")").println();
+
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+
+            saida.append(identacao).append("{").println();
+
+            if (opcoes.gerandoCodigoParaInterrupcaoDeThread) {
+                Utils.geraVerificacaoThreadInterrompida(saida, nivelEscopo);
+            }
+            visitarBlocos(no.getBlocos());
+            saida.println();
+
+            saida.append(identacao)
+                    .append("}")
+                    .println();
+
+                return null;
         }
 
         @Override
@@ -786,7 +822,48 @@ public class GeradorCodigoJava
         @Override
         public Void visitar(NoFacaEnquanto no) throws ExcecaoVisitaASA
         {
-            geradorLoops.gera(no, saida, this, nivelEscopo, opcoes, seed);
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+
+            boolean loopInfinito = geradorLoops.loopInfinito(no);
+
+            /**
+             * Quando detecta um loop infinito (uma constante sendo usada como
+             * condição) declara uma flag fora do loop para evitar "Unreacheable
+             * statement" no java.
+             */
+
+            String flag = "flag_" + String.valueOf(seed+nivelEscopo-1);
+            if (loopInfinito) {
+                saida.format("boolean %s =", flag);
+                no.getCondicao().aceitar(this);
+                saida.append(";");
+            }
+
+            saida.append("do").println();
+            saida.append(identacao).append("{").println();
+
+            if (opcoes.gerandoCodigoParaInterrupcaoDeThread) {
+                Utils.geraVerificacaoThreadInterrompida(saida, nivelEscopo);
+            }
+
+            List<NoBloco> blocos = no.getBlocos();
+            if (blocos != null) {
+                Utils.visitarBlocos(blocos, saida, this, nivelEscopo, opcoes, seed);
+                saida.println();
+            }
+
+            saida.append(identacao).append("}").println();
+
+            saida.append(identacao).append("while(");
+
+            if (!loopInfinito) {
+                no.getCondicao().aceitar(this);
+            }
+            else { // usa flag como condição para o loop
+                saida.append(flag);
+            }
+
+            saida.append(");").println();
             
             return null;
         }
