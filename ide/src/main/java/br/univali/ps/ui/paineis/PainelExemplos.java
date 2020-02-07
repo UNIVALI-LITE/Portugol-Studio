@@ -390,7 +390,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
         criarBotaoAbrirRecentes();
         for (File recente : files) {
-            if(!recente.exists() || !recente.canRead())
+            if(!recente.exists() || !recente.canRead() || !recente.isFile())
             {
                 arquivoRemovido = true;
                 continue;
