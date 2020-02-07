@@ -29,6 +29,11 @@ public final class FileHandle
                     String pasta = file.getParentFile().getAbsolutePath();
                     throw new ExcecaoAplicacao("Você não possuí permissão de escrita para a pasta '" + pasta + "'", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
                 }
+                else if (e.getMessage().contains("enough space on the disk") || e.getMessage().contains("insuficiente no disco")) {
+                    String pasta = file.getName();
+                    if(!pasta.contains("recuperavel"))
+                    throw new ExcecaoAplicacao("Não há espaço no disco", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+                }
                 else {
                     throw e;
                 }
