@@ -16,6 +16,15 @@ public final class FileHandle
     }
     public static void save(String text, File file, String charset) throws Exception
     {
+        if(file == null)
+        {
+            throw new ExcecaoAplicacao("Houve um erro ao criar o arquivo, tente 'salvar como' novamente", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+        }
+        else if(file.getParentFile() == null)
+        {
+            throw new ExcecaoAplicacao("A pasta de salvamento não existe ou foi removida", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+        }
+        
         if(file.getParentFile().exists())
         {
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset)))
