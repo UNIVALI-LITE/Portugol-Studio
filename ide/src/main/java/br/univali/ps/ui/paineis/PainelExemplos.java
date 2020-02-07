@@ -436,7 +436,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 FabricaDicasInterface.criarTooltip(button, recente.getPath());
                 areaRecentes.add(button);
             } catch (Exception ex) {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                //PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         }        
         if(arquivoRemovido)
