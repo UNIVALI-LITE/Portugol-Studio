@@ -615,14 +615,32 @@ public class GeradorCodigoJava
                 escopo = Utils.getNomeBiblioteca(escopo, asa);
                 saida.append(escopo).append(".");
             }
-
+            
             NoDeclaracaoBase declaracao = no.getOrigemDaReferencia();
             boolean ehParametroPorReferencia = declaracao instanceof NoDeclaracaoParametro && (((NoDeclaracaoParametro) declaracao).getModoAcesso() == ModoAcesso.POR_REFERENCIA);
             if (ehParametroPorReferencia || no.ehPassadoPorReferencia())
             {
                 String stringIndice = ehParametroPorReferencia ? no.getNome() : Utils.geraStringIndice(no);
                 String nomeTipo = Utils.getNomeTipoJava(declaracao.getTipoDado()).toUpperCase();
-                saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                if(no.getOrigemDaReferencia() instanceof NoDeclaracaoParametro)
+                {
+                    if(((NoDeclaracaoParametro)no.getOrigemDaReferencia()).getQuantificador()==Quantificador.VETOR 
+                    || ((NoDeclaracaoParametro)no.getOrigemDaReferencia()).getQuantificador()==Quantificador.MATRIZ)
+                    {
+                        saida.format("%s", stringIndice);
+                    }
+                    else
+                    {
+                        saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                    }
+                    
+                }
+                else
+                {
+                    saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                }
+                
+                
             }
             else
             {

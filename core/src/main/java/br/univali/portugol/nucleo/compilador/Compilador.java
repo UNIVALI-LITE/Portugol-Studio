@@ -36,6 +36,8 @@ import org.apache.commons.exec.PumpStreamHandler;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_ESCREVA;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LEIA;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LIMPA;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
