@@ -1630,7 +1630,12 @@ public final class AnalisadorSemantico implements VisitanteASA
                     || noOperacao.getOperandoEsquerdo() instanceof NoReferenciaVetor)
             {
                 simbolo = memoria.getSimbolo(((NoReferencia) noOperacao.getOperandoEsquerdo()).getNome());
-                if (simbolo.constante())
+                
+                if(simbolo==null)
+                {
+                    notificarErroSemantico(new ErroSimboloNaoDeclarado((NoReferencia) noOperacao.getOperandoEsquerdo()));
+                }
+                else if (simbolo.constante())
                 {
                     final Simbolo pSimbolo = simbolo;
                     notificarErroSemantico(new ErroAtribuirEmConstante(noOperacao.getTrechoCodigoFonte(), pSimbolo));
