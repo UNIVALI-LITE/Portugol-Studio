@@ -18,7 +18,7 @@ import java.util.Set;
 public class PreCompilador extends VisitanteNulo
 {
 
-    private final Map<TipoDado, List<NoDeclaracaoVariavel>> declaracoes = new HashMap<>();
+    private final Map<TipoDado, List<NoDeclaracao>> declaracoes = new HashMap<>();
     private final Set<NoDeclaracaoFuncao> funcoesInvocadas = new HashSet<>(); // guarda apenas as funções que foram invocadas, as funções que não são invocadas não serão geradas no código Java
     
     private static long seedNomes = System.currentTimeMillis();
@@ -89,10 +89,34 @@ public class PreCompilador extends VisitanteNulo
                         TipoDado tipoOrigem = origemReferencia.getTipoDado();
                         if (!declaracoes.containsKey(tipoOrigem)) // verifica se é necessário criar uma lista para guardar as variáveis do tipo do nó de origem
                         {
-                            declaracoes.put(tipoOrigem, new ArrayList<NoDeclaracaoVariavel>());
+                            declaracoes.put(tipoOrigem, new ArrayList<NoDeclaracao>());
                         }
                     
-                        List<NoDeclaracaoVariavel> variaveis = declaracoes.get(tipoOrigem);
+                        List<NoDeclaracao> variaveis = declaracoes.get(tipoOrigem);
+                        if (!variaveis.contains(origemReferencia))
+                        {
+                            int indice = variaveis.size();
+                            referencia.setIndiceReferencia(indice);
+                            origemReferencia.setIndiceReferencia(indice);
+                            variaveis.add(origemReferencia);
+                            for (NoReferencia ref : origemReferencia.getReferencias())
+                            {
+                                NoReferenciaVariavel origem = (NoReferenciaVariavel) ref;
+                                origem.setIndiceReferencia(indice);
+                            }
+                        }
+                    }
+                    else if (referencia.getOrigemDaReferencia() instanceof NoDeclaracaoParametro)
+                    {
+                        NoDeclaracaoParametro origemReferencia = (NoDeclaracaoParametro)referencia.getOrigemDaReferencia();
+                    
+                        TipoDado tipoOrigem = origemReferencia.getTipoDado();
+                        if (!declaracoes.containsKey(tipoOrigem)) // verifica se é necessário criar uma lista para guardar as variáveis do tipo do nó de origem
+                        {
+                            declaracoes.put(tipoOrigem, new ArrayList<NoDeclaracao>());
+                        }
+                    
+                        List<NoDeclaracao> variaveis = declaracoes.get(tipoOrigem);
                         if (!variaveis.contains(origemReferencia))
                         {
                             int indice = variaveis.size();
@@ -193,7 +217,7 @@ public class PreCompilador extends VisitanteNulo
         return null;
     }
 
-    public Map<TipoDado, List<NoDeclaracaoVariavel>> getVariaveisPassadasPorReferencia()
+    public Map<TipoDado, List<NoDeclaracao>> getVariaveisPassadasPorReferencia()
     {
         return declaracoes;
     }

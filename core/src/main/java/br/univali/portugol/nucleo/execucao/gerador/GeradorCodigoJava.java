@@ -1011,7 +1011,7 @@ public class GeradorCodigoJava
             return this;
         }
 
-        public VisitorGeracaoCodigo geraAtributosParaVariaveisPassadasPorReferencia(Map<TipoDado, List<NoDeclaracaoVariavel>> variaveis)
+        public VisitorGeracaoCodigo geraAtributosParaVariaveisPassadasPorReferencia(Map<TipoDado, List<NoDeclaracao>> variaveis)
         {
             if (variaveis.isEmpty())
             {
@@ -1046,15 +1046,28 @@ public class GeradorCodigoJava
             {
                 if (variaveis.containsKey(tipo))
                 {
-                    for (NoDeclaracaoVariavel variavel : variaveis.get(tipo))
+                    for (NoDeclaracao variavel : variaveis.get(tipo))
                     {
-                        saida.append(identacao)
+                        if(variavel instanceof NoDeclaracaoVariavel)
+                        {
+                            saida.append(identacao)
                                 .append("private final int ")
-                                .append(Utils.geraStringIndice(variavel))
+                                .append(Utils.geraStringIndice((NoDeclaracaoVariavel)variavel))
                                 .append(" = ")
-                                .append(String.valueOf(variavel.getIndiceReferencia()))
+                                .append(String.valueOf(((NoDeclaracaoVariavel)variavel).getIndiceReferencia()))
                                 .append(";")
                                 .println();
+                        }
+                        else if(variavel instanceof NoDeclaracaoParametro)
+                        {
+                            saida.append(identacao)
+                                .append("private final int ")
+                                .append(Utils.geraStringIndice((NoDeclaracaoParametro)variavel))
+                                .append(" = ")
+                                .append(String.valueOf(((NoDeclaracaoParametro)variavel).getIndiceReferencia()))
+                                .append(";")
+                                .println();
+                        }                        
                     }
                     
                     saida.println(); //separa as declarações para cada tipo

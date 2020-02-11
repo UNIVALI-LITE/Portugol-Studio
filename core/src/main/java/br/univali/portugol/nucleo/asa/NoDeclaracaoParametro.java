@@ -13,6 +13,8 @@ public final class NoDeclaracaoParametro extends NoDeclaracaoBase implements NoD
     private final ModoAcesso modoAcesso;
     private final Quantificador quantificador;
     
+    private int indiceReferencia = -1;
+    
     private int idParaInspecao = -1;
 
     /**
@@ -113,5 +115,20 @@ public final class NoDeclaracaoParametro extends NoDeclaracaoBase implements NoD
         int tamanhoTotal = caractereFinalNome - caractereInicialTipoDado;
 
         return new TrechoCodigoFonte(getTrechoCodigoFonteTipoDado().getLinha(), getTrechoCodigoFonteTipoDado().getColuna(), tamanhoTotal);
+    }
+    
+    public boolean ehPassadaPorReferencia()
+    {
+        return indiceReferencia >= 0;
+    }
+
+    public int getIndiceReferencia()
+    {
+        return indiceReferencia;
+    }
+
+    public void setIndiceReferencia(int indiceReferencia)
+    {
+        this.indiceReferencia = indiceReferencia;
     }
 }
