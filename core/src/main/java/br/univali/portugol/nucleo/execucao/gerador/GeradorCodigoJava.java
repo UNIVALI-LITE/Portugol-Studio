@@ -1058,6 +1058,8 @@ public class GeradorCodigoJava
                                 .append(";")
                                 .println();
                         }
+                        //TESTAR
+                        //else if(variavel instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro)variavel).getModoAcesso()==ModoAcesso.POR_VALOR)
                         else if(variavel instanceof NoDeclaracaoParametro)
                         {
                             saida.append(identacao)

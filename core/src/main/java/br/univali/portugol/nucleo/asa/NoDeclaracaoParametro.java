@@ -16,6 +16,8 @@ public final class NoDeclaracaoParametro extends NoDeclaracaoBase implements NoD
     private int indiceReferencia = -1;
     
     private int idParaInspecao = -1;
+    
+    private boolean origemLiteral = false;
 
     /**
      * @param nome o nome deste parãmetro.
@@ -131,4 +133,12 @@ public final class NoDeclaracaoParametro extends NoDeclaracaoBase implements NoD
     {
         this.indiceReferencia = indiceReferencia;
     }
+
+    public boolean isOrigemLiteral() {
+        return origemLiteral;
+    }
+
+    public void setOrigemLiteral(boolean origemLiteral) {
+        this.origemLiteral = origemLiteral;
+    }    
 }

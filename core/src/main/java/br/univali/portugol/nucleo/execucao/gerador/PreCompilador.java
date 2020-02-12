@@ -132,6 +132,13 @@ public class PreCompilador extends VisitanteNulo
                     }
                 }
             }
+            else if(parametroPassado instanceof NoExpressaoLiteral)
+            {
+                if (parametroEsperado != null && chamadaFuncao.getEscopoBiblioteca() == null)
+                {
+                    parametroEsperado.setOrigemLiteral(true);
+                }
+            }
         }
         return null;
     }
