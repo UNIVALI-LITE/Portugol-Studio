@@ -95,7 +95,9 @@ public class GeradorChamadaMetodo
             {
                 saida.append(Utils.geraStringIndice(referencia));
             }
-            else if(referencia.getOrigemDaReferencia() instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro)referencia.getOrigemDaReferencia()).getModoAcesso() == ModoAcesso.POR_VALOR)
+            else if(referencia.getOrigemDaReferencia() instanceof NoDeclaracaoParametro 
+                && ((NoDeclaracaoParametro)referencia.getOrigemDaReferencia()).getModoAcesso() == ModoAcesso.POR_VALOR
+                && ((NoDeclaracaoParametro)referencia.getOrigemDaReferencia()).getQuantificador() == Quantificador.VALOR)
             {
                 saida.append(Utils.geraStringIndice(referencia));
             }

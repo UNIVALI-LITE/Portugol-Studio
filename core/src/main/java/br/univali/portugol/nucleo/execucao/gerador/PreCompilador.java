@@ -106,7 +106,7 @@ public class PreCompilador extends VisitanteNulo
                             }
                         }
                     }
-                    else if (referencia.getOrigemDaReferencia() instanceof NoDeclaracaoParametro)
+                    else if (referencia.getOrigemDaReferencia() instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro)referencia.getOrigemDaReferencia()).getModoAcesso()==ModoAcesso.POR_VALOR)
                     {
                         NoDeclaracaoParametro origemReferencia = (NoDeclaracaoParametro)referencia.getOrigemDaReferencia();
                     
@@ -130,13 +130,6 @@ public class PreCompilador extends VisitanteNulo
                             }
                         }
                     }
-                }
-            }
-            else if(parametroPassado instanceof NoExpressaoLiteral)
-            {
-                if (parametroEsperado != null && chamadaFuncao.getEscopoBiblioteca() == null)
-                {
-                    parametroEsperado.setOrigemLiteral(true);
                 }
             }
         }
