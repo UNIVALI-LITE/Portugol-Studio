@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 
 /**
@@ -121,6 +123,12 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
             excecaoDialog.setLocationRelativeTo(Lancador.getInstance().getJFrame());
             telaExcecaoEncontrada.getAreaTextoStackTrace().setText(null);
             telaExcecaoEncontrada.getAreaTextoStackTrace().append(fluxoSaida.getFullStack());
+            Aba abaSelecionada = PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada();
+            if(abaSelecionada instanceof AbaCodigoFonte)
+            {
+                String codigoFonte = ((AbaCodigoFonte)abaSelecionada).getCodigoFonte();
+                telaExcecaoEncontrada.getAreaTextoStackTrace().append("\n\n\nCódigo do Erro:\n"+codigoFonte);
+            }
         }
     }
 
