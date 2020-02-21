@@ -125,7 +125,7 @@ public class PortugolHTMLHighlighter {
                             .append(token.getText())
                             .append("</span>");
             }
-        }
+        }        
         return htmlDoPortugol.toString();
     }
 }

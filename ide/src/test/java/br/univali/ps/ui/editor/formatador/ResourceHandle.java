@@ -1,4 +1,4 @@
-package br.univali.portugol.nucleo;
+package br.univali.ps.ui.editor.formatador;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,7 +48,7 @@ public final class ResourceHandle
 				reading.append(buffer, 0, read);
 			}
 		}
-		catch (IOException ex)
+		catch (Exception ex)
 		{
 			LOGGER.log(Level.SEVERE, null, ex);
 

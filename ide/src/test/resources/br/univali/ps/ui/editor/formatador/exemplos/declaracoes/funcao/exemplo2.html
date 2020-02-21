@@ -1,0 +1,54 @@
+<span class="porPalavraReservada">programa</span>
+<span class="porAgrupamentos">{</span>
+    <span class="porComentario">//Função com retorno do tipo vazio sem parâmetro
+</span>    <span class="porPalavraReservada">funcao</span> <span class="porTipoDeclaracao">vazio</span> <span class="porID">imprime_linha</span><span class="porAgrupamentos">(</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">{</span>
+        <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"\n-----------------------------\n"</span><span class="porAgrupamentos">)</span>    
+    <span class="porAgrupamentos">}</span>
+
+    <span class="porComentario">//Função com retorno do tipo vazio
+</span>    <span class="porPalavraReservada">funcao</span> <span class="porID">inicio</span><span class="porAgrupamentos">(</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">{</span>
+        <span class="porComentario">//Imprime o retorno da função media
+</span>        <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porID">media</span><span class="porAgrupamentos">(</span><span class="porNumeros">4</span><span class="porDesconhecido">,</span><span class="porNumeros">9</span><span class="porDesconhecido">,</span><span class="porNumeros">8</span><span class="porAgrupamentos">)</span><span class="porAgrupamentos">)</span>
+
+        <span class="porID">imprime_linha</span><span class="porAgrupamentos">(</span><span class="porAgrupamentos">)</span>
+
+        <span class="porTipoDeclaracao">inteiro</span> <span class="porID">variavel</span> <span class="porDesconhecido">=</span> <span class="porNumeros">123</span>
+
+        <span class="porID">zera_valor</span><span class="porAgrupamentos">(</span><span class="porID">variavel</span><span class="porAgrupamentos">)</span> 
+
+        <span class="porComentario">//Imprime 0
+</span>        <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porID">variavel</span><span class="porAgrupamentos">)</span> 
+        
+        <span class="porID">imprime_linha</span><span class="porAgrupamentos">(</span><span class="porAgrupamentos">)</span>
+
+        <span class="porTipoDeclaracao">inteiro</span> <span class="porID">num</span><span class="porDesconhecido">=</span><span class="porNumeros">3</span>
+
+        <span class="porComentario">//Verifica se o número 3 é par com uma resposta do tipo lógico
+</span>        <span class="porID">escreva</span> <span class="porAgrupamentos">(</span><span class="porID">num</span><span class="porDesconhecido">,</span> <span class="porTexto">" é par? "</span><span class="porDesconhecido">,</span> <span class="porID">verifica_par</span><span class="porAgrupamentos">(</span><span class="porID">num</span><span class="porAgrupamentos">)</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">}</span>
+
+    <span class="porComentario">//Função com retorno do tipo real e três parâmetros do tipo inteiro
+</span>    <span class="porPalavraReservada">funcao</span> <span class="porTipoDeclaracao">real</span> <span class="porID">media</span><span class="porAgrupamentos">(</span><span class="porTipoDeclaracao">inteiro</span> <span class="porID">m1</span><span class="porDesconhecido">,</span> <span class="porTipoDeclaracao">inteiro</span> <span class="porID">m2</span><span class="porDesconhecido">,</span> <span class="porTipoDeclaracao">inteiro</span> <span class="porID">m3</span><span class="porAgrupamentos">)</span> 
+    <span class="porAgrupamentos">{</span>
+        <span class="porPalavraReservada">retorne</span> <span class="porAgrupamentos">(</span><span class="porID">m1</span> <span class="porDesconhecido">*</span> <span class="porNumeros">2</span> <span class="porDesconhecido">+</span> <span class="porID">m2</span> <span class="porDesconhecido">*</span> <span class="porNumeros">3</span> <span class="porDesconhecido">+</span> <span class="porID">m3</span> <span class="porDesconhecido">*</span> <span class="porNumeros">8</span><span class="porAgrupamentos">)</span> <span class="porDesconhecido">/</span> <span class="porNumeros">13.0</span>    
+    <span class="porAgrupamentos">}</span>
+
+    <span class="porComentario">//Função com retorno vazio e parâmetro por referência
+</span>    <span class="porPalavraReservada">funcao</span> <span class="porID">zera_valor</span><span class="porAgrupamentos">(</span><span class="porTipoDeclaracao">inteiro</span> <span class="porDesconhecido">&</span><span class="porID">valor</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">{</span>
+        <span class="porID">valor</span> <span class="porDesconhecido">=</span> <span class="porNumeros">0</span>
+    <span class="porAgrupamentos">}</span>
+    
+    <span class="porComentario">//Função com retorno do tipo lógico e parâmetro do tipo real
+</span>    <span class="porPalavraReservada">funcao</span>  <span class="porTipoDeclaracao">logico</span> <span class="porID">verifica_par</span><span class="porAgrupamentos">(</span><span class="porTipoDeclaracao">inteiro</span> <span class="porID">num</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">{</span>
+            <span class="porPalavraReservada">se</span> <span class="porAgrupamentos">(</span><span class="porID">num</span> <span class="porDesconhecido">%</span> <span class="porNumeros">2</span> <span class="porDesconhecido">!=</span> <span class="porNumeros">0</span><span class="porAgrupamentos">)</span>
+            <span class="porAgrupamentos">{</span>
+                <span class="porPalavraReservada">retorne</span> <span class="porLogico">falso</span>
+            <span class="porAgrupamentos">}</span>
+
+            <span class="porPalavraReservada">retorne</span> <span class="porLogico">verdadeiro</span>
+    <span class="porAgrupamentos">}</span>
+<span class="porAgrupamentos">}</span>

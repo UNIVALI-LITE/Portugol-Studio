@@ -24,6 +24,8 @@ import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.execucao.gerador.GeradorCodigoJava;
+import br.univali.ps.dominio.PortugolHTMLHighlighter;
+import br.univali.ps.ui.editor.Utils;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,6 +43,17 @@ public class IntegracaoFormatadorTest
         File[] diretorios = dirExemplos.listFiles();
         for (File diretorio : diretorios) {
             testaExemplo(diretorio);
+        }
+    }
+    
+    @Test
+    public void testaFormatacaoAjuda() throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException, Exception
+    {
+        File dirExemplos = new File("../ide/src/main/assets/ajuda/recursos/exemplos");
+
+        File[] diretorios = dirExemplos.listFiles();
+        for (File diretorio : diretorios) {
+            testaAjuda(diretorio);
         }
     }
 
@@ -92,6 +105,46 @@ public class IntegracaoFormatadorTest
                 Assert.assertEquals("Os códigos Java gerados não são iguais!", codigoJava, codigoJavaFormatado);
 
                 System.out.println(exemplo.getName() + " testado com sucesso!");
+                System.out.println();
+            }
+        }
+    }
+    
+    private void testaAjuda(File ajuda) throws Exception
+    {
+        if (ajuda.isDirectory()) {
+            File files[] = ajuda.listFiles();
+            for (File file : files) {
+                testaAjuda(file);
+            }
+        } else {
+//            List<String> ignore = new ArrayList<>();
+//            ignore.add("varios.por");
+//            ignore.add("logico.por");
+//            ignore.add("lagarta.por");
+//            ignore.add("arkanoid.por");
+//            ignore.add("qr_code.por");
+//
+//            if (ignore.contains(ajuda.getName())) {
+//                return;
+//            }
+
+            if (ajuda.getName().endsWith(".por")) {
+                System.out.println("Testando "+ajuda.getParent()+" "+ ajuda.getName() + " ...");
+                String codigoPortugol = new String(Files.readAllBytes(Paths.get(ajuda.toURI())));
+                
+                String nomeCompleto = getClass().getCanonicalName();
+                int indicePonto = nomeCompleto.lastIndexOf(".");
+                int indicePasta = ajuda.getPath().lastIndexOf("\\exemplos");
+		String nome = (nomeCompleto.substring(0, indicePonto).replace('.', '/')+ajuda.getPath().substring(indicePasta, ajuda.getPath().length())).replace("\\", "/");
+                String nomehtml = nome.replace(".por", ".html");
+                
+                String codigoHTML = PortugolHTMLHighlighter.getText(Utils.removerInformacoesPortugolStudio(codigoPortugol));
+                String codigoHTMLCorreto = ResourceHandle.readInternalResourceFile(nomehtml);
+                //System.out.println(codigoHTML);
+                Assert.assertEquals("Os códigos HTML gerados não são iguais!", codigoHTMLCorreto, codigoHTML);
+
+                System.out.println(ajuda.getName() + " testado com sucesso!");
                 System.out.println();
             }
         }
