@@ -102,4 +102,12 @@ fragment SIMBOLO_HEXADECIMAL:   DIGITO | [A-Fa-f] ;
 COMENTARIO:         '/*' .*? '*/' -> channel(HIDDEN) ;
 COMENTARIO_SIMPLES: '//' .*? '\n' -> channel(HIDDEN) ; // acho que o ideal seria mandar os comentários para outro canal como no livro no Antlr4
 
-WS      : [ \t\n\r]+ -> skip ;
+WS      : [ \t\r\n]+ -> channel(HIDDEN);
+
+PONTO : '.';
+
+VIRGULA : ',';
+
+PONTOVIRGULA : ';';
+
+DOISPONTOS : ':';
