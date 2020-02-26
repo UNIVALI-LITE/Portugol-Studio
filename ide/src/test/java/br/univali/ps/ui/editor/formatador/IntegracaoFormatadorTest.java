@@ -29,12 +29,16 @@ import br.univali.ps.ui.editor.Utils;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Elieser
  */
 public class IntegracaoFormatadorTest
 {
+    private static final Logger LOGGER = Logger.getLogger(IntegracaoFormatadorTest.class.getName());
+    
     @Test
     public void testaFormatacaoExemplos() throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException, Exception
     {
@@ -127,6 +131,8 @@ public class IntegracaoFormatadorTest
                 int indicePasta = ajuda.getPath().lastIndexOf("\\exemplos");
 		String nome = nomeCompleto.substring(0, indicePonto).replace('.', '/');
                 String ajd = ajuda.getPath();
+                System.out.println("Indice Pasta:"+ indicePasta);
+                System.out.println("Tamanho Path:"+ ajd.length());
                 ajd = ajd.substring(indicePasta, ajd.length());
                 nome = nome+ajd;
                 nome = nome.replace("\\", "/");
