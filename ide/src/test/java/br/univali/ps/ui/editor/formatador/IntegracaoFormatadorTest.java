@@ -125,7 +125,9 @@ public class IntegracaoFormatadorTest
                 String nomeCompleto = getClass().getCanonicalName();
                 int indicePonto = nomeCompleto.lastIndexOf(".");
                 int indicePasta = ajuda.getPath().lastIndexOf("\\exemplos");
-		String nome = (nomeCompleto.substring(0, indicePonto).replace('.', '/')+ajuda.getPath().substring(indicePasta, ajuda.getPath().length())).replace("\\", "/");
+		String nome = nomeCompleto.substring(0, indicePonto).replace('.', '/');
+                nome = nome+ajuda.getPath().substring(indicePasta, ajuda.getPath().length());
+                nome = nome.replace("\\", "/");
                 String nomehtml = nome.replace(".por", ".html");
                 
                 String codigoHTML = PortugolHTMLHighlighter.getText(Utils.removerInformacoesPortugolStudio(codigoPortugol));
