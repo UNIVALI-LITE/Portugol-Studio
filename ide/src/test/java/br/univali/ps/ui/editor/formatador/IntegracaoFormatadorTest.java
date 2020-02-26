@@ -118,17 +118,6 @@ public class IntegracaoFormatadorTest
                 testaAjuda(file);
             }
         } else {
-//            List<String> ignore = new ArrayList<>();
-//            ignore.add("varios.por");
-//            ignore.add("logico.por");
-//            ignore.add("lagarta.por");
-//            ignore.add("arkanoid.por");
-//            ignore.add("qr_code.por");
-//
-//            if (ignore.contains(ajuda.getName())) {
-//                return;
-//            }
-
             if (ajuda.getName().endsWith(".por")) {
                 System.out.println("Testando "+ajuda.getParent()+" "+ ajuda.getName() + " ...");
                 String codigoPortugol = new String(Files.readAllBytes(Paths.get(ajuda.toURI())));
@@ -141,6 +130,8 @@ public class IntegracaoFormatadorTest
                 
                 String codigoHTML = PortugolHTMLHighlighter.getText(Utils.removerInformacoesPortugolStudio(codigoPortugol));
                 String codigoHTMLCorreto = ResourceHandle.readInternalResourceFile(nomehtml);
+                codigoHTML = codigoHTML.replaceAll("\\s+", "");
+                codigoHTMLCorreto = codigoHTMLCorreto.replaceAll("\\s+", "");
                 //System.out.println(codigoHTML);
                 Assert.assertEquals("Os códigos HTML gerados não são iguais!", codigoHTMLCorreto, codigoHTML);
 
