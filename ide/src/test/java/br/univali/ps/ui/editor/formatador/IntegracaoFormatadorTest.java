@@ -127,14 +127,13 @@ public class IntegracaoFormatadorTest
                 String codigoPortugol = new String(Files.readAllBytes(Paths.get(ajuda.toURI())));
                 
                 String nomeCompleto = getClass().getCanonicalName();
-                String ajd = ajuda.getPath();
-                System.out.println("Path Ajuda: "+ajd);
+                String ajd = ajuda.getPath().replace("\\", "/");
                 int indicePonto = nomeCompleto.lastIndexOf(".");
-                int indicePasta = ajd.lastIndexOf("\\exemplos");
+                int indicePasta = ajd.lastIndexOf("/exemplos");
 		String nome = nomeCompleto.substring(0, indicePonto).replace('.', '/');
                 
-                System.out.println("Indice Pasta:"+ indicePasta);
-                System.out.println("Tamanho Path:"+ ajd.length());
+                //System.out.println("Indice Pasta:"+ indicePasta);
+                //System.out.println("Tamanho Path:"+ ajd.length());
                 ajd = ajd.substring(indicePasta, ajd.length());
                 nome = nome+ajd;
                 nome = nome.replace("\\", "/");
