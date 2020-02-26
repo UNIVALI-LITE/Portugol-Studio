@@ -126,7 +126,8 @@ public class IntegracaoFormatadorTest
                 int indicePonto = nomeCompleto.lastIndexOf(".");
                 int indicePasta = ajuda.getPath().lastIndexOf("\\exemplos");
 		String nome = nomeCompleto.substring(0, indicePonto).replace('.', '/');
-                String ajd = ajuda.getPath().substring(indicePasta, ajuda.getPath().length());
+                String ajd = ajuda.getPath();
+                ajd = ajd.substring(indicePasta, ajd.length());
                 nome = nome+ajd;
                 nome = nome.replace("\\", "/");
                 String nomehtml = nome.replace(".por", ".html");
