@@ -128,12 +128,15 @@ public class IntegracaoFormatadorTest
                 
                 String nomeCompleto = getClass().getCanonicalName();
                 String ajd = ajuda.getPath().replace("\\", "/");
+                
+                System.out.println("Path ajuda:"+ ajd);
+                
                 int indicePonto = nomeCompleto.lastIndexOf(".");
                 int indicePasta = ajd.lastIndexOf("/exemplos");
 		String nome = nomeCompleto.substring(0, indicePonto).replace('.', '/');
                 
-                //System.out.println("Indice Pasta:"+ indicePasta);
-                //System.out.println("Tamanho Path:"+ ajd.length());
+                System.out.println("Indice Pasta:"+ indicePasta);
+                System.out.println("Tamanho Path:"+ ajd.length());
                 ajd = ajd.substring(indicePasta, ajd.length());
                 nome = nome+ajd;
                 nome = nome.replace("\\", "/");
@@ -143,7 +146,7 @@ public class IntegracaoFormatadorTest
                 String codigoHTMLCorreto = ResourceHandle.readInternalResourceFile(nomehtml);
                 codigoHTML = codigoHTML.replaceAll("\\s+", "");
                 codigoHTMLCorreto = codigoHTMLCorreto.replaceAll("\\s+", "");
-                //System.out.println(codigoHTML);
+                System.out.println(codigoHTML);
                 Assert.assertEquals("Os códigos HTML gerados não são iguais!", codigoHTMLCorreto, codigoHTML);
 
                 System.out.println(ajuda.getName() + " testado com sucesso!");
