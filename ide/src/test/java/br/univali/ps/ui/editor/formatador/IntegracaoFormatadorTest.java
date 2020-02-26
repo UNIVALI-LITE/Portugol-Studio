@@ -124,29 +124,25 @@ public class IntegracaoFormatadorTest
         } else {
             if (ajuda.getName().endsWith(".por")) {
                 System.out.println("Testando "+ajuda.getParent()+" "+ ajuda.getName() + " ...");
-                String codigoPortugol = new String(Files.readAllBytes(Paths.get(ajuda.toURI())));
+                String codigoPortugol = new String(Files.readAllBytes(Paths.get(ajuda.toURI())), "ISO-8859-1");
                 
                 String nomeCompleto = getClass().getCanonicalName();
-                String ajd = ajuda.getPath().replace("\\", "/");
-                
-                System.out.println("Path ajuda:"+ ajd);
-                
                 int indicePonto = nomeCompleto.lastIndexOf(".");
-                int indicePasta = ajd.lastIndexOf("/exemplos");
-		String nome = nomeCompleto.substring(0, indicePonto).replace('.', '/');
+                String localPath = nomeCompleto.substring(0, indicePonto).replace('.', '/');
                 
-                System.out.println("Indice Pasta:"+ indicePasta);
-                System.out.println("Tamanho Path:"+ ajd.length());
-                ajd = ajd.substring(indicePasta, ajd.length());
-                nome = nome+ajd;
-                nome = nome.replace("\\", "/");
-                String nomehtml = nome.replace(".por", ".html");
+                String ajudaPath = ajuda.getPath().replace("\\", "/");
+                int indicePasta = ajudaPath.lastIndexOf("/exemplos");
+                ajudaPath = ajudaPath.substring(indicePasta, ajudaPath.length());
+                
+                localPath = localPath+ajudaPath;
+                localPath = localPath.replace("\\", "/");
+                String nomehtml = localPath.replace(".por", ".html");
                 
                 String codigoHTML = PortugolHTMLHighlighter.getText(Utils.removerInformacoesPortugolStudio(codigoPortugol));
                 String codigoHTMLCorreto = ResourceHandle.readInternalResourceFile(nomehtml);
                 codigoHTML = codigoHTML.replaceAll("\\s+", "");
                 codigoHTMLCorreto = codigoHTMLCorreto.replaceAll("\\s+", "");
-                System.out.println(codigoHTML);
+                //System.out.println(codigoHTML);
                 Assert.assertEquals("Os códigos HTML gerados não são iguais!", codigoHTMLCorreto, codigoHTML);
 
                 System.out.println(ajuda.getName() + " testado com sucesso!");
