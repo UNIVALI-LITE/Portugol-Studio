@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Percorre a {@link ASA} gerada a partir do código fonte para detectar
@@ -2477,10 +2479,20 @@ public final class AnalisadorSemantico implements VisitanteASA
         if (expTamanho != null)
         {
             TipoDado tipoTamanho = (TipoDado) expTamanho.aceitar(this);
+            AnalisadorDeclaracaoTamanhoVetorMatriz adtvm = new AnalisadorDeclaracaoTamanhoVetorMatriz();
+            
+            if(expTamanho instanceof NoOperacao)
+            {                            
+                try {
+                    adtvm.possuiExpressaoDeTamanhoValida(noDeclaracao, expTamanho);
+                } catch (ErroTamanhoVetorMatriz ex) {
+                    notificarErroSemantico(ex);
+                }
+            }
 
             if (tipoTamanho == TipoDado.INTEIRO)
             {
-                if (!(expTamanho instanceof NoInteiro) && !(expTamanho instanceof NoReferenciaVariavel))
+                if (!(expTamanho instanceof NoInteiro) && !(expTamanho instanceof NoReferenciaVariavel) && !(expTamanho instanceof NoOperacao))
                 {
                     notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
                 }
@@ -2518,6 +2530,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                             notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
                         }
                     }
+                }
+                else if (expTamanho instanceof NoOperacao)
+                {
+                    return null;
                 }
                 else
                 {
