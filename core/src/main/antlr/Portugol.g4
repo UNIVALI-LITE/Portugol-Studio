@@ -38,7 +38,7 @@ inicializacaoArray
     :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
 
 tamanhoArray 
-    :   INT | ID; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante
+    :   expressao; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante
 
 declaracaoFuncao
     :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES 

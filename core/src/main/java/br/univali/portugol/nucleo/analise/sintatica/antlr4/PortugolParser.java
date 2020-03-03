@@ -523,7 +523,7 @@ public class PortugolParser extends Parser {
 			setState(121);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==ID || _la==INT) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 				{
 				setState(120);
 				linhaMatriz();
@@ -537,7 +537,7 @@ public class PortugolParser extends Parser {
 			setState(126);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==ID || _la==INT) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 				{
 				setState(125);
 				colunaMatriz();
@@ -741,7 +741,7 @@ public class PortugolParser extends Parser {
 			setState(151);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==ID || _la==INT) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 				{
 				setState(150);
 				tamanhoArray();
@@ -827,8 +827,9 @@ public class PortugolParser extends Parser {
 	}
 
 	public static class TamanhoArrayContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(PortugolParser.INT, 0); }
-		public TerminalNode ID() { return getToken(PortugolParser.ID, 0); }
+		public ExpressaoContext expressao() {
+			return getRuleContext(ExpressaoContext.class,0);
+		}
 		public TamanhoArrayContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -843,20 +844,11 @@ public class PortugolParser extends Parser {
 	public final TamanhoArrayContext tamanhoArray() throws RecognitionException {
 		TamanhoArrayContext _localctx = new TamanhoArrayContext(_ctx, getState());
 		enterRule(_localctx, 22, RULE_tamanhoArray);
-		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(164);
-			_la = _input.LA(1);
-			if ( !(_la==ID || _la==INT) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
+			expressao(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3712,38 +3704,38 @@ public class PortugolParser extends Parser {
 		"\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\7#\u01e5\n#\f#\16#\u01e8\13#\3$\3$\3"+
 		"$\5$\u01ed\n$\3$\3$\3$\3$\5$\u01f3\n$\7$\u01f5\n$\f$\16$\u01f8\13$\3%"+
 		"\3%\3%\3%\2\3D&\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62"+
-		"\64\668:<>@BDFH\2\4\4\2>>@@\3\2@A\2\u0241\2J\3\2\2\2\4[\3\2\2\2\6c\3\2"+
-		"\2\2\bq\3\2\2\2\ns\3\2\2\2\fx\3\2\2\2\16\u0087\3\2\2\2\20\u0092\3\2\2"+
-		"\2\22\u0094\3\2\2\2\24\u0096\3\2\2\2\26\u00a0\3\2\2\2\30\u00a6\3\2\2\2"+
-		"\32\u00a8\3\2\2\2\34\u00bb\3\2\2\2\36\u00c3\3\2\2\2 \u00cc\3\2\2\2\"\u00cf"+
-		"\3\2\2\2$\u00df\3\2\2\2&\u00e1\3\2\2\2(\u00f5\3\2\2\2*\u00f7\3\2\2\2,"+
-		"\u00fb\3\2\2\2.\u0104\3\2\2\2\60\u010a\3\2\2\2\62\u0111\3\2\2\2\64\u0126"+
-		"\3\2\2\2\66\u012b\3\2\2\28\u012d\3\2\2\2:\u0132\3\2\2\2<\u0134\3\2\2\2"+
-		">\u0141\3\2\2\2@\u015a\3\2\2\2B\u015c\3\2\2\2D\u01ac\3\2\2\2F\u01ec\3"+
-		"\2\2\2H\u01f9\3\2\2\2JK\7\25\2\2KO\7\13\2\2LN\5\4\3\2ML\3\2\2\2NQ\3\2"+
-		"\2\2OM\3\2\2\2OP\3\2\2\2PV\3\2\2\2QO\3\2\2\2RU\5\32\16\2SU\5\6\4\2TR\3"+
-		"\2\2\2TS\3\2\2\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2WY\3\2\2\2XV\3\2\2\2YZ\7"+
-		"\f\2\2Z\3\3\2\2\2[\\\7\33\2\2\\]\7\34\2\2]`\7>\2\2^_\7\63\2\2_a\7>\2\2"+
-		"`^\3\2\2\2`a\3\2\2\2a\5\3\2\2\2bd\7\23\2\2cb\3\2\2\2cd\3\2\2\2de\3\2\2"+
-		"\2ef\7\r\2\2fk\5\b\5\2gh\7\3\2\2hj\5\b\5\2ig\3\2\2\2jm\3\2\2\2ki\3\2\2"+
-		"\2kl\3\2\2\2l\7\3\2\2\2mk\3\2\2\2nr\5\n\6\2or\5\24\13\2pr\5\f\7\2qn\3"+
-		"\2\2\2qo\3\2\2\2qp\3\2\2\2r\t\3\2\2\2sv\7>\2\2tu\7%\2\2uw\5D#\2vt\3\2"+
-		"\2\2vw\3\2\2\2w\13\3\2\2\2xy\7>\2\2y{\7\t\2\2z|\5\20\t\2{z\3\2\2\2{|\3"+
-		"\2\2\2|}\3\2\2\2}~\7\n\2\2~\u0080\7\t\2\2\177\u0081\5\22\n\2\u0080\177"+
-		"\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0085\7\n\2\2\u0083"+
-		"\u0084\7%\2\2\u0084\u0086\5\16\b\2\u0085\u0083\3\2\2\2\u0085\u0086\3\2"+
-		"\2\2\u0086\r\3\2\2\2\u0087\u0088\7\13\2\2\u0088\u008d\5\26\f\2\u0089\u008a"+
-		"\7\3\2\2\u008a\u008c\5\26\f\2\u008b\u0089\3\2\2\2\u008c\u008f\3\2\2\2"+
-		"\u008d\u008b\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u0090\3\2\2\2\u008f\u008d"+
-		"\3\2\2\2\u0090\u0091\7\f\2\2\u0091\17\3\2\2\2\u0092\u0093\5\30\r\2\u0093"+
-		"\21\3\2\2\2\u0094\u0095\5\30\r\2\u0095\23\3\2\2\2\u0096\u0097\7>\2\2\u0097"+
+		"\64\668:<>@BDFH\2\3\3\2@A\2\u0241\2J\3\2\2\2\4[\3\2\2\2\6c\3\2\2\2\bq"+
+		"\3\2\2\2\ns\3\2\2\2\fx\3\2\2\2\16\u0087\3\2\2\2\20\u0092\3\2\2\2\22\u0094"+
+		"\3\2\2\2\24\u0096\3\2\2\2\26\u00a0\3\2\2\2\30\u00a6\3\2\2\2\32\u00a8\3"+
+		"\2\2\2\34\u00bb\3\2\2\2\36\u00c3\3\2\2\2 \u00cc\3\2\2\2\"\u00cf\3\2\2"+
+		"\2$\u00df\3\2\2\2&\u00e1\3\2\2\2(\u00f5\3\2\2\2*\u00f7\3\2\2\2,\u00fb"+
+		"\3\2\2\2.\u0104\3\2\2\2\60\u010a\3\2\2\2\62\u0111\3\2\2\2\64\u0126\3\2"+
+		"\2\2\66\u012b\3\2\2\28\u012d\3\2\2\2:\u0132\3\2\2\2<\u0134\3\2\2\2>\u0141"+
+		"\3\2\2\2@\u015a\3\2\2\2B\u015c\3\2\2\2D\u01ac\3\2\2\2F\u01ec\3\2\2\2H"+
+		"\u01f9\3\2\2\2JK\7\25\2\2KO\7\13\2\2LN\5\4\3\2ML\3\2\2\2NQ\3\2\2\2OM\3"+
+		"\2\2\2OP\3\2\2\2PV\3\2\2\2QO\3\2\2\2RU\5\32\16\2SU\5\6\4\2TR\3\2\2\2T"+
+		"S\3\2\2\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2WY\3\2\2\2XV\3\2\2\2YZ\7\f\2\2"+
+		"Z\3\3\2\2\2[\\\7\33\2\2\\]\7\34\2\2]`\7>\2\2^_\7\63\2\2_a\7>\2\2`^\3\2"+
+		"\2\2`a\3\2\2\2a\5\3\2\2\2bd\7\23\2\2cb\3\2\2\2cd\3\2\2\2de\3\2\2\2ef\7"+
+		"\r\2\2fk\5\b\5\2gh\7\3\2\2hj\5\b\5\2ig\3\2\2\2jm\3\2\2\2ki\3\2\2\2kl\3"+
+		"\2\2\2l\7\3\2\2\2mk\3\2\2\2nr\5\n\6\2or\5\24\13\2pr\5\f\7\2qn\3\2\2\2"+
+		"qo\3\2\2\2qp\3\2\2\2r\t\3\2\2\2sv\7>\2\2tu\7%\2\2uw\5D#\2vt\3\2\2\2vw"+
+		"\3\2\2\2w\13\3\2\2\2xy\7>\2\2y{\7\t\2\2z|\5\20\t\2{z\3\2\2\2{|\3\2\2\2"+
+		"|}\3\2\2\2}~\7\n\2\2~\u0080\7\t\2\2\177\u0081\5\22\n\2\u0080\177\3\2\2"+
+		"\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0085\7\n\2\2\u0083\u0084"+
+		"\7%\2\2\u0084\u0086\5\16\b\2\u0085\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086"+
+		"\r\3\2\2\2\u0087\u0088\7\13\2\2\u0088\u008d\5\26\f\2\u0089\u008a\7\3\2"+
+		"\2\u008a\u008c\5\26\f\2\u008b\u0089\3\2\2\2\u008c\u008f\3\2\2\2\u008d"+
+		"\u008b\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u0090\3\2\2\2\u008f\u008d\3\2"+
+		"\2\2\u0090\u0091\7\f\2\2\u0091\17\3\2\2\2\u0092\u0093\5\30\r\2\u0093\21"+
+		"\3\2\2\2\u0094\u0095\5\30\r\2\u0095\23\3\2\2\2\u0096\u0097\7>\2\2\u0097"+
 		"\u0099\7\t\2\2\u0098\u009a\5\30\r\2\u0099\u0098\3\2\2\2\u0099\u009a\3"+
 		"\2\2\2\u009a\u009b\3\2\2\2\u009b\u009e\7\n\2\2\u009c\u009d\7%\2\2\u009d"+
 		"\u009f\5\26\f\2\u009e\u009c\3\2\2\2\u009e\u009f\3\2\2\2\u009f\25\3\2\2"+
 		"\2\u00a0\u00a2\7\13\2\2\u00a1\u00a3\5F$\2\u00a2\u00a1\3\2\2\2\u00a2\u00a3"+
 		"\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a5\7\f\2\2\u00a5\27\3\2\2\2\u00a6"+
-		"\u00a7\t\2\2\2\u00a7\31\3\2\2\2\u00a8\u00aa\7\24\2\2\u00a9\u00ab\7\r\2"+
-		"\2\u00aa\u00a9\3\2\2\2\u00aa\u00ab\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00ad"+
+		"\u00a7\5D#\2\u00a7\31\3\2\2\2\u00a8\u00aa\7\24\2\2\u00a9\u00ab\7\r\2\2"+
+		"\u00aa\u00a9\3\2\2\2\u00aa\u00ab\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00ad"+
 		"\7>\2\2\u00ad\u00af\7\7\2\2\u00ae\u00b0\5\34\17\2\u00af\u00ae\3\2\2\2"+
 		"\u00af\u00b0\3\2\2\2\u00b0\u00b1\3\2\2\2\u00b1\u00b2\7\b\2\2\u00b2\u00b6"+
 		"\7\13\2\2\u00b3\u00b5\5$\23\2\u00b4\u00b3\3\2\2\2\u00b5\u00b8\3\2\2\2"+
@@ -3825,7 +3817,7 @@ public class PortugolParser extends Parser {
 		"\3\2\2\2\u019b\u019c\3\2\2\2\u019c\u019e\3\2\2\2\u019d\u0199\3\2\2\2\u019d"+
 		"\u019e\3\2\2\2\u019e\u01ad\3\2\2\2\u019f\u01a1\5H%\2\u01a0\u019f\3\2\2"+
 		"\2\u01a0\u01a1\3\2\2\2\u01a1\u01a2\3\2\2\2\u01a2\u01ad\7>\2\2\u01a3\u01ad"+
-		"\t\3\2\2\u01a4\u01ad\7?\2\2\u01a5\u01ad\79\2\2\u01a6\u01ad\7<\2\2\u01a7"+
+		"\t\2\2\2\u01a4\u01ad\7?\2\2\u01a5\u01ad\79\2\2\u01a6\u01ad\7<\2\2\u01a7"+
 		"\u01ad\7=\2\2\u01a8\u01a9\7\7\2\2\u01a9\u01aa\5D#\2\u01aa\u01ab\7\b\2"+
 		"\2\u01ab\u01ad\3\2\2\2\u01ac\u0160\3\2\2\2\u01ac\u016b\3\2\2\2\u01ac\u0170"+
 		"\3\2\2\2\u01ac\u0177\3\2\2\2\u01ac\u0179\3\2\2\2\u01ac\u017b\3\2\2\2\u01ac"+
