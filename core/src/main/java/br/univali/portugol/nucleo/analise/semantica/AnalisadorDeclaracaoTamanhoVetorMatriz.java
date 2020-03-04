@@ -5,10 +5,11 @@
  */
 package br.univali.portugol.nucleo.analise.semantica;
 
-import br.univali.portugol.nucleo.analise.semantica.erros.ErroTamanhoVetorMatriz;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroExpressaoTamanhoVetorMatriz;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
+import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
 import br.univali.portugol.nucleo.asa.NoCaso;
@@ -75,9 +76,12 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
      * @param noExpressao expressao a ser analisada
      * @return true se o tamanho é valido e false se não.
      * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
-     * @throws br.univali.portugol.nucleo.analise.semantica.erros.ErroTamanhoVetorMatriz
+     * @throws br.univali.portugol.nucleo.analise.semantica.erros.ErroExpressaoTamanhoVetorMatriz
      */
-    public Integer possuiExpressaoDeTamanhoValida(NoDeclaracaoBase declaracao, NoExpressao noExpressao) throws ExcecaoVisitaASA, ErroTamanhoVetorMatriz
+    
+    private static String variavelAtual = "";
+    
+    public Integer possuiExpressaoDeTamanhoValida(NoDeclaracaoBase declaracao, NoExpressao noExpressao) throws ExcecaoVisitaASA, ErroExpressaoTamanhoVetorMatriz
     {
         Integer valido = null;
         
@@ -86,12 +90,12 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
             valido = (Integer) noExpressao.aceitar(this);
             if(valido<=0)
             {
-                throw new ErroTamanhoVetorMatriz(declaracao, noExpressao);
+                throw new ErroExpressaoTamanhoVetorMatriz(declaracao, noExpressao);
             }
         }
         catch(ExcecaoVisitaASA ex)
         {
-            throw new ErroTamanhoVetorMatriz(declaracao, noExpressao);
+            throw new ErroExpressaoTamanhoVetorMatriz(declaracao, (NoBloco) ex.getNo(), variavelAtual);
         }        
         
         return valido;
@@ -144,7 +148,7 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
             NoExpressao exp = noDeclaracaoVariavel.getInicializacao();
             return (Integer) exp.aceitar(this);
         }
-        throw new ExcecaoVisitaASA("Not supported yet.", null, null); //To change body of generated methods, choose Tools | Templates.
+        throw new ExcecaoVisitaASA("Not supported yet.", null, noDeclaracaoVariavel); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -355,11 +359,12 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
     @Override
     public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA {
         NoDeclaracaoBase base = noReferenciaVariavel.getOrigemDaReferencia();
+        variavelAtual = base.getNome();
         if(base.constante())
-        {
+        {            
             return (Integer) base.aceitar(this);
         }
-        throw new ExcecaoVisitaASA("Not supported yet.", null, null); //To change body of generated methods, choose Tools | Templates.;
+        throw new ExcecaoVisitaASA("Not supported yet.", null, noReferenciaVariavel); //To change body of generated methods, choose Tools | Templates.;
     }
 
     @Override

@@ -2530,7 +2530,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {                            
                     try {
                         return adtvm.possuiExpressaoDeTamanhoValida(noDeclaracao, expTamanho);
-                    } catch (ErroTamanhoVetorMatriz ex) {
+                    } catch (ErroExpressaoTamanhoVetorMatriz ex) {
                         notificarErroSemantico(ex);
                     }
                 }
