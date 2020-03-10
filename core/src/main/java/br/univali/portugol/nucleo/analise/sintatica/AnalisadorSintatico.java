@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTokenException;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
@@ -115,7 +116,8 @@ public final class AnalisadorSintatico
                 if (e.getCause() instanceof NumberFormatException) {
                     String numero = msg.replaceAll("\\D+",""); // delete non-digits
                     notificarErroSintatico(new ErroInteiroForaDoIntervalo(line, charPositionInLine, numero));
-                } else {
+                }
+                else {
                     notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
                 }
             }

@@ -72,7 +72,9 @@ fragment ESC_CARACTER:  SEQ_ESC | '\\\'' ;
 
 fragment DIGIT_HEX: ('0'..'9'|'a'..'f'|'A'..'F') ;
 
-STRING : '"' ( SEQ_ESC |  . ~['\\'] )*? '"' ;
+STRING : '"' ( SEQ_ESC | ~[\b\t\f\r\n\\"] )*? '"' ;
+
+ILLEGAL_ESCAPE: '"' ('\\' ~[btnfr"'\\] | ~'\\')*;
 
 ID:             (LETRA | '_') (LETRA | [0-9] | '_')* ;
 

@@ -166,4 +166,4 @@ listaExpressoes
     :   (expressao | atribuicaoComposta | atribuicao) (',' (expressao | atribuicaoComposta | atribuicao))* ; 
      
 escopoBiblioteca
-    :   (ID '.') ; 
+    :   (ID '.') ;
