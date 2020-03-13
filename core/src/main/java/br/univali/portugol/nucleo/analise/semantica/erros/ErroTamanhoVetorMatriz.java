@@ -31,7 +31,7 @@ public class ErroTamanhoVetorMatriz extends ErroSemantico
         	codigo += "1";
         	super.setCodigo(codigo);
         	
-            return String.format("O tamanho do vetor '%s' deve ser um valor ou uma constante do tipo inteiro", declaracao.getNome());
+            return String.format("O tamanho do vetor '%s' deve ser um valor ou uma constante do tipo inteiro e positivo \n Ex: vetor[3]", declaracao.getNome());
         }
         else
         {            
@@ -39,7 +39,7 @@ public class ErroTamanhoVetorMatriz extends ErroSemantico
             codigo += "2";
             super.setCodigo(codigo);
             
-            return String.format("O número de %s da matriz '%s' deve ser um valor ou uma constante do tipo inteiro", aux, declaracao.getNome());
+            return String.format("O número de %s da matriz '%s' deve ser um valor ou uma constante do tipo inteiro e positivo \n Ex: matriz[5][4]", aux, declaracao.getNome());
         }
     }
 }

@@ -45,6 +45,12 @@ public class GeradorCodigoTest
 	}
         
         @Test
+	public void testVetorComTamanhoExpressao() throws Exception
+	{
+		comparaCodigos();
+	}
+        
+        @Test
 	public void testMatrizCadeiaNaoInicializada() throws Exception
 	{
 		comparaCodigos();

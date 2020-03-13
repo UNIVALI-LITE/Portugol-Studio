@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Percorre a {@link ASA} gerada a partir do código fonte para detectar
@@ -2482,10 +2484,11 @@ public final class AnalisadorSemantico implements VisitanteASA
         if (expTamanho != null)
         {
             TipoDado tipoTamanho = (TipoDado) expTamanho.aceitar(this);
-
+            AnalisadorDeclaracaoTamanhoVetorMatriz adtvm = new AnalisadorDeclaracaoTamanhoVetorMatriz();            
+            
             if (tipoTamanho == TipoDado.INTEIRO)
             {
-                if (!(expTamanho instanceof NoInteiro) && !(expTamanho instanceof NoReferenciaVariavel))
+                if (!(expTamanho instanceof NoInteiro) && !(expTamanho instanceof NoReferenciaVariavel) && !(expTamanho instanceof NoOperacao))
                 {
                     notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
                 }
@@ -2500,8 +2503,12 @@ public final class AnalisadorSemantico implements VisitanteASA
 
                         if (variavel.constante())
                         {
-
-                            return ((NoInteiro) decl.getInicializacao()).getValor();
+                            Integer intg = ((NoInteiro) decl.getInicializacao()).getValor();
+                            if(intg<=0)
+                            {
+                                notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
+                            }
+                            return intg;
                         }
                         else
                         {
@@ -2524,9 +2531,22 @@ public final class AnalisadorSemantico implements VisitanteASA
                         }
                     }
                 }
+                else if(expTamanho instanceof NoOperacao)
+                {                            
+                    try {
+                        return adtvm.possuiExpressaoDeTamanhoValida(noDeclaracao, expTamanho);
+                    } catch (ErroExpressaoTamanhoVetorMatriz ex) {
+                        notificarErroSemantico(ex);
+                    }
+                }
                 else
                 {
-                    return ((NoInteiro) expTamanho).getValor();
+                    Integer intg = ((NoInteiro) expTamanho).getValor();
+                    if(intg<=0)
+                    {
+                        notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
+                    }
+                    return intg;
                 }
             }
             else

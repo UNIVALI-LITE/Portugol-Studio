@@ -1,5 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.analise.semantica.AnalisadorDeclaracaoTamanhoVetorMatriz;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroExpressaoTamanhoVetorMatriz;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
@@ -13,6 +15,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoMatriz;
+import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
@@ -21,6 +24,7 @@ import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.ps.ui.swing.ColorController;
@@ -710,6 +714,16 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 if (noDeclaracao instanceof NoDeclaracaoInicializavel) {
                     return obtemValorDeExpressaoDoTipoInteiro(((NoDeclaracaoInicializavel) noDeclaracao).getInicializacao());
                 }
+            }
+        }
+        
+        if(expressao instanceof NoOperacao)
+        {
+            AnalisadorDeclaracaoTamanhoVetorMatriz analisadorDeclaracaoTamanhoVetorMatriz = new AnalisadorDeclaracaoTamanhoVetorMatriz();
+            try {
+                return analisadorDeclaracaoTamanhoVetorMatriz.possuiExpressaoDeTamanhoValida(null, expressao);
+            } catch (ErroExpressaoTamanhoVetorMatriz ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         }
         return null;
