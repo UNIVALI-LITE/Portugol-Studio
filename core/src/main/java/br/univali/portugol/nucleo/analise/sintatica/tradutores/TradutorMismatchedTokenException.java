@@ -99,8 +99,8 @@ public final class TradutorMismatchedTokenException
                 case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
                 case "ABRE_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
                 case "FECHA_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-                case "':'": return new ErroFaltaDoisPontos(linha, coluna);
-                case "';'": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
+                case "DOISPONTOS": return new ErroFaltaDoisPontos(linha, coluna);
+                case "PONTOVIRGULA": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
                 case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
                 case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
                 case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
@@ -128,7 +128,7 @@ public final class TradutorMismatchedTokenException
     {
         String contextoAtual = contextos.getContextoAtual();
         if (contextoAtual.equals("para") && !tokensEsperados.isEmpty()) {
-            if (!tokensEsperados.get(0).equals("';'")) {
+            if (!tokensEsperados.get(0).equals("PONTOVIRGULA")) {
                 boolean faltandoAbrirParenteses = tokensEsperados.contains("ABRE_PARENTESES");
                 boolean faltandoFecharParenteses = tokensEsperados.contains("FECHA_PARENTESES");
                 if (faltandoAbrirParenteses || faltandoFecharParenteses) {

@@ -27,7 +27,7 @@ public class ErrosSintaticosTest {
         Assert.assertEquals(1, analise.getErrosSintaticos().size());
         
         ErroSintatico erro = analise.getErrosSintaticos().get(0);
-        Assert.assertTrue(erro instanceof ErroParaEsperaCondicao);
+        Assert.assertTrue(erro instanceof ErroParentesis);
     }
     
     @Test
