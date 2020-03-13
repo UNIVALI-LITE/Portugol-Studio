@@ -166,4 +166,4 @@ listaExpressoes
     :   (expressao | atribuicaoComposta | atribuicao) (VIRGULA (expressao | atribuicaoComposta | atribuicao))* ; 
      
 escopoBiblioteca
-    :   (ID PONTO) ;
+    :   (ID PONTO) ; 
