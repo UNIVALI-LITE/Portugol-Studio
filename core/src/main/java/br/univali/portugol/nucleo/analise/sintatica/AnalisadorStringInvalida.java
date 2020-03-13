@@ -5,21 +5,20 @@
  */
 package br.univali.portugol.nucleo.analise.sintatica;
 
-import br.univali.portugol.nucleo.analise.semantica.erros.ErroSemanticoNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroLinhaPuladaEmString;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
-import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
+import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
+import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  *
@@ -47,17 +46,48 @@ public class AnalisadorStringInvalida extends VisitanteNulo{
     }
 
     @Override
+    public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
+         List<NoExpressao> parametros = chamadaFuncao.getParametros();
+         for (NoExpressao parametro : parametros) {
+            parametro.aceitar(this);
+        }
+         
+        return super.visitar(chamadaFuncao); //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         
-        Pattern pattern = Pattern.compile("(?<![\\\\])\\\\(?![tnbrf\"\\\\])");
-        Matcher matcher = pattern.matcher(noCadeia.getValor());
-        
-        while (matcher.find())
-        {
-            String codigo = matcher.group();
-            int start = matcher.start();
-            
-            notificarErroSintatico(new ErroEscapeUnico(noCadeia.getTrechoCodigoFonte().getLinha(), noCadeia.getTrechoCodigoFonte().getColuna() + 1 + start, codigo));
+//        Pattern pattern = Pattern.compile("(?<![\\\\])\\\\(?![tnbrf\\\"\\\\])");
+//        Matcher matcher = pattern.matcher(noCadeia.getValor());
+//        
+//        while (matcher.find())
+//        {
+//            String codigo = matcher.group();
+//            int start = matcher.start();
+//            
+//            notificarErroSintatico(new ErroEscapeUnico(noCadeia.getTrechoCodigoFonte().getLinha(), noCadeia.getTrechoCodigoFonte().getColuna() + 1 + start, codigo));
+//        }
+
+        String[] cadeia = noCadeia.getValorOriginal().split("");
+        Boolean previousEscape = false;
+        for (int i = 0; i<cadeia.length; i++) {
+            if(!previousEscape && cadeia[i].matches("\\\\"))
+            {
+                previousEscape = true;
+            }
+            else if(previousEscape && cadeia[i].matches("[tnbrf\\\"\\\\]"))
+            {
+                previousEscape = false;
+            }
+            else if(previousEscape && !cadeia[i].matches("[tnbrf\\\"\\\\]"))
+            {
+                previousEscape = false;
+                notificarErroSintatico(new ErroEscapeUnico(noCadeia.getTrechoCodigoFonte().getLinha(), noCadeia.getTrechoCodigoFonte().getColuna() - 1 + i, cadeia[i]));
+            }
+            if(cadeia[i].matches("\r?\n"))
+            {
+                notificarErroSintatico(new ErroLinhaPuladaEmString(noCadeia.getTrechoCodigoFonte().getLinha(), noCadeia.getTrechoCodigoFonte().getColuna(), noCadeia.getValorOriginal()));
+            }
         }
         
         return super.visitar(noCadeia); //To change body of generated methods, choose Tools | Templates.
@@ -66,16 +96,16 @@ public class AnalisadorStringInvalida extends VisitanteNulo{
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA {
         
-        Pattern pattern = Pattern.compile("(?<![\\\\])\\\\(?![tnbrf\"\\\\])");
-        Matcher matcher = pattern.matcher(""+noCaracter.getValor());
-        
-        while (matcher.find())
-        {
-            String codigo = matcher.group();
-            int start = matcher.start();
-            
-            notificarErroSintatico(new ErroEscapeUnico(noCaracter.getTrechoCodigoFonte().getLinha(), noCaracter.getTrechoCodigoFonte().getColuna() + 1 + start, codigo));
-        }
+//        Pattern pattern = Pattern.compile("(?<![\\\\])\\\\(?![tnbrf\"\\\\])");
+//        Matcher matcher = pattern.matcher(""+noCaracter.getValor());
+//        
+//        while (matcher.find())
+//        {
+//            String codigo = matcher.group();
+//            int start = matcher.start();
+//            
+//            notificarErroSintatico(new ErroEscapeUnico(noCaracter.getTrechoCodigoFonte().getLinha(), noCaracter.getTrechoCodigoFonte().getColuna() + 1 + start, codigo));
+//        }
         
         return super.visitar(noCaracter); //To change body of generated methods, choose Tools | Templates.
     }

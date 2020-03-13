@@ -19,7 +19,7 @@ public class StringUtils {
                 .replaceAll("\r", "\\\\r") // preserva \r nas string do código Portugol
                 .replaceAll("\b", "\\\\b") // preserva \b nas string do código Portugol
                 .replaceAll("\f", "\\\\f") // preserva \f nas string do código Portugol
-                .replaceAll("\'", "\\\\'") // preserva \' nas string do código Portugol
+                //.replaceAll("\'", "\\\\'") // preserva \' nas string do código Portugol
                 .replaceAll("\"", "\\\\\""); // preserva aspas duplas com scape (\") nas string do código Portugol 
     }
 

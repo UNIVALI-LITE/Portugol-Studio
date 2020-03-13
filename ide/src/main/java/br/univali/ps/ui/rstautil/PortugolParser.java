@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEsco
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
+import br.univali.portugol.nucleo.mensagens.ErroSemiSintatico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
@@ -130,9 +131,9 @@ public class PortugolParser extends AbstractParser
                             coluna = documento.getLength();
                         }                       
                         
-                        if(erro instanceof ErroEscapeUnico)
+                        if(erro instanceof ErroSemiSintatico)
                         {
-                            String codigo = ((ErroEscapeUnico)erro).getCodigofonte();
+                            String codigo = ((ErroSemiSintatico)erro).getCodigofonte();
                             String codigoFormatado = codigo.split("\n\t")[0];
 
                             DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), erro.getLinha() - 1, indice, codigoFormatado.length());

@@ -1,25 +1,19 @@
 package br.univali.portugol.nucleo.analise.sintatica.erros;
 
-import br.univali.portugol.nucleo.mensagens.ErroSintatico;
+import br.univali.portugol.nucleo.mensagens.ErroSemiSintatico;
 
 /**
  *
  * @author Luiz Fernando Noschang
  */
-public final class ErroEscapeUnico extends ErroSintatico
+public final class ErroEscapeUnico extends ErroSemiSintatico
 {
-    private String codigofonte = "";
     
     
     public ErroEscapeUnico(int linha, int coluna, String codigofonte)
     {
-        super(linha, coluna);
-        this.codigofonte = codigofonte;
-    }
-
-    public String getCodigofonte() {
-        return codigofonte;
-    }
+        super(linha, coluna, codigofonte);
+    }   
 
     @Override
     protected String construirMensagem()
