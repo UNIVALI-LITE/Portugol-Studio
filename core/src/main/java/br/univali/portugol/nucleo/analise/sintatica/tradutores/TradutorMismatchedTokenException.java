@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncompleta;
@@ -59,10 +60,10 @@ public final class TradutorMismatchedTokenException
             PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
             for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
             {
-                if(token.getType() == PortugolLexer.ILLEGAL_ESCAPE)
-                {
-                    return new ErroTokenFaltando(token.getLine(), token.getCharPositionInLine(), "\\");
-                }
+//                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
+//                {
+//                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
+//                }
             }
         }
         
