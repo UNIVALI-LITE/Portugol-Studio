@@ -192,6 +192,12 @@ public class Utils
         assert (variavel.ehPassadoPorReferencia());
         return geraStringIndice(variavel.getIndiceReferencia(), variavel.getNome());
     }
+    
+    public static String geraStringIndice(NoDeclaracaoParametro variavel)
+    {
+        assert (variavel.ehPassadaPorReferencia());
+        return geraStringIndice(variavel.getIndiceReferencia(), variavel.getNome());
+    }
 
     public static String geraStringIndice(NoDeclaracaoVariavel variavel)
     {

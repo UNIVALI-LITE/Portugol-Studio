@@ -509,3 +509,21 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
 }
+
+#video-curso{
+    width: 560px;
+    height: 315px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+@media screen and (max-width: 991px) {
+    #video-curso{
+        width: 300px;
+        height: 200px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    #header-buttons{
+        margin-bottom: 60px;
+    }
+}

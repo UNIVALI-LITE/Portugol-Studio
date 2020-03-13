@@ -118,6 +118,10 @@ task debug(dependsOn: compileJava, type: JavaExec) {
 	}
 }
 
+test {
+  testLogging.showStandardStreams = true
+}
+
 def loadJvmArgs(def platform = null){
 
 	def jvmConfigFile = new File(project.projectDir, 'jvm.config')

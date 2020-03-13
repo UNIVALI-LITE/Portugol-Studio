@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public final class ResourceHandle
 {
 	private static final Logger LOGGER = Logger.getLogger(ResourceHandle.class.getName());
-	private static final String CHARSET_PADRAO = "ISO-8859-1";
+	private static final String CHARSET_PADRAO = "UTF-8";
 
 	public static String readInternalResourceFile(String path) throws IOException
 	{
@@ -55,6 +55,6 @@ public final class ResourceHandle
 			throw ex;
 		}
 
-		return reading.toString().replaceAll(System.lineSeparator(), Portugol.QUEBRA_DE_LINHA);
+		return reading.toString().replaceAll(System.lineSeparator(), "\n");
 	}
 }

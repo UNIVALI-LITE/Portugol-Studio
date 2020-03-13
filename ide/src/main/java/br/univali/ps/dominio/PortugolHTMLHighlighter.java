@@ -108,6 +108,7 @@ public class PortugolHTMLHighlighter {
                             .append(token.getText())
                             .append("</span>");
                     break;
+                case PortugolLexer.COMENTARIO_SIMPLES:
                 case PortugolLexer.COMENTARIO:
                     htmlDoPortugol
                             .append("<span class=\"")
@@ -124,7 +125,7 @@ public class PortugolHTMLHighlighter {
                             .append(token.getText())
                             .append("</span>");
             }
-        }
+        }        
         return htmlDoPortugol.toString();
     }
 }
