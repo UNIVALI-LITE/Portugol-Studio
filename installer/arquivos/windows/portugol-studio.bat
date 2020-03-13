@@ -10,6 +10,7 @@ SET caminho_portugol=%caminho_script%
 SET caminho_java=%caminho_portugol%\java\java-windows\bin\javaw.exe
 
 SET comando="%caminho_java%" -server -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio -jar aplicacao\portugol-studio.jar
+				
 SET parametros=
 
 :PROCESSAR_PROXIMO_PARAMETRO
