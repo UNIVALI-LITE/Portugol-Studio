@@ -46,7 +46,9 @@ public class GeradorDeclaracaoMetodo
         saida.append(" throws ErroExecucao, InterruptedException");
         saida.println(); // pula uma linha depois da declaração da assinatura do método
         saida.append(identacao).append("{").println(); // inicia o escopo do método
-
+        saida.append(identacao);
+        geraInicializacaoParametroPorReferenciaLiteral(noFuncao, saida);
+        
         if (opcoes.gerandoCodigoParaInterrupcaoDeThread)
         {
             Utils.geraVerificacaoThreadInterrompida(saida, nivelEscopo);
@@ -66,6 +68,7 @@ public class GeradorDeclaracaoMetodo
 
         saida.println();
         saida.append(identacao).append("}").println(); // finaliza o escopo do método
+        //TODO HERE Parametros Referenciaveis        
         saida.println(); // linha em branco depois de cada método
         
         
@@ -242,6 +245,26 @@ public class GeradorDeclaracaoMetodo
             }
         }
         saida.append(")"); // parenteses de fim da lista de parâmetros
+    }
+    
+    private static void geraInicializacaoParametroPorReferenciaLiteral(NoDeclaracaoFuncao noFuncao, PrintWriter saida)
+    {
+        List<NoDeclaracaoParametro> parametros = noFuncao.getParametros();
+        int size = parametros.size();
+        for (int i = 0; i < size; i++)
+        {
+            NoDeclaracaoParametro noParametro = parametros.get(i);
+            
+            if (noParametro.ehPassadaPorReferencia() && noParametro.getQuantificador() == Quantificador.VALOR && noParametro.getModoAcesso() == ModoAcesso.POR_VALOR) 
+            {
+                String stringIndice = Utils.geraStringIndice(noParametro);
+                String nomeTipo = Utils.getNomeTipoJava(noParametro.getTipoDado()).toUpperCase();
+                saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                saida.append(" = "+noParametro.getNome());
+                saida.append(";");
+                saida.println();
+            }
+        }
     }
     
     private static void geraParametroPorReferencia(NoDeclaracaoParametro noParametro, PrintWriter saida)

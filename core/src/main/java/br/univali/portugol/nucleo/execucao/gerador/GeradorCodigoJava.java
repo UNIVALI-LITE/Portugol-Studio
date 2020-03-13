@@ -615,14 +615,32 @@ public class GeradorCodigoJava
                 escopo = Utils.getNomeBiblioteca(escopo, asa);
                 saida.append(escopo).append(".");
             }
-
+            
             NoDeclaracaoBase declaracao = no.getOrigemDaReferencia();
             boolean ehParametroPorReferencia = declaracao instanceof NoDeclaracaoParametro && (((NoDeclaracaoParametro) declaracao).getModoAcesso() == ModoAcesso.POR_REFERENCIA);
             if (ehParametroPorReferencia || no.ehPassadoPorReferencia())
             {
                 String stringIndice = ehParametroPorReferencia ? no.getNome() : Utils.geraStringIndice(no);
                 String nomeTipo = Utils.getNomeTipoJava(declaracao.getTipoDado()).toUpperCase();
-                saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                if(no.getOrigemDaReferencia() instanceof NoDeclaracaoParametro)
+                {
+                    if(((NoDeclaracaoParametro)no.getOrigemDaReferencia()).getQuantificador()==Quantificador.VETOR 
+                    || ((NoDeclaracaoParametro)no.getOrigemDaReferencia()).getQuantificador()==Quantificador.MATRIZ)
+                    {
+                        saida.format("%s", stringIndice);
+                    }
+                    else
+                    {
+                        saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                    }
+                    
+                }
+                else
+                {
+                    saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                }
+                
+                
             }
             else
             {
@@ -1070,7 +1088,7 @@ public class GeradorCodigoJava
             return this;
         }
 
-        public VisitorGeracaoCodigo geraAtributosParaVariaveisPassadasPorReferencia(Map<TipoDado, List<NoDeclaracaoVariavel>> variaveis)
+        public VisitorGeracaoCodigo geraAtributosParaVariaveisPassadasPorReferencia(Map<TipoDado, List<NoDeclaracao>> variaveis)
         {
             if (variaveis.isEmpty())
             {
@@ -1105,15 +1123,30 @@ public class GeradorCodigoJava
             {
                 if (variaveis.containsKey(tipo))
                 {
-                    for (NoDeclaracaoVariavel variavel : variaveis.get(tipo))
+                    for (NoDeclaracao variavel : variaveis.get(tipo))
                     {
-                        saida.append(identacao)
+                        if(variavel instanceof NoDeclaracaoVariavel)
+                        {
+                            saida.append(identacao)
                                 .append("private final int ")
-                                .append(Utils.geraStringIndice(variavel))
+                                .append(Utils.geraStringIndice((NoDeclaracaoVariavel)variavel))
                                 .append(" = ")
-                                .append(String.valueOf(variavel.getIndiceReferencia()))
+                                .append(String.valueOf(((NoDeclaracaoVariavel)variavel).getIndiceReferencia()))
                                 .append(";")
                                 .println();
+                        }
+                        //TESTAR
+                        //else if(variavel instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro)variavel).getModoAcesso()==ModoAcesso.POR_VALOR)
+                        else if(variavel instanceof NoDeclaracaoParametro)
+                        {
+                            saida.append(identacao)
+                                .append("private final int ")
+                                .append(Utils.geraStringIndice((NoDeclaracaoParametro)variavel))
+                                .append(" = ")
+                                .append(String.valueOf(((NoDeclaracaoParametro)variavel).getIndiceReferencia()))
+                                .append(";")
+                                .println();
+                        }                        
                     }
                     
                     saida.println(); //separa as declarações para cada tipo
