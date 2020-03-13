@@ -28,8 +28,8 @@ public class PortugolParser extends Parser {
 		OP_SHIFT_RIGHT=45, OP_XOR=46, OP_OU_BITWISE=47, OP_NOT_BITWISE=48, OP_ALIAS_BIBLIOTECA=49, 
 		E_COMERCIAL=50, OP_MAIS_IGUAL=51, OP_MENOS_IGUAL=52, OP_MULTIPLICACAO_IGUAL=53, 
 		OP_DIVISAO_IGUAL=54, LOGICO=55, VERDADEIRO=56, FALSO=57, CARACTER=58, 
-		STRING=59, ILLEGAL_ESCAPE=60, ID=61, REAL=62, INT=63, HEXADECIMAL=64, 
-		COMENTARIO=65, COMENTARIO_SIMPLES=66, WS=67;
+		STRING=59, ID=60, REAL=61, INT=62, HEXADECIMAL=63, COMENTARIO=64, COMENTARIO_SIMPLES=65, 
+		WS=66;
 	public static final int
 		RULE_arquivo = 0, RULE_inclusaoBiblioteca = 1, RULE_listaDeclaracoes = 2, 
 		RULE_declaracao = 3, RULE_declaracaoVariavel = 4, RULE_declaracaoMatriz = 5, 
@@ -81,9 +81,8 @@ public class PortugolParser extends Parser {
 			"OP_INCREMENTO_UNARIO", "OP_DECREMENTO_UNARIO", "OP_SHIFT_LEFT", "OP_SHIFT_RIGHT", 
 			"OP_XOR", "OP_OU_BITWISE", "OP_NOT_BITWISE", "OP_ALIAS_BIBLIOTECA", "E_COMERCIAL", 
 			"OP_MAIS_IGUAL", "OP_MENOS_IGUAL", "OP_MULTIPLICACAO_IGUAL", "OP_DIVISAO_IGUAL", 
-			"LOGICO", "VERDADEIRO", "FALSO", "CARACTER", "STRING", "ILLEGAL_ESCAPE", 
-			"ID", "REAL", "INT", "HEXADECIMAL", "COMENTARIO", "COMENTARIO_SIMPLES", 
-			"WS"
+			"LOGICO", "VERDADEIRO", "FALSO", "CARACTER", "STRING", "ID", "REAL", 
+			"INT", "HEXADECIMAL", "COMENTARIO", "COMENTARIO_SIMPLES", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -805,7 +804,7 @@ public class PortugolParser extends Parser {
 			setState(160);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (((((_la - 5)) & ~0x3f) == 0 && ((1L << (_la - 5)) & ((1L << (ABRE_PARENTESES - 5)) | (1L << (OP_NAO - 5)) | (1L << (OP_SUBTRACAO - 5)) | (1L << (OP_ADICAO - 5)) | (1L << (OP_INCREMENTO_UNARIO - 5)) | (1L << (OP_DECREMENTO_UNARIO - 5)) | (1L << (OP_NOT_BITWISE - 5)) | (1L << (LOGICO - 5)) | (1L << (CARACTER - 5)) | (1L << (STRING - 5)) | (1L << (ID - 5)) | (1L << (REAL - 5)) | (1L << (INT - 5)) | (1L << (HEXADECIMAL - 5)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 				{
 				setState(159);
 				listaExpressoes();
@@ -939,7 +938,7 @@ public class PortugolParser extends Parser {
 			setState(180);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 5)) & ~0x3f) == 0 && ((1L << (_la - 5)) & ((1L << (ABRE_PARENTESES - 5)) | (1L << (TIPO - 5)) | (1L << (FACA - 5)) | (1L << (ENQUANTO - 5)) | (1L << (PARA - 5)) | (1L << (SE - 5)) | (1L << (CONSTANTE - 5)) | (1L << (ESCOLHA - 5)) | (1L << (PARE - 5)) | (1L << (RETORNE - 5)) | (1L << (OP_NAO - 5)) | (1L << (OP_SUBTRACAO - 5)) | (1L << (OP_ADICAO - 5)) | (1L << (OP_INCREMENTO_UNARIO - 5)) | (1L << (OP_DECREMENTO_UNARIO - 5)) | (1L << (OP_NOT_BITWISE - 5)) | (1L << (LOGICO - 5)) | (1L << (CARACTER - 5)) | (1L << (STRING - 5)) | (1L << (ID - 5)) | (1L << (REAL - 5)) | (1L << (INT - 5)) | (1L << (HEXADECIMAL - 5)))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << TIPO) | (1L << FACA) | (1L << ENQUANTO) | (1L << PARA) | (1L << SE) | (1L << CONSTANTE) | (1L << ESCOLHA) | (1L << PARE) | (1L << RETORNE) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 				{
 				{
 				setState(177);
@@ -1759,7 +1758,7 @@ public class PortugolParser extends Parser {
 			setState(274);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (((((_la - 5)) & ~0x3f) == 0 && ((1L << (_la - 5)) & ((1L << (ABRE_PARENTESES - 5)) | (1L << (TIPO - 5)) | (1L << (CONSTANTE - 5)) | (1L << (OP_NAO - 5)) | (1L << (OP_SUBTRACAO - 5)) | (1L << (OP_ADICAO - 5)) | (1L << (OP_INCREMENTO_UNARIO - 5)) | (1L << (OP_DECREMENTO_UNARIO - 5)) | (1L << (OP_NOT_BITWISE - 5)) | (1L << (LOGICO - 5)) | (1L << (CARACTER - 5)) | (1L << (STRING - 5)) | (1L << (ID - 5)) | (1L << (REAL - 5)) | (1L << (INT - 5)) | (1L << (HEXADECIMAL - 5)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << TIPO) | (1L << CONSTANTE) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 				{
 				setState(273);
 				inicializacaoPara();
@@ -1828,7 +1827,7 @@ public class PortugolParser extends Parser {
 				setState(287);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (((((_la - 5)) & ~0x3f) == 0 && ((1L << (_la - 5)) & ((1L << (ABRE_PARENTESES - 5)) | (1L << (TIPO - 5)) | (1L << (FACA - 5)) | (1L << (ENQUANTO - 5)) | (1L << (PARA - 5)) | (1L << (SE - 5)) | (1L << (CONSTANTE - 5)) | (1L << (ESCOLHA - 5)) | (1L << (PARE - 5)) | (1L << (RETORNE - 5)) | (1L << (OP_NAO - 5)) | (1L << (OP_SUBTRACAO - 5)) | (1L << (OP_ADICAO - 5)) | (1L << (OP_INCREMENTO_UNARIO - 5)) | (1L << (OP_DECREMENTO_UNARIO - 5)) | (1L << (OP_NOT_BITWISE - 5)) | (1L << (LOGICO - 5)) | (1L << (CARACTER - 5)) | (1L << (STRING - 5)) | (1L << (ID - 5)) | (1L << (REAL - 5)) | (1L << (INT - 5)) | (1L << (HEXADECIMAL - 5)))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << TIPO) | (1L << FACA) | (1L << ENQUANTO) | (1L << PARA) | (1L << SE) | (1L << CONSTANTE) | (1L << ESCOLHA) | (1L << PARE) | (1L << RETORNE) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 					{
 					{
 					setState(284);
@@ -2242,7 +2241,7 @@ public class PortugolParser extends Parser {
 				setState(335);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (((((_la - 5)) & ~0x3f) == 0 && ((1L << (_la - 5)) & ((1L << (ABRE_PARENTESES - 5)) | (1L << (TIPO - 5)) | (1L << (FACA - 5)) | (1L << (ENQUANTO - 5)) | (1L << (PARA - 5)) | (1L << (SE - 5)) | (1L << (CONSTANTE - 5)) | (1L << (ESCOLHA - 5)) | (1L << (PARE - 5)) | (1L << (RETORNE - 5)) | (1L << (OP_NAO - 5)) | (1L << (OP_SUBTRACAO - 5)) | (1L << (OP_ADICAO - 5)) | (1L << (OP_INCREMENTO_UNARIO - 5)) | (1L << (OP_DECREMENTO_UNARIO - 5)) | (1L << (OP_NOT_BITWISE - 5)) | (1L << (LOGICO - 5)) | (1L << (CARACTER - 5)) | (1L << (STRING - 5)) | (1L << (ID - 5)) | (1L << (REAL - 5)) | (1L << (INT - 5)) | (1L << (HEXADECIMAL - 5)))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << TIPO) | (1L << FACA) | (1L << ENQUANTO) | (1L << PARA) | (1L << SE) | (1L << CONSTANTE) | (1L << ESCOLHA) | (1L << PARE) | (1L << RETORNE) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 					{
 					{
 					setState(332);
@@ -2916,7 +2915,7 @@ public class PortugolParser extends Parser {
 				setState(357);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (((((_la - 5)) & ~0x3f) == 0 && ((1L << (_la - 5)) & ((1L << (ABRE_PARENTESES - 5)) | (1L << (OP_NAO - 5)) | (1L << (OP_SUBTRACAO - 5)) | (1L << (OP_ADICAO - 5)) | (1L << (OP_INCREMENTO_UNARIO - 5)) | (1L << (OP_DECREMENTO_UNARIO - 5)) | (1L << (OP_NOT_BITWISE - 5)) | (1L << (LOGICO - 5)) | (1L << (CARACTER - 5)) | (1L << (STRING - 5)) | (1L << (ID - 5)) | (1L << (REAL - 5)) | (1L << (INT - 5)) | (1L << (HEXADECIMAL - 5)))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABRE_PARENTESES) | (1L << OP_NAO) | (1L << OP_SUBTRACAO) | (1L << OP_ADICAO) | (1L << OP_INCREMENTO_UNARIO) | (1L << OP_DECREMENTO_UNARIO) | (1L << OP_NOT_BITWISE) | (1L << LOGICO) | (1L << CARACTER) | (1L << STRING) | (1L << ID) | (1L << REAL) | (1L << INT) | (1L << HEXADECIMAL))) != 0)) {
 					{
 					setState(356);
 					listaExpressoes();
@@ -3677,7 +3676,7 @@ public class PortugolParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3E\u01fd\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3D\u01fd\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3713,7 +3712,7 @@ public class PortugolParser extends Parser {
 		"\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\7#\u01e5\n#\f#\16#\u01e8\13#\3$\3$\3"+
 		"$\5$\u01ed\n$\3$\3$\3$\3$\5$\u01f3\n$\7$\u01f5\n$\f$\16$\u01f8\13$\3%"+
 		"\3%\3%\3%\2\3D&\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62"+
-		"\64\668:<>@BDFH\2\4\4\2??AA\3\2AB\2\u0241\2J\3\2\2\2\4[\3\2\2\2\6c\3\2"+
+		"\64\668:<>@BDFH\2\4\4\2>>@@\3\2@A\2\u0241\2J\3\2\2\2\4[\3\2\2\2\6c\3\2"+
 		"\2\2\bq\3\2\2\2\ns\3\2\2\2\fx\3\2\2\2\16\u0087\3\2\2\2\20\u0092\3\2\2"+
 		"\2\22\u0094\3\2\2\2\24\u0096\3\2\2\2\26\u00a0\3\2\2\2\30\u00a6\3\2\2\2"+
 		"\32\u00a8\3\2\2\2\34\u00bb\3\2\2\2\36\u00c3\3\2\2\2 \u00cc\3\2\2\2\"\u00cf"+
@@ -3724,12 +3723,12 @@ public class PortugolParser extends Parser {
 		"\2\2\2H\u01f9\3\2\2\2JK\7\25\2\2KO\7\13\2\2LN\5\4\3\2ML\3\2\2\2NQ\3\2"+
 		"\2\2OM\3\2\2\2OP\3\2\2\2PV\3\2\2\2QO\3\2\2\2RU\5\32\16\2SU\5\6\4\2TR\3"+
 		"\2\2\2TS\3\2\2\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2WY\3\2\2\2XV\3\2\2\2YZ\7"+
-		"\f\2\2Z\3\3\2\2\2[\\\7\33\2\2\\]\7\34\2\2]`\7?\2\2^_\7\63\2\2_a\7?\2\2"+
+		"\f\2\2Z\3\3\2\2\2[\\\7\33\2\2\\]\7\34\2\2]`\7>\2\2^_\7\63\2\2_a\7>\2\2"+
 		"`^\3\2\2\2`a\3\2\2\2a\5\3\2\2\2bd\7\23\2\2cb\3\2\2\2cd\3\2\2\2de\3\2\2"+
 		"\2ef\7\r\2\2fk\5\b\5\2gh\7\3\2\2hj\5\b\5\2ig\3\2\2\2jm\3\2\2\2ki\3\2\2"+
 		"\2kl\3\2\2\2l\7\3\2\2\2mk\3\2\2\2nr\5\n\6\2or\5\24\13\2pr\5\f\7\2qn\3"+
-		"\2\2\2qo\3\2\2\2qp\3\2\2\2r\t\3\2\2\2sv\7?\2\2tu\7%\2\2uw\5D#\2vt\3\2"+
-		"\2\2vw\3\2\2\2w\13\3\2\2\2xy\7?\2\2y{\7\t\2\2z|\5\20\t\2{z\3\2\2\2{|\3"+
+		"\2\2\2qo\3\2\2\2qp\3\2\2\2r\t\3\2\2\2sv\7>\2\2tu\7%\2\2uw\5D#\2vt\3\2"+
+		"\2\2vw\3\2\2\2w\13\3\2\2\2xy\7>\2\2y{\7\t\2\2z|\5\20\t\2{z\3\2\2\2{|\3"+
 		"\2\2\2|}\3\2\2\2}~\7\n\2\2~\u0080\7\t\2\2\177\u0081\5\22\n\2\u0080\177"+
 		"\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0085\7\n\2\2\u0083"+
 		"\u0084\7%\2\2\u0084\u0086\5\16\b\2\u0085\u0083\3\2\2\2\u0085\u0086\3\2"+
@@ -3737,7 +3736,7 @@ public class PortugolParser extends Parser {
 		"\7\3\2\2\u008a\u008c\5\26\f\2\u008b\u0089\3\2\2\2\u008c\u008f\3\2\2\2"+
 		"\u008d\u008b\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u0090\3\2\2\2\u008f\u008d"+
 		"\3\2\2\2\u0090\u0091\7\f\2\2\u0091\17\3\2\2\2\u0092\u0093\5\30\r\2\u0093"+
-		"\21\3\2\2\2\u0094\u0095\5\30\r\2\u0095\23\3\2\2\2\u0096\u0097\7?\2\2\u0097"+
+		"\21\3\2\2\2\u0094\u0095\5\30\r\2\u0095\23\3\2\2\2\u0096\u0097\7>\2\2\u0097"+
 		"\u0099\7\t\2\2\u0098\u009a\5\30\r\2\u0099\u0098\3\2\2\2\u0099\u009a\3"+
 		"\2\2\2\u009a\u009b\3\2\2\2\u009b\u009e\7\n\2\2\u009c\u009d\7%\2\2\u009d"+
 		"\u009f\5\26\f\2\u009e\u009c\3\2\2\2\u009e\u009f\3\2\2\2\u009f\25\3\2\2"+
@@ -3745,7 +3744,7 @@ public class PortugolParser extends Parser {
 		"\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a5\7\f\2\2\u00a5\27\3\2\2\2\u00a6"+
 		"\u00a7\t\2\2\2\u00a7\31\3\2\2\2\u00a8\u00aa\7\24\2\2\u00a9\u00ab\7\r\2"+
 		"\2\u00aa\u00a9\3\2\2\2\u00aa\u00ab\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00ad"+
-		"\7?\2\2\u00ad\u00af\7\7\2\2\u00ae\u00b0\5\34\17\2\u00af\u00ae\3\2\2\2"+
+		"\7>\2\2\u00ad\u00af\7\7\2\2\u00ae\u00b0\5\34\17\2\u00af\u00ae\3\2\2\2"+
 		"\u00af\u00b0\3\2\2\2\u00b0\u00b1\3\2\2\2\u00b1\u00b2\7\b\2\2\u00b2\u00b6"+
 		"\7\13\2\2\u00b3\u00b5\5$\23\2\u00b4\u00b3\3\2\2\2\u00b5\u00b8\3\2\2\2"+
 		"\u00b6\u00b4\3\2\2\2\u00b6\u00b7\3\2\2\2\u00b7\u00b9\3\2\2\2\u00b8\u00b6"+
@@ -3753,7 +3752,7 @@ public class PortugolParser extends Parser {
 		"\u00bd\7\3\2\2\u00bd\u00bf\5\36\20\2\u00be\u00bc\3\2\2\2\u00bf\u00c2\3"+
 		"\2\2\2\u00c0\u00be\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1\35\3\2\2\2\u00c2"+
 		"\u00c0\3\2\2\2\u00c3\u00c5\7\r\2\2\u00c4\u00c6\7\64\2\2\u00c5\u00c4\3"+
-		"\2\2\2\u00c5\u00c6\3\2\2\2\u00c6\u00c7\3\2\2\2\u00c7\u00ca\7?\2\2\u00c8"+
+		"\2\2\2\u00c5\u00c6\3\2\2\2\u00c6\u00c7\3\2\2\2\u00c7\u00ca\7>\2\2\u00c8"+
 		"\u00cb\5 \21\2\u00c9\u00cb\5\"\22\2\u00ca\u00c8\3\2\2\2\u00ca\u00c9\3"+
 		"\2\2\2\u00ca\u00cb\3\2\2\2\u00cb\37\3\2\2\2\u00cc\u00cd\7\t\2\2\u00cd"+
 		"\u00ce\7\n\2\2\u00ce!\3\2\2\2\u00cf\u00d0\7\t\2\2\u00d0\u00d1\7\n\2\2"+
@@ -3786,7 +3785,7 @@ public class PortugolParser extends Parser {
 		"\3\2\2\2\u0120\u0123\3\2\2\2\u0121\u011f\3\2\2\2\u0121\u0122\3\2\2\2\u0122"+
 		"\u0124\3\2\2\2\u0123\u0121\3\2\2\2\u0124\u0127\7\f\2\2\u0125\u0127\5$"+
 		"\23\2\u0126\u011d\3\2\2\2\u0126\u0125\3\2\2\2\u0127\65\3\2\2\2\u0128\u012c"+
-		"\5&\24\2\u0129\u012c\5\6\4\2\u012a\u012c\7?\2\2\u012b\u0128\3\2\2\2\u012b"+
+		"\5&\24\2\u0129\u012c\5\6\4\2\u012a\u012c\7>\2\2\u012b\u0128\3\2\2\2\u012b"+
 		"\u0129\3\2\2\2\u012b\u012a\3\2\2\2\u012c\67\3\2\2\2\u012d\u012e\5D#\2"+
 		"\u012e9\3\2\2\2\u012f\u0133\5D#\2\u0130\u0133\5(\25\2\u0131\u0133\5&\24"+
 		"\2\u0132\u012f\3\2\2\2\u0132\u0130\3\2\2\2\u0132\u0131\3\2\2\2\u0133;"+
@@ -3805,28 +3804,28 @@ public class PortugolParser extends Parser {
 		"\3\2\2\2\u0159?\3\2\2\2\u015a\u015b\7\31\2\2\u015bA\3\2\2\2\u015c\u015d"+
 		"\7\t\2\2\u015d\u015e\5D#\2\u015e\u015f\7\n\2\2\u015fC\3\2\2\2\u0160\u0162"+
 		"\b#\1\2\u0161\u0163\5H%\2\u0162\u0161\3\2\2\2\u0162\u0163\3\2\2\2\u0163"+
-		"\u0164\3\2\2\2\u0164\u0165\7?\2\2\u0165\u0167\7\7\2\2\u0166\u0168\5F$"+
+		"\u0164\3\2\2\2\u0164\u0165\7>\2\2\u0165\u0167\7\7\2\2\u0166\u0168\5F$"+
 		"\2\u0167\u0166\3\2\2\2\u0167\u0168\3\2\2\2\u0168\u0169\3\2\2\2\u0169\u01ad"+
 		"\7\b\2\2\u016a\u016c\5H%\2\u016b\u016a\3\2\2\2\u016b\u016c\3\2\2\2\u016c"+
-		"\u016d\3\2\2\2\u016d\u016e\7?\2\2\u016e\u01ad\5B\"\2\u016f\u0171\5H%\2"+
+		"\u016d\3\2\2\2\u016d\u016e\7>\2\2\u016e\u01ad\5B\"\2\u016f\u0171\5H%\2"+
 		"\u0170\u016f\3\2\2\2\u0170\u0171\3\2\2\2\u0171\u0172\3\2\2\2\u0172\u0173"+
-		"\7?\2\2\u0173\u0175\5B\"\2\u0174\u0176\5B\"\2\u0175\u0174\3\2\2\2\u0175"+
+		"\7>\2\2\u0173\u0175\5B\"\2\u0174\u0176\5B\"\2\u0175\u0174\3\2\2\2\u0175"+
 		"\u0176\3\2\2\2\u0176\u01ad\3\2\2\2\u0177\u0178\7 \2\2\u0178\u01ad\5D#"+
 		"#\u0179\u017a\7!\2\2\u017a\u01ad\5D#\"\u017b\u017c\7\35\2\2\u017c\u01ad"+
-		"\5D#!\u017d\u017e\7\62\2\2\u017e\u01ad\5D# \u017f\u0184\7?\2\2\u0180\u0182"+
+		"\5D#!\u017d\u017e\7\62\2\2\u017e\u01ad\5D# \u017f\u0184\7>\2\2\u0180\u0182"+
 		"\5B\"\2\u0181\u0183\5B\"\2\u0182\u0181\3\2\2\2\u0182\u0183\3\2\2\2\u0183"+
 		"\u0185\3\2\2\2\u0184\u0180\3\2\2\2\u0184\u0185\3\2\2\2\u0185\u0186\3\2"+
-		"\2\2\u0186\u01ad\7,\2\2\u0187\u018c\7?\2\2\u0188\u018a\5B\"\2\u0189\u018b"+
+		"\2\2\u0186\u01ad\7,\2\2\u0187\u018c\7>\2\2\u0188\u018a\5B\"\2\u0189\u018b"+
 		"\5B\"\2\u018a\u0189\3\2\2\2\u018a\u018b\3\2\2\2\u018b\u018d\3\2\2\2\u018c"+
 		"\u0188\3\2\2\2\u018c\u018d\3\2\2\2\u018d\u018e\3\2\2\2\u018e\u01ad\7-"+
-		"\2\2\u018f\u0190\7,\2\2\u0190\u0195\7?\2\2\u0191\u0193\5B\"\2\u0192\u0194"+
+		"\2\2\u018f\u0190\7,\2\2\u0190\u0195\7>\2\2\u0191\u0193\5B\"\2\u0192\u0194"+
 		"\5B\"\2\u0193\u0192\3\2\2\2\u0193\u0194\3\2\2\2\u0194\u0196\3\2\2\2\u0195"+
 		"\u0191\3\2\2\2\u0195\u0196\3\2\2\2\u0196\u01ad\3\2\2\2\u0197\u0198\7-"+
-		"\2\2\u0198\u019d\7?\2\2\u0199\u019b\5B\"\2\u019a\u019c\5B\"\2\u019b\u019a"+
+		"\2\2\u0198\u019d\7>\2\2\u0199\u019b\5B\"\2\u019a\u019c\5B\"\2\u019b\u019a"+
 		"\3\2\2\2\u019b\u019c\3\2\2\2\u019c\u019e\3\2\2\2\u019d\u0199\3\2\2\2\u019d"+
 		"\u019e\3\2\2\2\u019e\u01ad\3\2\2\2\u019f\u01a1\5H%\2\u01a0\u019f\3\2\2"+
-		"\2\u01a0\u01a1\3\2\2\2\u01a1\u01a2\3\2\2\2\u01a2\u01ad\7?\2\2\u01a3\u01ad"+
-		"\t\3\2\2\u01a4\u01ad\7@\2\2\u01a5\u01ad\79\2\2\u01a6\u01ad\7<\2\2\u01a7"+
+		"\2\u01a0\u01a1\3\2\2\2\u01a1\u01a2\3\2\2\2\u01a2\u01ad\7>\2\2\u01a3\u01ad"+
+		"\t\3\2\2\u01a4\u01ad\7?\2\2\u01a5\u01ad\79\2\2\u01a6\u01ad\7<\2\2\u01a7"+
 		"\u01ad\7=\2\2\u01a8\u01a9\7\7\2\2\u01a9\u01aa\5D#\2\u01aa\u01ab\7\b\2"+
 		"\2\u01ab\u01ad\3\2\2\2\u01ac\u0160\3\2\2\2\u01ac\u016b\3\2\2\2\u01ac\u0170"+
 		"\3\2\2\2\u01ac\u0177\3\2\2\2\u01ac\u0179\3\2\2\2\u01ac\u017b\3\2\2\2\u01ac"+
@@ -3861,7 +3860,7 @@ public class PortugolParser extends Parser {
 		"\5&\24\2\u01f2\u01ef\3\2\2\2\u01f2\u01f0\3\2\2\2\u01f2\u01f1\3\2\2\2\u01f3"+
 		"\u01f5\3\2\2\2\u01f4\u01ee\3\2\2\2\u01f5\u01f8\3\2\2\2\u01f6\u01f4\3\2"+
 		"\2\2\u01f6\u01f7\3\2\2\2\u01f7G\3\2\2\2\u01f8\u01f6\3\2\2\2\u01f9\u01fa"+
-		"\7?\2\2\u01fa\u01fb\7\6\2\2\u01fbI\3\2\2\2:OTV`ckqv{\u0080\u0085\u008d"+
+		"\7>\2\2\u01fa\u01fb\7\6\2\2\u01fbI\3\2\2\2:OTV`ckqv{\u0080\u0085\u008d"+
 		"\u0099\u009e\u00a2\u00aa\u00af\u00b6\u00c0\u00c5\u00ca\u00df\u00f5\u00f9"+
 		"\u0102\u0114\u0121\u0126\u012b\u0132\u013c\u0144\u014a\u0151\u0155\u0158"+
 		"\u0162\u0167\u016b\u0170\u0175\u0182\u0184\u018a\u018c\u0193\u0195\u019b"+

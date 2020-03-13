@@ -2,6 +2,7 @@ package br.univali.portugol.nucleo.analise;
 
 import br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.AnalisadorStringInvalida;
 import br.univali.portugol.nucleo.asa.ASA;
 
 /**
@@ -50,13 +51,19 @@ public final class AnalisadorAlgoritmo
         ObservadorAnaliseAlgoritmo observadorAnaliseAlgoritmo = new ObservadorAnaliseAlgoritmo();
         AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico();
         AnalisadorSemantico analisadorSemantico = new AnalisadorSemantico();
+        AnalisadorStringInvalida asi = new AnalisadorStringInvalida();
                 
         analisadorSintatico.adicionarObservador(observadorAnaliseAlgoritmo);
         analisadorSemantico.adicionarObservador(observadorAnaliseAlgoritmo);
+        asi.adicionarObservador(observadorAnaliseAlgoritmo);
         
         ASA asa = analisadorSintatico.analisar(codigo);
         arvoreSintaticaAbstrata = asa;
+        
+        
+        
         if (asa != null) {
+            asi.analisar(asa);
             analisadorSemantico.analisar(asa);
         }
         
