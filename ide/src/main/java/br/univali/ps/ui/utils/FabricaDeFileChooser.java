@@ -54,6 +54,11 @@ public class FabricaDeFileChooser {
                                 return;
                             }
                         }
+                        if((selectedFile != null) && selectedFile.getName().matches(".*[><\"/|?\\*].*"))
+                        {
+                            QuestionDialog.getInstance().showMessage("O nome do arquivo não pode conter os caracteres > < : \" / | ? *,", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
                     }
 
                     super.approveSelection();
