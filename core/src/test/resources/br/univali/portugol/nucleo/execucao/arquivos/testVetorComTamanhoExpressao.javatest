@@ -1,0 +1,25 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.programa.*;
+
+public class testVetorComTamanhoExpressao extends Programa
+{
+
+
+
+     public testVetorComTamanhoExpressao() throws ErroExecucao, InterruptedException {
+     }
+
+
+     @Override
+     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+     {
+     int x = 2;
+     int y = 5;
+     int vet[] = new int[1 + x + y];
+
+
+     }
+
+}

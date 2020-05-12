@@ -137,10 +137,9 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         };
 
         botaoAceitar.setAction(acaoAceitar);
-        botaoAceitar.setText("<html><body><u>A</u>ceitar</body></html>");
+        botaoAceitar.setText("<html><body>Aceitar</body></html>");
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Aceitar");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "Aceitar");
         getActionMap().put("Aceitar", acaoAceitar);
 
         acaoCancelar = new AbstractAction("Cancelar", botaoCancelar.getIcon())
@@ -159,10 +158,9 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         };
 
         botaoCancelar.setAction(acaoCancelar);
-        botaoCancelar.setText("<html><body><u>C</u>ancelar</body></html>");
+        botaoCancelar.setText("<html><body>Cancelar</body></html>");
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancelar");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "Cancelar");
         getActionMap().put("Cancelar", acaoCancelar);
     }
 

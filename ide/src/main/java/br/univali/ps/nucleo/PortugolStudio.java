@@ -691,6 +691,7 @@ public final class PortugolStudio
         {
             try {
             String arquivo = FileHandle.open(removerPlugins);
+            FileUtils.forceDelete(removerPlugins);
             String [] caminhos = arquivo.split("\n");
             for (String caminho : caminhos) {
                 File pastaPlugin = new File(caminho);
@@ -698,10 +699,9 @@ public final class PortugolStudio
                 {
                     FileUtils.deleteDirectory(pastaPlugin);
                 }
-            }
-            FileUtils.deleteQuietly(removerPlugins);
+            }            
             } catch (Exception ex) {
-                LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos recentemente utilizados pelo Portugol Studio.");
+                PortugolStudio.getInstancia().tratadorExcecoes.exibirExcecao(ex);
             }
         }
     }
@@ -1020,19 +1020,6 @@ public final class PortugolStudio
         return (PSFindReplace) telaPesquisarSubstituir.getPanel();
     }
 
-    public JDialog getTelaRenomearSimbolo()
-    {
-        if (telaRenomearSimbolo == null)
-        {
-            telaRenomearSimbolo = new TelaCustomBorder("renomear");
-            telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
-        }
-        
-        telaRenomearSimbolo.setLocationRelativeTo(Lancador.getInstance().getJFrame());
-        
-        return telaRenomearSimbolo;
-    }
-    
     public TelaRenomearSimbolo getTelaRenomearSimboloPanel()
     {
         if (telaRenomearSimbolo == null)

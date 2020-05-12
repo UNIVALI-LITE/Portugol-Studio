@@ -48,6 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -390,7 +391,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
         criarBotaoAbrirRecentes();
         for (File recente : files) {
-            if(!recente.exists())
+            if(!recente.exists() || !recente.canRead() || !recente.isFile())
             {
                 arquivoRemovido = true;
                 continue;
@@ -436,7 +437,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 FabricaDicasInterface.criarTooltip(button, recente.getPath());
                 areaRecentes.add(button);
             } catch (Exception ex) {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                //PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         }        
         if(arquivoRemovido)
@@ -647,6 +648,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelDireita.revalidate();
 
     }
+
+    public JTree getArvoreExemplos() {
+        return arvoreExemplos;
+    }    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

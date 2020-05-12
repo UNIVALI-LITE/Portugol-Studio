@@ -11,7 +11,7 @@ inclusaoBiblioteca
     : INCLUA BIBLIOTECA ID (OP_ALIAS_BIBLIOTECA ID)?;
 
 listaDeclaracoes
-    :  CONSTANTE? TIPO declaracao (',' declaracao)*;
+    :  CONSTANTE? TIPO declaracao (VIRGULA declaracao)*;
 
 declaracao
     :   declaracaoVariavel | declaracaoArray | declaracaoMatriz ;
@@ -23,7 +23,7 @@ declaracaoMatriz
     : ID ABRE_COLCHETES linhaMatriz? FECHA_COLCHETES ABRE_COLCHETES colunaMatriz? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoMatriz)? ;
 
 inicializacaoMatriz
-    :  ABRE_CHAVES inicializacaoArray (',' inicializacaoArray)* FECHA_CHAVES;  
+    :  ABRE_CHAVES inicializacaoArray (VIRGULA inicializacaoArray)* FECHA_CHAVES;  
 
 linhaMatriz
     :   tamanhoArray ;
@@ -38,14 +38,14 @@ inicializacaoArray
     :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
 
 tamanhoArray 
-    :   INT | ID; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante
+    :   expressao; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante
 
 declaracaoFuncao
     :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES 
                                              ABRE_CHAVES comando* FECHA_CHAVES ; 
 
 listaParametros
-    :   parametro (',' parametro)* ;
+    :   parametro (VIRGULA parametro)* ;
 
 parametro
     :   TIPO E_COMERCIAL? ID (parametroArray | parametroMatriz)? ;
@@ -93,7 +93,7 @@ facaEnquanto
     :   FACA listaComandos ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
 para
-    :   PARA ABRE_PARENTESES inicializacaoPara? ';' condicao ';' incrementoPara FECHA_PARENTESES listaComandos ;
+    :   PARA ABRE_PARENTESES inicializacaoPara? PONTOVIRGULA condicao PONTOVIRGULA incrementoPara FECHA_PARENTESES listaComandos ;
 
 listaComandos
     : (ABRE_CHAVES comando* FECHA_CHAVES | comando); // 1 comando ou um bloco de comandos entre chaves, possivelmente vazio
@@ -114,7 +114,7 @@ escolha
     :   ESCOLHA ABRE_PARENTESES expressao FECHA_PARENTESES ABRE_CHAVES caso* FECHA_CHAVES ;   
 
 caso
-    :   CASO (CONTRARIO | expressao) ':' (comando* | ABRE_CHAVES comando* FECHA_CHAVES) pare? ;
+    :   CASO (CONTRARIO | expressao) DOISPONTOS (comando* | ABRE_CHAVES comando* FECHA_CHAVES) pare? ;
 
 pare
     : PARE ;
@@ -163,7 +163,7 @@ expressao
     ;
 
 listaExpressoes
-    :   (expressao | atribuicaoComposta | atribuicao) (',' (expressao | atribuicaoComposta | atribuicao))* ; 
+    :   (expressao | atribuicaoComposta | atribuicao) (VIRGULA (expressao | atribuicaoComposta | atribuicao))* ; 
      
 escopoBiblioteca
-    :   (ID '.') ; 
+    :   (ID PONTO) ; 

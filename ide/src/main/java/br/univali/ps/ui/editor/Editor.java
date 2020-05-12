@@ -834,11 +834,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         centralizarCodigoFonte();
     }
 
-    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
-    {
-        //this.abaCodigoFonte = abaCodigoFonte;
-    }
-
     /**
      * Deve ser usado somente para definir o código fonte quando o componente
      * estiver embutido no HTML da ajuda

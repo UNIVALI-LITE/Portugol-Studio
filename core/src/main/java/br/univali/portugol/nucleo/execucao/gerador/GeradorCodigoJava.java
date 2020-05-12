@@ -615,14 +615,32 @@ public class GeradorCodigoJava
                 escopo = Utils.getNomeBiblioteca(escopo, asa);
                 saida.append(escopo).append(".");
             }
-
+            
             NoDeclaracaoBase declaracao = no.getOrigemDaReferencia();
             boolean ehParametroPorReferencia = declaracao instanceof NoDeclaracaoParametro && (((NoDeclaracaoParametro) declaracao).getModoAcesso() == ModoAcesso.POR_REFERENCIA);
             if (ehParametroPorReferencia || no.ehPassadoPorReferencia())
             {
                 String stringIndice = ehParametroPorReferencia ? no.getNome() : Utils.geraStringIndice(no);
                 String nomeTipo = Utils.getNomeTipoJava(declaracao.getTipoDado()).toUpperCase();
-                saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                if(no.getOrigemDaReferencia() instanceof NoDeclaracaoParametro)
+                {
+                    if(((NoDeclaracaoParametro)no.getOrigemDaReferencia()).getQuantificador()==Quantificador.VETOR 
+                    || ((NoDeclaracaoParametro)no.getOrigemDaReferencia()).getQuantificador()==Quantificador.MATRIZ)
+                    {
+                        saida.format("%s", stringIndice);
+                    }
+                    else
+                    {
+                        saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                    }
+                    
+                }
+                else
+                {
+                    saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
+                }
+                
+                
             }
             else
             {
@@ -635,9 +653,45 @@ public class GeradorCodigoJava
         @Override
         public Void visitar(NoEnquanto no) throws ExcecaoVisitaASA
         {
-            geradorLoops.gera(no, saida, this, nivelEscopo, opcoes, seed);
-            
-            return null;
+            boolean loopInfinito = geradorLoops.loopInfinito(no);
+
+            /**
+             * Quando detecta um loop infinito (uma constante sendo usada como
+             * condição) declara uma flag fora do loop para evitar "Unreacheable
+             * statement" no java.
+             */
+            String flag = "flag_" + String.valueOf(seed+nivelEscopo-1);
+            if (loopInfinito) {
+                saida.format("boolean %s =", flag);
+                no.getCondicao().aceitar(this);
+                saida.append(";");
+            }
+
+            saida.append("while(");
+
+            if (!loopInfinito) {
+                no.getCondicao().aceitar(this);
+            } else {
+                saida.append(flag); // usa flag como condição do loop para 'enganar' o java e impedir que ele detecte o 'Unreacheable Stament' error
+            }
+
+            saida.append(")").println();
+
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+
+            saida.append(identacao).append("{").println();
+
+            if (opcoes.gerandoCodigoParaInterrupcaoDeThread) {
+                Utils.geraVerificacaoThreadInterrompida(saida, nivelEscopo);
+            }
+            visitarBlocos(no.getBlocos());
+            saida.println();
+
+            saida.append(identacao)
+                    .append("}")
+                    .println();
+
+                return null;
         }
 
         @Override
@@ -786,7 +840,48 @@ public class GeradorCodigoJava
         @Override
         public Void visitar(NoFacaEnquanto no) throws ExcecaoVisitaASA
         {
-            geradorLoops.gera(no, saida, this, nivelEscopo, opcoes, seed);
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+
+            boolean loopInfinito = geradorLoops.loopInfinito(no);
+
+            /**
+             * Quando detecta um loop infinito (uma constante sendo usada como
+             * condição) declara uma flag fora do loop para evitar "Unreacheable
+             * statement" no java.
+             */
+
+            String flag = "flag_" + String.valueOf(seed+nivelEscopo-1);
+            if (loopInfinito) {
+                saida.format("boolean %s =", flag);
+                no.getCondicao().aceitar(this);
+                saida.append(";");
+            }
+
+            saida.append("do").println();
+            saida.append(identacao).append("{").println();
+
+            if (opcoes.gerandoCodigoParaInterrupcaoDeThread) {
+                Utils.geraVerificacaoThreadInterrompida(saida, nivelEscopo);
+            }
+
+            List<NoBloco> blocos = no.getBlocos();
+            if (blocos != null) {
+                Utils.visitarBlocos(blocos, saida, this, nivelEscopo, opcoes, seed);
+                saida.println();
+            }
+
+            saida.append(identacao).append("}").println();
+
+            saida.append(identacao).append("while(");
+
+            if (!loopInfinito) {
+                no.getCondicao().aceitar(this);
+            }
+            else { // usa flag como condição para o loop
+                saida.append(flag);
+            }
+
+            saida.append(");").println();
             
             return null;
         }
@@ -993,7 +1088,7 @@ public class GeradorCodigoJava
             return this;
         }
 
-        public VisitorGeracaoCodigo geraAtributosParaVariaveisPassadasPorReferencia(Map<TipoDado, List<NoDeclaracaoVariavel>> variaveis)
+        public VisitorGeracaoCodigo geraAtributosParaVariaveisPassadasPorReferencia(Map<TipoDado, List<NoDeclaracao>> variaveis)
         {
             if (variaveis.isEmpty())
             {
@@ -1028,15 +1123,30 @@ public class GeradorCodigoJava
             {
                 if (variaveis.containsKey(tipo))
                 {
-                    for (NoDeclaracaoVariavel variavel : variaveis.get(tipo))
+                    for (NoDeclaracao variavel : variaveis.get(tipo))
                     {
-                        saida.append(identacao)
+                        if(variavel instanceof NoDeclaracaoVariavel)
+                        {
+                            saida.append(identacao)
                                 .append("private final int ")
-                                .append(Utils.geraStringIndice(variavel))
+                                .append(Utils.geraStringIndice((NoDeclaracaoVariavel)variavel))
                                 .append(" = ")
-                                .append(String.valueOf(variavel.getIndiceReferencia()))
+                                .append(String.valueOf(((NoDeclaracaoVariavel)variavel).getIndiceReferencia()))
                                 .append(";")
                                 .println();
+                        }
+                        //TESTAR
+                        //else if(variavel instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro)variavel).getModoAcesso()==ModoAcesso.POR_VALOR)
+                        else if(variavel instanceof NoDeclaracaoParametro)
+                        {
+                            saida.append(identacao)
+                                .append("private final int ")
+                                .append(Utils.geraStringIndice((NoDeclaracaoParametro)variavel))
+                                .append(" = ")
+                                .append(String.valueOf(((NoDeclaracaoParametro)variavel).getIndiceReferencia()))
+                                .append(";")
+                                .println();
+                        }                        
                     }
                     
                     saida.println(); //separa as declarações para cada tipo
