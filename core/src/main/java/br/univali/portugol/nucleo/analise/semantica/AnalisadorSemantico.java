@@ -195,12 +195,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
 
         List<NoDeclaracao> declaracoes = asap.getListaDeclaracoesGlobais(true);
+        boolean possuiFuncaoInicio = false;
         
         // itera somente nas declarações de funções para colocá-las na tabela de símbolos
         for (NoDeclaracao declaracao : declaracoes) {
             if (declaracao instanceof NoDeclaracaoFuncao) {
+                if(((NoDeclaracaoFuncao)declaracao).getNome().equals("inicio"))
+                {
+                    possuiFuncaoInicio = true;
+                }
                 registraFuncaoNaTabelaDeSimbolos((NoDeclaracaoFuncao)declaracao);
             }
+        }
+        
+        if(!possuiFuncaoInicio)
+        {
+            notificarErroSemantico(new ErroFuncaoInicioInexistente());
         }
         
         for (NoDeclaracao declaracao : declaracoes) {
