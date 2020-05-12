@@ -100,4 +100,15 @@ public final class FileHandle
 
         return reading.toString().replaceAll("\r\n", "\n");
     }
+    
+    public static boolean isFilenameValid(String file) {
+        File f = new File(file);
+        try {
+           f.getCanonicalPath();
+           return true;
+        }
+        catch (IOException e) {
+           return false;
+        }
+    }
 }
