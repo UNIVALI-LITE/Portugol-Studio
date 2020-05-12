@@ -4,10 +4,12 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
+import br.univali.portugol.nucleo.mensagens.ErroSemiSintatico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
@@ -103,15 +105,18 @@ public class PortugolParser extends AbstractParser
                         int coluna = 0;
                         int indice = linha.getStartOffset() + erro.getColuna();
 
-                        for (int i = indice; i > 0; i--)
+                        if (!(erro instanceof ErroEscapeUnico))
                         {
-                            if (caracterParadaEncontrado(documento.charAt(i)))
+                            for (int i = indice; i > 0; i--)
                             {
-                                indice = i + 1;
-                                break;
+                                if (caracterParadaEncontrado(documento.charAt(i)))
+                                {
+                                    indice = i + 1;
+                                    break;
+                                }
                             }
                         }
-
+                        
                         for (int i = indice; i < documento.getLength(); i++)
                         {
                             if (caracterParadaEncontrado(documento.charAt(i)))
@@ -120,17 +125,32 @@ public class PortugolParser extends AbstractParser
                                 break;
                             }
                         }
-
+                        
                         if (coluna == 0)
                         {
                             coluna = documento.getLength();
+                        }                       
+                        
+                        if(erro instanceof ErroSemiSintatico)
+                        {
+                            String codigo = ((ErroSemiSintatico)erro).getCodigofonte();
+                            String codigoFormatado = codigo.split("\n\t")[0];
+
+                            DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), erro.getLinha() - 1, indice, codigoFormatado.length());
+                            notice.setShowInEditor(true);
+                            notice.setColor(Color.RED);
+
+                            resultado.addNotice(notice);
                         }
+                        else
+                        {
+                            DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), erro.getLinha() - 1, indice, coluna - indice);
+                            notice.setShowInEditor(true);
+                            notice.setColor(Color.RED);
 
-                        DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), erro.getLinha() - 1, indice, coluna - indice);
-                        notice.setShowInEditor(true);
-                        notice.setColor(Color.RED);
-
-                        resultado.addNotice(notice);
+                            resultado.addNotice(notice);
+                        }                        
+                        
                     }
                     catch (BadLocationException excecao)
                     {

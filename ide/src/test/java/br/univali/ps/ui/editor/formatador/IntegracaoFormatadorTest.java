@@ -65,7 +65,6 @@ public class IntegracaoFormatadorTest
     {
         AnalisadorAlgoritmo aa = new AnalisadorAlgoritmo();
         ResultadoAnalise resultado = aa.analisar(codigoPortugol);
-
         Assert.assertTrue("Error de compilação!", resultado.getErros().isEmpty());
 
         GeradorCodigoJava gerador = new GeradorCodigoJava(seed);

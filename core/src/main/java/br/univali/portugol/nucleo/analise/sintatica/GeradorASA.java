@@ -841,6 +841,7 @@ public class GeradorASA {
             String texto = ctx.STRING().getText();
             String substring = StringUtils.removerAspasCircundantes(texto);
             NoCadeia noCadeia = new NoCadeia(StringUtils.traduzirSequenciasEscape(substring)); //ignora as aspas que circundam a string
+            noCadeia.setValorOriginal(texto);
             noCadeia.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.STRING()));
             return noCadeia;
         }

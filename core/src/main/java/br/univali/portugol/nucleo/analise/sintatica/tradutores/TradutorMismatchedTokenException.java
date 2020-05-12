@@ -1,8 +1,10 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncompleta;
@@ -19,8 +21,10 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.runtime.MismatchedTokenException;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
@@ -45,12 +49,23 @@ public final class TradutorMismatchedTokenException
       
         int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
         int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
-        
         ContextSet contextos = new ContextSet(erro);
         
         List<String> tokensEsperados = getTokensEsperados(erro);
         
         String contextoAtual = contextos.getContextoAtual();
+        
+        if(tokensEsperados.size()>1)
+        {
+            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
+            {
+//                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
+//                {
+//                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
+//                }
+            }
+        }
         
         if (contextoAtual.equals("expressao") ) {
             
@@ -144,6 +159,11 @@ public final class TradutorMismatchedTokenException
         }
         
         return new ErroParaEsperaCondicao(linha, coluna);
+    }
+    
+    private ErroSintatico traduzirErrosEscape()
+    {
+        return new ErroTokenFaltando(0, 0, "\\");
     }
     
     private int numeroPontoVirgula(String string) {

@@ -10,6 +10,8 @@ package br.univali.portugol.nucleo.asa;
  */
 public final class NoCadeia extends NoExpressaoLiteral<String>
 {
+    String valorOriginal = "";
+    
     /**
      * @param valor a cadeia representada por este nó da árvore
      * @since 1.0
@@ -38,6 +40,14 @@ public final class NoCadeia extends NoExpressaoLiteral<String>
     public TipoDado getTipoResultante()
     {
         return TipoDado.CADEIA;
+    }
+
+    public String getValorOriginal() {
+        return valorOriginal;
+    }
+
+    public void setValorOriginal(String valorOriginal) {
+        this.valorOriginal = valorOriginal;
     }
    
 }
