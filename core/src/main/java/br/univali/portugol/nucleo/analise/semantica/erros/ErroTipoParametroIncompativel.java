@@ -113,7 +113,7 @@ public class ErroTipoParametroIncompativel extends ErroSemantico
 
         if (AnalisadorSemantico.FUNCAO_ESCREVA.equals(nomeFuncao))
         {
-            construtorString.append("Você não pode passar uma função com retorno vazio para a função \"escreva\"");
+            construtorString.append("Você não pode passar uma função sem retorno para a função \"escreva\"");
         }
         else
         {
