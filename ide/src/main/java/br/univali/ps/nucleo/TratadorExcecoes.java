@@ -126,8 +126,15 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
             Aba abaSelecionada = PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada();
             if(abaSelecionada instanceof AbaCodigoFonte)
             {
-                String codigoFonte = ((AbaCodigoFonte)abaSelecionada).getCodigoFonte();
-                telaExcecaoEncontrada.getAreaTextoStackTrace().append("\n\n\nCódigo do Erro:\n"+codigoFonte);
+                try
+                {
+                    String codigoFonte = ((AbaCodigoFonte)abaSelecionada).getCodigoFonte();
+                    telaExcecaoEncontrada.getAreaTextoStackTrace().append("\n\n\nCódigo do Erro:\n"+codigoFonte);
+                }
+                catch (Exception ex)
+                {
+                    //Se não conseguiu, nem manda
+                }                    
             }
         }
     }
