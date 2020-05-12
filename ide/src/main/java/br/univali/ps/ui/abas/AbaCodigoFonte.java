@@ -167,7 +167,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         carregarConfiguracoes();
         configurarResolucao();
         configurarAcoes();
-        configurarEditor();
         configurarBarraDeBotoesDoEditor();
         configuraBarraDeBotoesDoPainelArvoreInspetor();
         instalarObservadores();
@@ -1178,10 +1177,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         miniBarra.getBotaoParar().setHideActionText(true);
     }
 
-    private void configurarEditor() {
-        editor.setAbaCodigoFonte(AbaCodigoFonte.this);
-    }
-
     private int getNumeroDeLinhas(String codigo) {
         try {
             LineNumberReader lineNumberReader = new LineNumberReader(new StringReader(codigo));
@@ -1350,10 +1345,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarTooltip(btnSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarComo);
         FabricaDicasInterface.criarTooltip(barraBotoesEditor.getCompomemtParaAdicionarDica(), "Personalizar as cores do Portugol");
         FabricaDicasInterface.criarTooltip(barraBotoesInspetorArvore.getCompomemtParaAdicionarDica(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
-    }
-
-    protected PainelSaida getPainelSaida() {
-        return this.painelSaida;
     }
 
     public Editor getEditor() {
@@ -2748,11 +2739,76 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         });
     }
+    
+    public PainelSaida getPainelSaida() {
+        return this.painelSaida;
+    }
 
     public JScrollPane getScrollInspetor() {
         return scrollInspetor;
     }
 
+    public JPanel getPainelTemporario() {
+        return painelTemporario;
+    }
+
+    public String getCodigoFonteAtual() {
+        return codigoFonteAtual;
+    }
+
+    public AbaGerenciadorBibliotecas getPainelGerenciadorBibliotecas() {
+        return painelGerenciadorBibliotecas;
+    }
+
+    public AbaGerenciadorTemplates getPainelGerenciadorTemplates() {
+        return painelGerenciadorTemplates;
+    }
+
+    public PSPainelTabulado getPainelTabuladoUtilitarios() {
+        return painelTabuladoUtilitarios;
+    }
+
+    public JToolBar getBarraFerramentas() {
+        return barraFerramentas;
+    }
+
+    public JToolBar getBotoesPlugin() {
+        return botoesPlugin;
+    }
+
+    public InspetorDeSimbolos getInspetorDeSimbolos() {
+        return inspetorDeSimbolos;
+    }
+
+    public JPanel getPainelInspetorArvore() {
+        return painelInspetorArvore;
+    }
+
+    public JPanel getPainelTemplate() {
+        return painelTemplate;
+    }
+
+    public JPanel getTreePanel() {
+        return treePanel;
+    }
+
+    public Programa getProgramaAnalisado() {
+        return programaAnalisado;
+    }
+
+    public Programa getProgramaCompilado() {
+        return programaCompilado;
+    }
+
+    public JPanel getPainelConsole() {
+        return painelConsole;
+    }
+
+    public JPanel getPainelEditor() {
+        return painelEditor;
+    }
+    
+    
     @Override
     public void registrarBiblioteca(Class<? extends Biblioteca> biblioteca) {
         try {
