@@ -20,6 +20,7 @@ import com.alee.laf.radiobutton.WebRadioButtonUI;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.separator.WebSeparatorUI;
 import com.alee.laf.table.WebTableStyle;
+import com.alee.laf.text.WebPasswordFieldUI;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
@@ -139,13 +140,23 @@ public class WeblafUtils {
        if (!WeblafUtils.weblafEstaInstalado()) {
            return;
        }
-       ((WebTextFieldUI) field.getUI()).setDrawBorder(false);
-       ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
+       if(field instanceof JPasswordField)
+       {
+           ((WebPasswordFieldUI) field.getUI()).setDrawBorder(false);
+            ((WebPasswordFieldUI) field.getUI()).setDrawBackground(true);
+       }
+       else
+       {
+           ((WebTextFieldUI) field.getUI()).setDrawBorder(false);
+            ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
+       }
+       
 //       field.setBorder(new EmptyBorder(15,15,15,15));
        field.setOpaque(true);
        field.setBackground(ColorController.COR_DESTAQUE);
        field.setForeground(ColorController.COR_LETRA);
     }
+    
     public static void configuraWebLaf(JTextField field, int margin, int leftMargin) {
        if (!WeblafUtils.weblafEstaInstalado()) {
            return;

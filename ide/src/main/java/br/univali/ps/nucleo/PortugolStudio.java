@@ -3,7 +3,9 @@ package br.univali.ps.nucleo;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.ps.DetectorViolacoesThreadSwing;
+import br.univali.ps.plugins.base.ErroCarregamentoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.plugins.base.ResultadoCarregamento;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
@@ -734,7 +736,11 @@ public final class PortugolStudio
             gerenciadorPlugins.incluirDiretorioPlugin(diretorio);
         }
 
-        gerenciadorPlugins.carregarPlugins();
+        ResultadoCarregamento resultado  = gerenciadorPlugins.carregarPlugins();
+        List<ErroCarregamentoPlugin> erros = resultado.getErros();
+        for (ErroCarregamentoPlugin erro : erros) {
+            JOptionPane.showConfirmDialog(null, erro);            
+        }
     }
 
     private void carregarBibliotecas()
