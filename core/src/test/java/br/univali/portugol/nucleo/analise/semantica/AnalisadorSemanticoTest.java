@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.analise.semantica.erros.ErroInclusaoBiblioteca
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloRedeclarado;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroTipoParametroIncompativel;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
@@ -56,6 +57,30 @@ public final class AnalisadorSemanticoTest
             ResultadoAnalise resultado = e.getResultadoAnalise();
             Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() == 1);
             Assert.assertEquals("Erro no tipo de exceção reportada", ErroExpressaoTamanhoVetorMatriz.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
+        
+    }
+    
+    @Test 
+    public void testEscrevaComFuncaoSemRetorno() throws ErroCompilacao {
+        try {
+            Portugol.compilarParaAnalise(
+                "programa                               " 
+            +   "{                                      " 
+            +   "   funcao inicio()                     " 
+            +   "   {                                   " 
+            +   "	escreva(\"Olá Mundo\",nada())   " 
+            +   "   }                                   " 
+            +   "   funcao nada()                       " 
+            +   "   {                                   " 
+            +   "   }                                   "
+            +   "}                                      "
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() == 1);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroTipoParametroIncompativel.class.getName(), resultado.getErros().get(0).getClass().getName());
         }
         
     }

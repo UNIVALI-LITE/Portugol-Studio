@@ -599,7 +599,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         {
             Funcao funcao = (Funcao) memoria.getSimbolo(chamadaFuncao.getNome());
 
-            return funcao.getParametros().get(indice).getNome();
+            return funcao==null?"":funcao.getParametros().get(indice).getNome();
         }
         else
         {
