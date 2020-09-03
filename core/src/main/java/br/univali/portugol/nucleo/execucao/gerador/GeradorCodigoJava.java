@@ -853,6 +853,7 @@ public class GeradorCodigoJava
              */
 
             String flag = "flag_" + String.valueOf(seed+numeroFlag+nivelEscopo-1);
+            numeroFlag++;
             if (loopInfinito) {
                 saida.format("boolean %s =", flag);
                 no.getCondicao().aceitar(this);
