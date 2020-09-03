@@ -54,7 +54,7 @@ public class FabricaDeFileChooser {
                                 return;
                             }
                         }
-                        if((selectedFile != null) && (selectedFile.getName().matches(".*[><\"/|?\\*].*") || FileHandle.isFilenameValid(selectedFile.getPath())))
+                        if((selectedFile != null) && (selectedFile.getName().matches(".*[><\"/|?\\*].*") || !FileHandle.isFilenameValid(selectedFile.getPath())))
                         {
                             QuestionDialog.getInstance().showMessage("O nome do arquivo não é permitido. \n O nome não pode conter os caracteres \n > < : \" / | ? *,", JOptionPane.WARNING_MESSAGE);
                             return;

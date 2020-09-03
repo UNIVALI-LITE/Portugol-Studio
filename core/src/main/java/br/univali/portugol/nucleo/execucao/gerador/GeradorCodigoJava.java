@@ -36,6 +36,7 @@ public class GeradorCodigoJava
     private boolean inicializandoNoPara = false;
     private int quantidadeInicializacoesPara = 0;
     private int indiceAtualInicializacaoPara = -1;
+    private int numeroFlag = 1;
 
     public static class Opcoes
     {
@@ -660,7 +661,8 @@ public class GeradorCodigoJava
              * condição) declara uma flag fora do loop para evitar "Unreacheable
              * statement" no java.
              */
-            String flag = "flag_" + String.valueOf(seed+nivelEscopo-1);
+            String flag = "flag_" + String.valueOf(seed+numeroFlag+nivelEscopo-1);
+            numeroFlag++;
             if (loopInfinito) {
                 saida.format("boolean %s =", flag);
                 no.getCondicao().aceitar(this);
@@ -850,7 +852,7 @@ public class GeradorCodigoJava
              * statement" no java.
              */
 
-            String flag = "flag_" + String.valueOf(seed+nivelEscopo-1);
+            String flag = "flag_" + String.valueOf(seed+numeroFlag+nivelEscopo-1);
             if (loopInfinito) {
                 saida.format("boolean %s =", flag);
                 no.getCondicao().aceitar(this);
