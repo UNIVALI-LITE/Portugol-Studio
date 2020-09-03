@@ -5,10 +5,14 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolBaseVisitor;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ErrorNodeImpl;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class GeradorASA {
@@ -672,8 +676,12 @@ public class GeradorASA {
             NoSe se = new NoSe((NoExpressao)ctx.expressao().accept(this));
             
             se.setBlocosVerdadeiros(getBlocos(ctx.listaComandos(0)));
-            
+                        
             if (ctx.SENAO() != null) {
+                if(ctx.SENAO() instanceof ErrorNodeImpl)
+                {
+                    //throw new ErroComandoEsperado(10, 50);
+                }
                 se.setBlocosFalsos(getBlocos(ctx.listaComandos(1)));
             }
             
