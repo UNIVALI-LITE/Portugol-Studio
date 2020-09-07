@@ -680,7 +680,7 @@ public class GeradorASA {
             if (ctx.SENAO() != null) {
                 if(ctx.SENAO() instanceof ErrorNodeImpl)
                 {
-                    //throw new ErroComandoEsperado(10, 50);
+                    throw new RecognitionException("ERROSENAO", parser, null, ctx);
                 }
                 se.setBlocosFalsos(getBlocos(ctx.listaComandos(1)));
             }

@@ -2,8 +2,10 @@ package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoInesperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
@@ -54,6 +56,16 @@ public final class TradutorMismatchedTokenException
         List<String> tokensEsperados = getTokensEsperados(erro);
         
         String contextoAtual = contextos.getContextoAtual();
+        
+        if(tokensEsperados.isEmpty())
+        {
+            if(erro.getMessage().equals("ERROSENAO"))
+            {
+                linha = ((PortugolParser.SeContext) erro.getCtx()).SENAO().getSymbol().getLine();
+                coluna = ((PortugolParser.SeContext) erro.getCtx()).SENAO().getSymbol().getCharPositionInLine();
+                return new ErroComandoInesperado(linha, coluna, ((PortugolParser.SeContext) erro.getCtx()).SENAO().getSymbol().getText());
+            }
+        }
         
         if(tokensEsperados.size()>1)
         {
@@ -126,9 +138,15 @@ public final class TradutorMismatchedTokenException
     }
 
     private List<String> getTokensEsperados(RecognitionException erro) {
+        List<String> tokens = new ArrayList<>();
+        try{
+            erro.getExpectedTokens();
+        }catch(Exception e){
+            return tokens;
+        }        
         Vocabulary vocabulario = erro.getRecognizer().getVocabulary();
         IntervalSet expectedTokens = erro.getExpectedTokens();
-        List<String> tokens = new ArrayList<>();
+        
         for (int i = 0; i < expectedTokens.size(); i++) {
             String token = vocabulario.getSymbolicName(expectedTokens.get(i));
             if (token == null) {
