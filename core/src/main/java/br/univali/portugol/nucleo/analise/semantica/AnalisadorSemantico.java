@@ -329,6 +329,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                     if (noReferenciaVariavel.getEscopoBiblioteca() == null)
                     {
                         Simbolo simbolo = memoria.getSimbolo(noReferenciaVariavel.getNome());
+                        if(simbolo == null)
+                        {
+                            return modosAcesso;
+                        }
                         if (simbolo.constante())
                         {
                             modosAcesso.add(ModoAcesso.POR_VALOR);
@@ -677,6 +681,11 @@ public final class AnalisadorSemantico implements VisitanteASA
                         String nome = ((NoReferenciaVariavel) parametro).getNome();
 
                         Simbolo variavel = memoria.getSimbolo(nome);
+                        if(variavel == null)
+                        {
+                            notificarErroSemantico(new ErroSimboloNaoDeclarado((NoReferenciaVariavel)parametro));
+                            return tipos;
+                        }
                         variavel.setInicializado(true);
                     }
                     passandoParametro = (chamadaFuncao.getEscopoBiblioteca() == null && !FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()));
