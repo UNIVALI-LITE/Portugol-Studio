@@ -15,7 +15,7 @@ public class ErroComandoInesperado extends ErroSintatico
     @Override
     protected String construirMensagem()
     {
-        return String.format("O comando '%s' não era esperada neste local, remova-o para corrigir o problema", token);
+        return String.format("O comando '%s' não era esperado neste local, remova-o para corrigir o problema", token);
     }    
 
     public String getToken() {
