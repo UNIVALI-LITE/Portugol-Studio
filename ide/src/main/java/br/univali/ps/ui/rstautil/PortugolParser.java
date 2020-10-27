@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroFuncaoInicioInexistente;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
@@ -168,6 +169,12 @@ public class PortugolParser extends AbstractParser
                 notice.setShowInEditor(true);
                 resultado.addNotice(notice);
             }
+            else if(erro instanceof ErroFuncaoInicioInexistente)
+            {
+                DefaultParserNotice notice = (DefaultParserNotice) adicionarErroAviso(raiz, erro.getTrechoCodigoFonte(), erro.getMensagem());
+                notice.setShowInEditor(true);
+                resultado.addNotice(notice);
+            }    
         }
 
         for (AvisoAnalise aviso : resultadoAnalise.getAvisos())
