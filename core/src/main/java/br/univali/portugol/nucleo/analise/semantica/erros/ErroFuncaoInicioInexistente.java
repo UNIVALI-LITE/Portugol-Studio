@@ -13,15 +13,15 @@ public class ErroFuncaoInicioInexistente extends ErroSemantico
     
     private String codigo = "ErroSemantico.ErroFuncaoInicioInexistente";
             
-    public ErroFuncaoInicioInexistente()
+    public ErroFuncaoInicioInexistente(int tamanhoTotalCodigo)
     {
-        super(montarTrechoCodigoFonte());
+        super(montarTrechoCodigoFonte(tamanhoTotalCodigo));
         super.setCodigo(codigo);
     }
     
-    private static TrechoCodigoFonte montarTrechoCodigoFonte()
+    private static TrechoCodigoFonte montarTrechoCodigoFonte(int tamanhoTotalCodigo)
     {
-        return new TrechoCodigoFonte(1, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        return new TrechoCodigoFonte(1, 1, tamanhoTotalCodigo);
     }
 
     @Override

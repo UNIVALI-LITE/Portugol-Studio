@@ -35,6 +35,8 @@ import java.util.logging.Logger;
 public final class AnalisadorSemantico implements VisitanteASA
 {    
     private static final List<String> FUNCOES_RESERVADAS = getLista();
+    
+    private String codigoFonte;
 
     private final Memoria memoria;
     private final List<ObservadorAnaliseSemantica> observadores;
@@ -61,8 +63,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     private int totalVetoresDeclarados = 0;
     private int totalMatrizesDeclaradas = 0;
     
-    public AnalisadorSemantico()
+    public AnalisadorSemantico(String codigoFonte)
     {
+        this.codigoFonte = codigoFonte;
         memoria = new Memoria();
         metaDadosBibliotecas = new TreeMap<>();
         observadores = new ArrayList<>();
@@ -210,7 +213,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         
         if(!possuiFuncaoInicio)
         {
-            notificarErroSemantico(new ErroFuncaoInicioInexistente());
+            notificarErroSemantico(new ErroFuncaoInicioInexistente(codigoFonte.length()));
         }
         
         for (NoDeclaracao declaracao : declaracoes) {
