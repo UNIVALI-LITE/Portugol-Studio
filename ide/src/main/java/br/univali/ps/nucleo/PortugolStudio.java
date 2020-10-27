@@ -619,9 +619,11 @@ public final class PortugolStudio
     {
         final String path = "br/univali/ps/ui/fontes/";
 
-        final String[] fontes
-                =
-                {
+        final String[] fontes = {
+                    "consola.ttf",
+                    "consolab.ttf",
+                    "consolai.ttf",
+                    "consolaz.ttf",
                     "OpenSans-Bold.ttf",
                     "OpenSans-Italic.ttf",
                     "OpenSans-Regular.ttf",
@@ -635,12 +637,29 @@ public final class PortugolStudio
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         GraphicsEnvironment ambienteGrafico = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font [] registeredFontes = ambienteGrafico.getAllFonts();
+        
+        boolean hasConsola = false;
+        for (Font registeredFonte : registeredFontes) {
+            if (registeredFonte.getFontName().equals("Consolas")){
+                hasConsola = true;
+            }
+        }
+        
         for (String nome : fontes)
         {
             try
             {
-                Font fonte = Font.createFont(Font.TRUETYPE_FONT, classLoader.getResourceAsStream(path + nome));
-                ambienteGrafico.registerFont(fonte);
+                if(nome.contains("consola")){
+                    if(! hasConsola){
+                        Font fonte = Font.createFont(Font.TRUETYPE_FONT, classLoader.getResourceAsStream(path + nome));
+                        ambienteGrafico.registerFont(fonte);
+                    }
+                }else{
+                    Font fonte = Font.createFont(Font.TRUETYPE_FONT, classLoader.getResourceAsStream(path + nome));
+                    ambienteGrafico.registerFont(fonte);
+                }
+                
             }
             catch (FontFormatException | IOException excecao)
             {
