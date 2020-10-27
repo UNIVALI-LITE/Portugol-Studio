@@ -12,11 +12,14 @@ import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.IntervalSet;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 
@@ -121,7 +124,6 @@ public final class AnalisadorSintatico
                     notificarErroSintatico(traduzirErroParsing(e, msg, line, charPositionInLine));
                 }
             }
-            
         });
  
         PortugolParser portugolParser = new PortugolParser(new CommonTokenStream(portugolLexer));
@@ -150,6 +152,33 @@ public final class AnalisadorSintatico
                 String msg = "missing " + expecting.toString(recognizer.getVocabulary()) + " at " + getTokenErrorDisplay(t);
                 throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
             }
+
+            @Override
+            protected void reportUnwantedToken(Parser recognizer) {
+                beginErrorCondition(recognizer);
+                Token t = recognizer.getCurrentToken();
+                IntervalSet expecting = getExpectedTokens(recognizer);
+                String msg = "Expressão " +getTokenErrorDisplay(t)+ " não faz sentido, era esperado o token "+expecting.toString(recognizer.getVocabulary())+". Remova-a para solucionar o problema";
+                throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+            }
+
+            @Override
+            protected void reportFailedPredicate(Parser recognizer, FailedPredicateException e) {
+                beginErrorCondition(recognizer);
+                Token t = recognizer.getCurrentToken();
+                IntervalSet expecting = getExpectedTokens(recognizer);
+                String msg = "Expressão " +getTokenErrorDisplay(t)+ " não faz sentido, era esperado o token "+expecting.toString(recognizer.getVocabulary())+".";
+                throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+            }
+            
+            @Override
+            protected void reportNoViableAlternative(Parser recognizer, NoViableAltException e) {
+                beginErrorCondition(recognizer);
+                Token t = recognizer.getCurrentToken();
+                IntervalSet expecting = getExpectedTokens(recognizer);
+                String msg = "Expressão " +getTokenErrorDisplay(t)+ " não faz sentido, era esperado o token "+expecting.toString(recognizer.getVocabulary())+".";
+                throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+            }
         });
         
         try {
@@ -161,7 +190,7 @@ public final class AnalisadorSintatico
             return asa;
         }
         catch (RecognitionException excecao) {
-            tratarErroParsing(excecao, codigoFonte);
+            tratarErroParsing(excecao, excecao.getLocalizedMessage());
         }
         catch(ParseCancellationException e) {
             System.out.println(e);
