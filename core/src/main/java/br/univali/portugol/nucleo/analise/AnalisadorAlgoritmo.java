@@ -50,7 +50,7 @@ public final class AnalisadorAlgoritmo
     {
         ObservadorAnaliseAlgoritmo observadorAnaliseAlgoritmo = new ObservadorAnaliseAlgoritmo();
         AnalisadorSintatico analisadorSintatico = new AnalisadorSintatico();
-        AnalisadorSemantico analisadorSemantico = new AnalisadorSemantico();
+        AnalisadorSemantico analisadorSemantico = new AnalisadorSemantico(codigo);
         AnalisadorStringInvalida asi = new AnalisadorStringInvalida();
                 
         analisadorSintatico.adicionarObservador(observadorAnaliseAlgoritmo);
