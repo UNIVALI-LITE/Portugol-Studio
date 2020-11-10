@@ -11,6 +11,7 @@ import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.WebConnectionUtils;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -156,6 +157,12 @@ public class TelaPrincipal extends javax.swing.JPanel
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
+                if(configuracoes.isExibirAlertas())
+                {
+                    SwingUtilities.invokeLater(() -> {
+                        ((TelaAlertas) PortugolStudio.getInstancia().getTelaAlertas().getPanel()).mostrarTela();
+                    });
+                }
                 
                 Thread thread = new Thread(){
                     public void run(){
@@ -238,11 +245,8 @@ public class TelaPrincipal extends javax.swing.JPanel
     {
         String requestURL = Configuracoes.getInstancia().getUriAtualizacao();
         try {
-            InputStream is = new URL(requestURL).openStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = org.apache.commons.io.IOUtils.toString(rd);
+            String jsonText = WebConnectionUtils.getString(requestURL);
             JSONObject json = new JSONObject(jsonText);
-            is.close();
             return json;
         } catch (MalformedURLException ex) {
             

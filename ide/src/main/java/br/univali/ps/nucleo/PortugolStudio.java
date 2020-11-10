@@ -23,6 +23,7 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.Sobre;
+import br.univali.ps.ui.telas.TelaAlertas;
 import br.univali.ps.ui.telas.TelaAtalhos;
 import br.univali.ps.ui.telas.TelaEditarTemas;
 import br.univali.ps.ui.telas.TelaRelatarBug;
@@ -102,6 +103,8 @@ public final class PortugolStudio
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
+    
+    private TelaCustomBorder telaAlertas = null;
         
     private TratadorExcecoes tratadorExcecoes = null;
     
@@ -925,6 +928,18 @@ public final class PortugolStudio
         telaDicas.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaDicas;
+    }
+    
+    public TelaCustomBorder getTelaAlertas()
+    {
+        if (telaAlertas == null)
+        {
+            telaAlertas = new TelaCustomBorder(new TelaAlertas(), "Alerta!");
+        }
+
+        telaAlertas.setLocationRelativeTo(Lancador.getInstance().getJFrame());
+
+        return telaAlertas;
     }
     
     public JDialog getTelaPluginsInstalados()

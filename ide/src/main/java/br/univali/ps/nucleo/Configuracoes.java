@@ -42,6 +42,7 @@ public final class Configuracoes
     public static final String EXIBIR_AVISO_RENOMEAR = "exibirAvisoRenomear";
     public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
     public static final String EXIBIR_DICAS_INTERFACE = "exibirDicasInterface";
+    public static final String EXIBIR_ALERTAS = "exibirAlertas";
     public static final String URI_ATUALIZACAO = "uriAtualizacao";
     public static final String CAMINHO_ULTIMO_DIRETORIO = "caminhoUltimoDiretorio";
     public static final String ID_USUARIO_ANALYTICS = "idAnalytics";
@@ -80,9 +81,11 @@ public final class Configuracoes
     private boolean exibirAvisoRenomear = true;
     private boolean exibirTutorialUso = true;
     private boolean exibirDicasInterface = true;
+    private boolean exibirAlertas = true;
     private String userMac = "0-0-0-0";
     private String userAnalyticsID = "bafta";
     private String uriAtualizacao = "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest";
+    private String uriAlertas = "https://cdn.discordapp.com/attachments/354074984857206794/775553082716454952/alertaseavisos.json";
     private String caminhoUltimoDiretorio = getDiretorioUsuario().toString();
     private JSONObject arquivo_temas = null;
 
@@ -120,6 +123,7 @@ public final class Configuracoes
             exibirAvisoRenomear = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_RENOMEAR, "true"));
             exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
             exibirDicasInterface = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_DICAS_INTERFACE, "true"));
+            exibirAlertas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_ALERTAS, "true"));
             uriAtualizacao = configuracoes.getProperty(URI_ATUALIZACAO, "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest");
             caminhoUltimoDiretorio = configuracoes.getProperty(CAMINHO_ULTIMO_DIRETORIO, getCaminhoUltimoDiretorio());
         }
@@ -174,6 +178,11 @@ public final class Configuracoes
     public boolean isExibirDicasInterface()
     {
         return exibirDicasInterface;
+    }
+    
+    public boolean isExibirAlertas()
+    {
+        return exibirAlertas;
     }
 
     public void setExibirDicasInterface(boolean exibirDicasInterface)
@@ -443,6 +452,15 @@ public final class Configuracoes
             uriAtualizacao = uriAtualizacao.substring(0, uriAtualizacao.length() - 1);
         }
         return uriAtualizacao;
+    }
+    
+    public String getUriAlertas()
+    {
+        if (uriAlertas.endsWith("/"))
+        {
+            uriAlertas = uriAlertas.substring(0, uriAlertas.length() - 1);
+        }
+        return uriAlertas;
     }
 
     public void setUriAtualizacao(String uriAtualizacao)
