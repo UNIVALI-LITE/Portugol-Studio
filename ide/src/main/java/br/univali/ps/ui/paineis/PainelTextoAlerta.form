@@ -27,7 +27,7 @@
     <Component class="javax.swing.JLabel" name="labelTituloMensagem">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="42" style="1"/>
+          <Font name="Arial" size="48" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="T&#xed;tulo"/>
@@ -134,6 +134,9 @@
         <Component class="com.alee.laf.button.WebButton" name="botaoLinkMensagem">
           <Properties>
             <Property name="text" type="java.lang.String" value="Acessar Link"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
         </Component>

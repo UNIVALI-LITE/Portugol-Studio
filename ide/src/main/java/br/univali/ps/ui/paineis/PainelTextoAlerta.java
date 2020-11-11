@@ -14,11 +14,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-import org.fife.ui.rsyntaxtextarea.Style;
 
 /**
  *
@@ -64,7 +62,7 @@ public class PainelTextoAlerta extends javax.swing.JPanel implements Themeable{
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(painelScrollMensagem);
             WeblafUtils.configuraWebLaf(painelTextoMensagem);
-            WeblafUtils.configurarBotao(botaoLinkMensagem, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA_TITULO, ColorController.AMARELO, ColorController.COR_PRINCIPAL, 3, true);
+            WeblafUtils.configurarBotao(botaoLinkMensagem, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA_TITULO, ColorController.AMARELO, ColorController.COR_PRINCIPAL, 5, true);
         }
         
         painelBotoes.setOpaque(false);
@@ -84,6 +82,7 @@ public class PainelTextoAlerta extends javax.swing.JPanel implements Themeable{
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+        aset = sc.addAttribute(aset, StyleConstants.Size, 14);
 
         int len = tp.getDocument().getLength();
         tp.setCaretPosition(len);
@@ -116,7 +115,7 @@ public class PainelTextoAlerta extends javax.swing.JPanel implements Themeable{
         setMinimumSize(new java.awt.Dimension(640, 380));
         setLayout(new java.awt.GridBagLayout());
 
-        labelTituloMensagem.setFont(new java.awt.Font("Arial", 1, 42)); // NOI18N
+        labelTituloMensagem.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         labelTituloMensagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTituloMensagem.setText("Título");
         labelTituloMensagem.setAlignmentY(0.0F);
@@ -162,6 +161,7 @@ public class PainelTextoAlerta extends javax.swing.JPanel implements Themeable{
         painelBotoes.setPreferredSize(new java.awt.Dimension(640, 50));
 
         botaoLinkMensagem.setText("Acessar Link");
+        botaoLinkMensagem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         botaoLinkMensagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         painelBotoes.add(botaoLinkMensagem);
 

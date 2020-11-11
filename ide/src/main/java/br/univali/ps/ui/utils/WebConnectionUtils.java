@@ -24,7 +24,7 @@ public class WebConnectionUtils {
         } catch (IOException ex) {
             StringSelection stringSelection = new StringSelection(endereco);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-            QuestionDialog.getInstance().showMessage("Não foi possível abrir o seu navegador de Internet no endereço "+endereco+". Seu computador está com problemas d econxão com a internet, ou a página encontra-se temporariamente indisponível. O endereço está em sua área de transferência, aperte CTRL+V no navegador para acessá-lo manualmente");
+            QuestionDialog.getInstance().showMessage("Não foi possível abrir o seu navegador de Internet no endereço "+endereco+". Seu computador está com problemas de conexão com a internet, ou a página encontra-se temporariamente indisponível. O endereço está em sua área de transferência, aperte CTRL+V no navegador para acessá-lo manualmente");
         }
     }
     public static String getString(String endereco) throws MalformedURLException, IOException
