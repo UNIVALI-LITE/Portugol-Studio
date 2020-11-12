@@ -51,6 +51,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoParametroFuncao;
 import br.univali.portugol.nucleo.asa.NoPare;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
@@ -410,6 +411,11 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
 
     @Override
     public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
+        throw new ExcecaoVisitaASA("Not supported yet.", null, null); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA {
         throw new ExcecaoVisitaASA("Not supported yet.", null, null); //To change body of generated methods, choose Tools | Templates.
     }
 }

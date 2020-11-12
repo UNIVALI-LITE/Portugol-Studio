@@ -42,6 +42,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoParametroFuncao;
 import br.univali.portugol.nucleo.asa.NoPare;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
@@ -736,6 +737,15 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     @Override
     public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
         component.setText("senao");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA {
+        component.setText("parametroFuncao");
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
         component.setIcon(icone);
         component.setDisabledIcon(icone);

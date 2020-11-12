@@ -14,6 +14,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParametrosNaoTipados;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSenaoInesperado;
@@ -48,7 +49,7 @@ public final class TradutorMismatchedTokenException
 {
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, String codigoFonte)
     {
-      
+        
         int linha = TradutorUtils.getToken(erro).getLine();
         int coluna = TradutorUtils.getToken(erro).getCharPositionInLine();
         ContextSet contextos = new ContextSet(erro);
@@ -76,7 +77,16 @@ public final class TradutorMismatchedTokenException
             {
                return new ErroSenaoInesperado(linha, coluna, token);
             }
+            if(contextoAtual.equals("parametroFuncao"))
+            {
+                return new ErroParametrosNaoTipados(linha, coluna, token);
+            }
             return new ErroExpressaoInesperada(linha, coluna, token);
+        }
+        
+        if(contextoAtual.equals("parametroFuncao"))
+        {
+            return new ErroParametrosNaoTipados(linha, coluna, TradutorUtils.getToken(erro).getText());
         }
         
         if (contextoAtual.equals("expressao") ) {
@@ -123,13 +133,13 @@ public final class TradutorMismatchedTokenException
         for (String tokenEsperado : tokensEsperados) {
             switch (tokenEsperado)
             {            
+                case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
                 case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
                 case "ABRE_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
                 case "FECHA_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
                 case "DOISPONTOS": return new ErroFaltaDoisPontos(linha, coluna);
                 case "PONTOVIRGULA": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
                 case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
-                case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
                 case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
             }        
         }
