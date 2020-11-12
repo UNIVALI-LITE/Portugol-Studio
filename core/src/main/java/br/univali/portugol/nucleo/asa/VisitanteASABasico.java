@@ -282,6 +282,12 @@ public abstract class VisitanteASABasico implements VisitanteASA
     }
 
     @Override
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA 
+    {
+        throw new ExcecaoVisitaASA(new UnsupportedOperationException("Esta operação ainda não foi implementada. " + this.getClass() + ":" + Thread.currentThread().getStackTrace()[1].getMethodName()), null, null) ;
+    }
+
+    @Override
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA
     {
         throw new ExcecaoVisitaASA(new UnsupportedOperationException("Esta operação ainda não foi implementada. " + this.getClass() + ":" + Thread.currentThread().getStackTrace()[1].getMethodName()), null, null) ;

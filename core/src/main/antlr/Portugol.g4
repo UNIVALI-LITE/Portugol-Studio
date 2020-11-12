@@ -58,7 +58,7 @@ parametroMatriz
 
 comando
     :   listaDeclaracoes   
-    |   se   
+    |   se
     |   enquanto
     |   facaEnquanto
     |   para
@@ -84,7 +84,10 @@ retorne
     :   RETORNE expressao? ;   
 
 se
-    :   SE ABRE_PARENTESES expressao FECHA_PARENTESES listaComandos (SENAO listaComandos)? ;
+    :   SE ABRE_PARENTESES expressao FECHA_PARENTESES listaComandos (senao)? ;
+	
+senao
+	:	SENAO listaComandos ;
 
 enquanto
     :   ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES listaComandos ; 

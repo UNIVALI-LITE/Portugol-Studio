@@ -2587,4 +2587,10 @@ public final class AnalisadorSemantico implements VisitanteASA
         setarPaiDoNo(noVaPara);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noVaPara.getTrechoCodigoFonte()), asa, noVaPara);
     }
+
+    @Override
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
+        setarPaiDoNo(noSenao);
+        throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noSenao.getTrechoCodigoFonte()), asa, noSenao);
+    }
 }

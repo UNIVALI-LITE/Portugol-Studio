@@ -677,4 +677,9 @@ final class BuscadorDeSimbolo implements VisitanteASA {
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA {
         return null;
     }
+
+    @Override
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
+        return null;
+    }
 }

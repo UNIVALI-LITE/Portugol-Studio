@@ -103,6 +103,8 @@ public interface VisitanteASA
 
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA;
     
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA;
+    
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA;
     
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA;

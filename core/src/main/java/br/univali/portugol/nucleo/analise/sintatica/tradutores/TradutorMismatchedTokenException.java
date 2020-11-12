@@ -8,6 +8,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncompleta;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
@@ -15,6 +16,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEs
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSenaoInesperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
@@ -47,24 +49,34 @@ public final class TradutorMismatchedTokenException
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, String codigoFonte)
     {
       
-        int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
-        int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
+        int linha = TradutorUtils.getToken(erro).getLine();
+        int coluna = TradutorUtils.getToken(erro).getCharPositionInLine();
         ContextSet contextos = new ContextSet(erro);
         
         List<String> tokensEsperados = getTokensEsperados(erro);
         
         String contextoAtual = contextos.getContextoAtual();
         
-        if(tokensEsperados.size()>1)
+//        if(tokensEsperados.size()>1)
+//        {
+//            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+//            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
+//            {
+////                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
+////                {
+////                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
+////                }
+//            }
+//        }
+        
+        if(erro.getMessage().contains("Remove-lo pode solucionar o problema"))
         {
-            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
-            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
+            String token = TradutorUtils.getToken(erro).getText();
+            if(token.equals("senao"))
             {
-//                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
-//                {
-//                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
-//                }
+               return new ErroSenaoInesperado(linha, coluna, token);
             }
+            return new ErroExpressaoInesperada(linha, coluna, token);
         }
         
         if (contextoAtual.equals("expressao") ) {

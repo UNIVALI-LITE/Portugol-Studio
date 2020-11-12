@@ -165,6 +165,12 @@ public interface PortugolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSe(PortugolParser.SeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PortugolParser#senao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSenao(PortugolParser.SenaoContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PortugolParser#enquanto}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

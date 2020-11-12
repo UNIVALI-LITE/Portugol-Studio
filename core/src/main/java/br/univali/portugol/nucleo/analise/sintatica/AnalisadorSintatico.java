@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.antlr.runtime.UnwantedTokenException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -157,8 +158,7 @@ public final class AnalisadorSintatico
             protected void reportUnwantedToken(Parser recognizer) {
                 beginErrorCondition(recognizer);
                 Token t = recognizer.getCurrentToken();
-                IntervalSet expecting = getExpectedTokens(recognizer);
-                String msg = "Expressão " +getTokenErrorDisplay(t)+ " não faz sentido, era esperado o token "+expecting.toString(recognizer.getVocabulary())+". Remova-a para solucionar o problema";
+                String msg = "O token " +getTokenErrorDisplay(t)+ " não faz sentido neste local. Remove-lo pode solucionar o problema";
                 throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
             }
 
