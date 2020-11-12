@@ -196,6 +196,7 @@ public class GeradorASA {
         @Override
         public No visitParametroFuncao(ParametroFuncaoContext ctx) {
             NoParametroFuncao noParametroFuncao = new NoParametroFuncao();
+            if(ctx.listaParametros()!=null)
             for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
                 noParametroFuncao.addParametro((NoDeclaracaoParametro)parametroContext.accept(this));
             }
