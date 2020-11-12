@@ -17,6 +17,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParametrosNaoTipados;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroRetornoVetorMatriz;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSenaoInesperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
@@ -58,6 +59,8 @@ public final class TradutorMismatchedTokenException
         
         String contextoAtual = contextos.getContextoAtual();
         
+        String token = TradutorUtils.getToken(erro).getText();
+        
 //        if(tokensEsperados.size()>1)
 //        {
 //            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
@@ -71,8 +74,7 @@ public final class TradutorMismatchedTokenException
 //        }
         
         if(erro.getMessage().contains("Remove-lo pode solucionar o problema"))
-        {
-            String token = TradutorUtils.getToken(erro).getText();
+        {            
             if(token.equals("senao"))
             {
                return new ErroSenaoInesperado(linha, coluna, token);
@@ -115,6 +117,10 @@ public final class TradutorMismatchedTokenException
         
         // função, variável ou parâmetro sem nome
         if (contextoAtual.startsWith("declaracao") || contextoAtual.equals("parametro")) {
+            if(token.equals("["))
+            {
+                return new ErroRetornoVetorMatriz(linha, coluna, contextoAtual);
+            }
             if (tokensEsperados.contains("ID")){
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             }
