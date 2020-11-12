@@ -175,13 +175,10 @@ public class GeradorASA {
             TipoDado tipoRetorno = TipoDado.obterTipoDadoPeloNome(nomeTipoRetorno);
 
             NoDeclaracaoFuncao declaracaoFuncao = new NoDeclaracaoFuncao(nomeFuncao, tipoRetorno, Quantificador.VALOR);
-
-            if (ctx.listaParametros() != null) { // se a função tem parâmetros
-                List<NoDeclaracaoParametro> parametros = new ArrayList<>();
-                for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
-                    parametros.add((NoDeclaracaoParametro)parametroContext.accept(this));
-                }
-                declaracaoFuncao.setParametros(parametros);
+            
+            if (ctx.parametroFuncao() != null) { // se a função tem parâmetros
+                NoParametroFuncao noParametroFuncao = (NoParametroFuncao) visit(ctx.parametroFuncao());
+                declaracaoFuncao.setParametros(noParametroFuncao.getParametros());
             }
                         
             declaracaoFuncao.setBlocos(getBlocos(ctx.comando()));
@@ -194,6 +191,15 @@ public class GeradorASA {
             }
 
             return declaracaoFuncao;
+        }
+
+        @Override
+        public No visitParametroFuncao(ParametroFuncaoContext ctx) {
+            NoParametroFuncao noParametroFuncao = new NoParametroFuncao();
+            for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
+                noParametroFuncao.addParametro((NoDeclaracaoParametro)parametroContext.accept(this));
+            }
+            return noParametroFuncao;
         }
 
         @Override

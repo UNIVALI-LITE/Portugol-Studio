@@ -41,9 +41,10 @@ tamanhoArray
     :   expressao; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante
 
 declaracaoFuncao
-    :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES 
-                                             ABRE_CHAVES comando* FECHA_CHAVES ; 
+    :   FUNCAO TIPO? ID parametroFuncao ABRE_CHAVES comando* FECHA_CHAVES ; 
 
+parametroFuncao
+	:	ABRE_PARENTESES listaParametros? FECHA_PARENTESES ;
 listaParametros
     :   parametro (VIRGULA parametro)* ;
 
