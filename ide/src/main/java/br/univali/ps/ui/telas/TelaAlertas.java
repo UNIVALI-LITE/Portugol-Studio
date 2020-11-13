@@ -22,112 +22,32 @@ import java.util.List;
  */
 public class TelaAlertas extends javax.swing.JPanel implements Themeable {
 
-    List<PainelTextoAlerta> alertas;
-    List<String> mensagensLidas;
-    
-    public TelaAlertas() {
+    PainelTextoAlerta painelAlerta;
+       
+    public TelaAlertas(PainelTextoAlerta painelAlerta) {
+        this.painelAlerta = painelAlerta;
         initComponents();
-        configurarCores();
-        carregarMensagensLidas();
-        alertas = new ArrayList<>();
-        loadAlertas(Configuracoes.getInstancia().getUriAlertas());
+        configurarCores();      
+        loadAlerta();
     }
 
     @Override
     public void configurarCores() {
         this.labelSemAlertas.setForeground(ColorController.COR_LETRA);
         this.labelTitulo.setForeground(ColorController.COR_LETRA);
-        this.painelTabuladoAlertas.setForeground(ColorController.COR_LETRA);
+        this.painelAlertas.setForeground(ColorController.COR_LETRA);
         this.caixaCheckLido.setForeground(ColorController.COR_LETRA);
         setBackground(ColorController.COR_DESTAQUE);
         this.painelDeBaixo.setOpaque(false);
         this.painelTitulo.setBackground(ColorController.VERMELHO);
-        this.painelTabuladoAlertas.setOpaque(false);
-        this.painelTabuladoAlertas.setUI(new PSMainTabbedPaneUI());
-    }
-    
-    public void carregarMensagensLidas()
-    {
-        mensagensLidas = new ArrayList<>();
-        File diretorioConfiguracoes = Configuracoes.getInstancia().getDiretorioConfiguracoes();
-        File arquivoMensagensLidas = new File(diretorioConfiguracoes, "mensagensLidas.txt");
-        if(arquivoMensagensLidas.exists())
-        {
-            try {
-                String arquivo = FileHandle.open(arquivoMensagensLidas);
-                String [] caminhos = arquivo.split("\n");
-                for (String caminho : caminhos) {
-                        mensagensLidas.add(caminho);
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-    
-    public void mostrarTela()
-    {
-        if(this.alertas.isEmpty())
-        {
-            return;
-        }
-        PortugolStudio.getInstancia().getTelaAlertas().setVisible(true);
+        this.painelAlertas.setOpaque(false);
     }
 
-    private void loadAlertas(String dir) {
+    private void loadAlerta() {
         
         try {
-            String jsontext = WebConnectionUtils.getString(dir);
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode node = (ObjectNode) mapper.readTree(jsontext);
-            
-            JsonNode alertasNode = node.get("alertas&avisos");
-            
-            if(alertasNode.size()>0)
-            {
-                this.painelTabuladoAlertas.removeAll();
-            }
-            
-            for (JsonNode jsonNode : alertasNode) {
-                ArrayNode versaoArray = (ArrayNode)jsonNode.get("versao");
-                ArrayNode OSArray = (ArrayNode)jsonNode.get("OS");
-                String idmensagem = jsonNode.get("id").asText("");
-                String OSName = System.getProperty("os.name").toLowerCase();
-                boolean acceptedOS = false;
-                boolean acceptedVersion = false;
-                                
-                for (JsonNode OS : OSArray) {
-                    if(OSName.contains(OS.asText("?")))
-                    {
-                        acceptedOS = true;
-                        break;
-                    }
-                }
-                
-                for (JsonNode versao : versaoArray) {
-                    if(versao.asText("").equals(PortugolStudio.getInstancia().getVersao()))
-                    {
-                        acceptedVersion = true;
-                        break;
-                    }
-                }
-                
-                if(!acceptedOS || !acceptedVersion || mensagensLidas.contains(idmensagem))
-                {
-                    continue;
-                }                
-                
-                String titulo = jsonNode.get("titulo").asText("");
-                String subtitulo = jsonNode.get("subtitulo").asText("");
-                String mensagem = jsonNode.get("mensagem").asText("");
-                String link = jsonNode.get("link").asText("");
-                String tipo = jsonNode.get("tipo").asText("");
-                
-                PainelTextoAlerta alerta = new PainelTextoAlerta(titulo, subtitulo, mensagem, link, idmensagem);
-                this.alertas.add(alerta);
-                this.painelTabuladoAlertas.add(tipo,alerta);
-            }
-            
+            painelAlertas.removeAll();
+            painelAlertas.add(this.painelAlerta);            
             revalidate();
             repaint();
         } catch (Exception e) {
@@ -146,10 +66,10 @@ public class TelaAlertas extends javax.swing.JPanel implements Themeable {
 
         painelTitulo = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
-        painelTabuladoAlertas = new javax.swing.JTabbedPane();
-        labelSemAlertas = new javax.swing.JLabel();
         painelDeBaixo = new javax.swing.JPanel();
         caixaCheckLido = new javax.swing.JCheckBox();
+        painelAlertas = new javax.swing.JPanel();
+        labelSemAlertas = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         setMinimumSize(new java.awt.Dimension(640, 480));
@@ -168,17 +88,6 @@ public class TelaAlertas extends javax.swing.JPanel implements Themeable {
 
         add(painelTitulo, java.awt.BorderLayout.NORTH);
 
-        painelTabuladoAlertas.setMaximumSize(new java.awt.Dimension(640, 340));
-        painelTabuladoAlertas.setMinimumSize(new java.awt.Dimension(640, 340));
-        painelTabuladoAlertas.setPreferredSize(new java.awt.Dimension(640, 340));
-
-        labelSemAlertas.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        labelSemAlertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelSemAlertas.setText("Não há Alertas ou Avisos!");
-        painelTabuladoAlertas.addTab("", labelSemAlertas);
-
-        add(painelTabuladoAlertas, java.awt.BorderLayout.CENTER);
-
         painelDeBaixo.setMaximumSize(new java.awt.Dimension(640, 40));
         painelDeBaixo.setMinimumSize(new java.awt.Dimension(640, 40));
         painelDeBaixo.setPreferredSize(new java.awt.Dimension(640, 40));
@@ -193,26 +102,17 @@ public class TelaAlertas extends javax.swing.JPanel implements Themeable {
         painelDeBaixo.add(caixaCheckLido, java.awt.BorderLayout.CENTER);
 
         add(painelDeBaixo, java.awt.BorderLayout.SOUTH);
+
+        labelSemAlertas.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        labelSemAlertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSemAlertas.setText("Não há Alertas ou Avisos!");
+        painelAlertas.add(labelSemAlertas);
+
+        add(painelAlertas, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void caixaCheckLidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaCheckLidoActionPerformed
-        File diretorioConfiguracoes = Configuracoes.getInstancia().getDiretorioConfiguracoes();
-        File arquivoMensagensLidas = new File(diretorioConfiguracoes, "mensagensLidas.txt");
-        try {
-            for (PainelTextoAlerta alerta : alertas) {
-                    mensagensLidas.add(alerta.getIdMensagem());
-            }
-
-            StringBuilder mensagens = new StringBuilder();
-
-            for (String mensagemLida : mensagensLidas) {
-                mensagens.append(mensagemLida+"\n");
-            }
-
-            FileHandle.save(mensagens.toString(), arquivoMensagensLidas, "UTF-8");                
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        PortugolStudio.getInstancia().adicionaMensagemLida(this.painelAlerta.getIdMensagem());
     }//GEN-LAST:event_caixaCheckLidoActionPerformed
 
 
@@ -220,8 +120,8 @@ public class TelaAlertas extends javax.swing.JPanel implements Themeable {
     private javax.swing.JCheckBox caixaCheckLido;
     private javax.swing.JLabel labelSemAlertas;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JPanel painelAlertas;
     private javax.swing.JPanel painelDeBaixo;
-    private javax.swing.JTabbedPane painelTabuladoAlertas;
     private javax.swing.JPanel painelTitulo;
     // End of variables declaration//GEN-END:variables
 }

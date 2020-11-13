@@ -160,7 +160,8 @@ public class TelaPrincipal extends javax.swing.JPanel
                 if(configuracoes.isExibirAlertas())
                 {
                     SwingUtilities.invokeLater(() -> {
-                        ((TelaAlertas) PortugolStudio.getInstancia().getTelaAlertas().getPanel()).mostrarTela();
+                        PortugolStudio.getInstancia().carregarMensagensLidas();
+                        PortugolStudio.getInstancia().apresentarAlertas(false);
                     });
                 }
                 
