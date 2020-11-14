@@ -391,7 +391,7 @@ public class CarrosselCursos extends JPanel {
     private boolean mouseEstaNasBordas(int arrowsBackgroundWidth) {
         Point mousePosition = getMousePosition();
         if (mousePosition != null) {
-            double mouseX = getMousePosition().getX();
+            double mouseX = mousePosition.getX();
             return mouseX < arrowsBackgroundWidth || mouseX >= getWidth() - arrowsBackgroundWidth;
         }
 
