@@ -43,6 +43,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoParametroFuncao;
 import br.univali.portugol.nucleo.asa.NoPare;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
@@ -50,6 +51,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.NoSenao;
 import br.univali.portugol.nucleo.asa.NoTitulo;
 import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
@@ -433,6 +435,16 @@ class AnalisadorRetornoDeFuncao implements VisitanteASA
     @Override
     public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA
     {
+        return false;
+    }
+
+    @Override
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
+        return false;
+    }
+
+    @Override
+    public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA {
         return false;
     }
 

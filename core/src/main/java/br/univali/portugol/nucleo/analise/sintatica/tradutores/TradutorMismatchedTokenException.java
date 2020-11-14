@@ -8,13 +8,17 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncompleta;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroFaltaDoisPontos;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroNomeSimboloEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPalavraReservadaEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParametrosNaoTipados;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroRetornoVetorMatriz;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSenaoInesperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
@@ -46,25 +50,45 @@ public final class TradutorMismatchedTokenException
 {
     public ErroSintatico traduzirErroParsing(RecognitionException erro, String mensagemPadrao, String codigoFonte)
     {
-      
-        int linha = ((ParserRuleContext)(erro.getCtx())).start.getLine();
-        int coluna = ((ParserRuleContext)(erro.getCtx())).start.getCharPositionInLine();
+        
+        int linha = TradutorUtils.getToken(erro).getLine();
+        int coluna = TradutorUtils.getToken(erro).getCharPositionInLine();
         ContextSet contextos = new ContextSet(erro);
         
         List<String> tokensEsperados = getTokensEsperados(erro);
         
         String contextoAtual = contextos.getContextoAtual();
         
-        if(tokensEsperados.size()>1)
-        {
-            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
-            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
+        String token = TradutorUtils.getToken(erro).getText();
+        
+//        if(tokensEsperados.size()>1)
+//        {
+//            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+//            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
+//            {
+////                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
+////                {
+////                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
+////                }
+//            }
+//        }
+        
+        if(erro.getMessage().contains("Remove-lo pode solucionar o problema"))
+        {            
+            if(token.equals("senao"))
             {
-//                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
-//                {
-//                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
-//                }
+               return new ErroSenaoInesperado(linha, coluna, token);
             }
+            if(contextoAtual.equals("parametroFuncao"))
+            {
+                return new ErroParametrosNaoTipados(linha, coluna, token);
+            }
+            return new ErroExpressaoInesperada(linha, coluna, token);
+        }
+        
+        if(contextoAtual.equals("parametroFuncao"))
+        {
+            return new ErroParametrosNaoTipados(linha, coluna, TradutorUtils.getToken(erro).getText());
         }
         
         if (contextoAtual.equals("expressao") ) {
@@ -93,6 +117,10 @@ public final class TradutorMismatchedTokenException
         
         // função, variável ou parâmetro sem nome
         if (contextoAtual.startsWith("declaracao") || contextoAtual.equals("parametro")) {
+            if(token.equals("["))
+            {
+                return new ErroRetornoVetorMatriz(linha, coluna, contextoAtual);
+            }
             if (tokensEsperados.contains("ID")){
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             }
@@ -111,13 +139,13 @@ public final class TradutorMismatchedTokenException
         for (String tokenEsperado : tokensEsperados) {
             switch (tokenEsperado)
             {            
+                case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
                 case "FECHA_CHAVES": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
                 case "ABRE_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
                 case "FECHA_PARENTESES": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
                 case "DOISPONTOS": return new ErroFaltaDoisPontos(linha, coluna);
                 case "PONTOVIRGULA": return new ErroTokenFaltando(linha, coluna, tokenEsperado);
                 case "ENQUANTO": return new ErroPalavraReservadaEstaFaltando(linha, coluna, "enquanto");
-                case "TIPO": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
                 case "PROGRAMA": return new ErroExpressoesForaEscopoPrograma(coluna, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
             }        
         }

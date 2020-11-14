@@ -45,6 +45,6 @@ public final class ErroParsingNaoTratado extends ErroSintatico
     @Override
     protected String construirMensagem() 
     {
-        return this.mensagemPadrao + " - Contexto: " + contexto + " - Classe: " + erro.getClass().getSimpleName();
+        return this.mensagemPadrao;
     }    
 }

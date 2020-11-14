@@ -7,6 +7,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoParametroFuncao;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.simbolos.Funcao;
@@ -149,6 +150,11 @@ public final class AvisoSimboloGlobalOcultado extends AvisoAnalise
         public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
         {
             return super.visitar(declaracaoFuncao); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 }

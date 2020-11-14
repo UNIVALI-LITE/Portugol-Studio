@@ -107,14 +107,14 @@ task debug(dependsOn: compileJava, type: JavaExec) {
     
     description = 'Runs this program as a JVM application for debugging'
 	group = 'application'
-	    
+	    debug = true
     doFirst {
     
 	    main = mainClass
 	    classpath = sourceSets.main.runtimeClasspath
 	    jvmArgs = loadJvmArgs()
 	    
-	    debug = true
+	    
 	}
 }
 

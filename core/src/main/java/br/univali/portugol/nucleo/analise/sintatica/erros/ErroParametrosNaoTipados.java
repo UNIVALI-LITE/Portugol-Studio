@@ -6,11 +6,11 @@ import br.univali.portugol.nucleo.mensagens.ErroSemiSintatico;
  *
  * @author Luiz Fernando Noschang
  */
-public final class ErroLinhaPuladaEmString extends ErroSemiSintatico
+public final class ErroParametrosNaoTipados extends ErroSemiSintatico
 {
     
     
-    public ErroLinhaPuladaEmString(int linha, int coluna, String codigofonte)
+    public ErroParametrosNaoTipados(int linha, int coluna, String codigofonte)
     {
         super(linha, coluna, codigofonte);
     }   
@@ -20,7 +20,8 @@ public final class ErroLinhaPuladaEmString extends ErroSemiSintatico
     {
         StringBuilder sb = new StringBuilder();
         
-        sb.append("Você pulou uma linha ao escrever uma cadeia. Cadeias apenas podem ser escritas em uma mesma linha");
+        sb.append("Os parametros da função, não estão tipados.\n");
+        sb.append("Adicione tipos para cada um dos parametros utilizados ex: funcao nome(inteiro idade, cadeia sobrenome)");
         
         return sb.toString();
     }

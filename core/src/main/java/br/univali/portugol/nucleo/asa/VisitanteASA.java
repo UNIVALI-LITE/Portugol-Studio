@@ -103,6 +103,10 @@ public interface VisitanteASA
 
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA;
     
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA;
+    
+    public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA;
+    
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA;
     
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA;
@@ -111,5 +115,6 @@ public interface VisitanteASA
 
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA;
     
-    public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA;
+    public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA;    
+   
 }

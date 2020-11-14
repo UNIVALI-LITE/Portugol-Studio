@@ -6,11 +6,11 @@ import br.univali.portugol.nucleo.mensagens.ErroSemiSintatico;
  *
  * @author Luiz Fernando Noschang
  */
-public final class ErroLinhaPuladaEmString extends ErroSemiSintatico
+public final class ErroRetornoVetorMatriz extends ErroSemiSintatico
 {
     
     
-    public ErroLinhaPuladaEmString(int linha, int coluna, String codigofonte)
+    public ErroRetornoVetorMatriz(int linha, int coluna, String codigofonte)
     {
         super(linha, coluna, codigofonte);
     }   
@@ -20,7 +20,7 @@ public final class ErroLinhaPuladaEmString extends ErroSemiSintatico
     {
         StringBuilder sb = new StringBuilder();
         
-        sb.append("Você pulou uma linha ao escrever uma cadeia. Cadeias apenas podem ser escritas em uma mesma linha");
+        sb.append("Não é possível retornar vetores ou matrizes por funções.\n\n");
         
         return sb.toString();
     }
