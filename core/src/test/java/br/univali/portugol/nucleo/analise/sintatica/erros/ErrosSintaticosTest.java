@@ -49,6 +49,101 @@ public class ErrosSintaticosTest {
     }
     
     @Test
+    public void testSenaoInesperado() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "       se senao (verdadeiro){                                "
+                + "       }                                                     "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroSenaoInesperado);
+    }
+    
+    @Test
+    public void testExpressaoInesperada() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    inclua biblioteca Graficos lol -->                       "
+                + "    funcao lol inicio(){                                     "
+                + "       }                                                     "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroExpressaoInesperada);
+    }
+    
+    @Test
+    public void testParametrosNaoTipados() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "    }                                                        "
+                + "    funcao nope(joia, ok){                                   "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroParametrosNaoTipados);
+    }
+    
+    @Test
+    public void testParametrosVetor() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "    }                                                        "
+                + "    funcao inteiro[] nope(){                                   "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroRetornoVetorMatriz);
+    }
+    
+    @Test
+    public void testParametrosMatriz() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "    }                                                        "
+                + "    funcao inteiro[][] nope(){                                   "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroRetornoVetorMatriz);
+    }
+    
+    @Test
     public void testComandoSeSemCondicao() throws Exception {
          String codigoFonte
                 = " programa {                                                  "

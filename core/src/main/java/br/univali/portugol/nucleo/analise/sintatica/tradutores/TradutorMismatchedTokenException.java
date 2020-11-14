@@ -74,11 +74,27 @@ public final class TradutorMismatchedTokenException
 //        }
         
         if(erro.getMessage().contains("Remove-lo pode solucionar o problema"))
-        {            
+        {
+            if((token.equals("<EOF>") || token.equals("funcao")) && tokensEsperados.contains("FECHA_CHAVES"))
+            {
+                return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, contextoAtual);
+            }
+            
             if(token.equals("senao"))
             {
                return new ErroSenaoInesperado(linha, coluna, token);
             }
+            
+            if(contextoAtual.equals("expressao") && contextos.getContextoPai().equals("declaracaoVariavel"))
+            {
+                 return new ErroExpressaoEsperada(linha, coluna, contextos.getContextoPai(), contextos.getContextoAvo());
+            }
+            
+            if(contextos.contains("para") && token.equals(";"))
+            {
+                return new ErroParaEsperaCondicao(linha, coluna);
+            }
+            
             if(contextoAtual.equals("parametroFuncao"))
             {
                 return new ErroParametrosNaoTipados(linha, coluna, token);
