@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroPareForaDeLoopOuSwitch;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTokenException;
 import br.univali.portugol.nucleo.asa.ASA;
@@ -190,12 +191,21 @@ public final class AnalisadorSintatico
             return asa;
         }
         catch (RecognitionException excecao) {
-            tratarErroParsing(excecao, excecao.getLocalizedMessage());
+            if(excecao.getMessage().equals("Pare fora de escopo"))
+                tratarErroPare(excecao);
+            else
+                tratarErroParsing(excecao, excecao.getLocalizedMessage());
         }
         catch(ParseCancellationException e) {
             System.out.println(e);
         }
         return null;
+    }
+    
+    private void tratarErroPare(RecognitionException excecao)
+    {
+        Token pare = ((PortugolParser.PareContext) excecao.getCtx()).PARE().getSymbol();
+        notificarErroSintatico(new ErroPareForaDeLoopOuSwitch(pare.getLine(), pare.getCharPositionInLine(), pare.getText()));
     }
 
     private void verificarCaracteresAposEscopoPrograma(String codigoFonte) {
