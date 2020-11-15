@@ -17,6 +17,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParametrosNaoTipados;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroRealComVirgula;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroRetornoVetorMatriz;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSenaoInesperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
@@ -116,6 +117,11 @@ public final class TradutorMismatchedTokenException
             
             if (contextoPai.equals("expressao")) {
                 return new ErroExpressaoIncompleta(linha, coluna);
+            }
+            
+            if(token.equals(","))
+            {
+                return new ErroRealComVirgula(linha, coluna);
             }
             
             if (erro.getMessage() != null && erro.getMessage().contains("<EOF>")) {
