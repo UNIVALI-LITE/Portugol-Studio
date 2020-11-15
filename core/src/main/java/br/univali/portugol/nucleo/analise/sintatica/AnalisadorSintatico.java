@@ -165,19 +165,23 @@ public final class AnalisadorSintatico
             @Override
             protected void reportFailedPredicate(Parser recognizer, FailedPredicateException e) {
                 beginErrorCondition(recognizer);
-                Token t = recognizer.getCurrentToken();
-                IntervalSet expecting = getExpectedTokens(recognizer);
+                Token t = e.getOffendingToken();
+                IntervalSet expecting = e.getExpectedTokens();
                 String msg = "Expressão " +getTokenErrorDisplay(t)+ " não faz sentido, era esperado o token "+expecting.toString(recognizer.getVocabulary())+".";
-                throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+                RecognitionException ex = new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+                     ex.initCause(e);
+                throw ex;
             }
             
             @Override
             protected void reportNoViableAlternative(Parser recognizer, NoViableAltException e) {
                 beginErrorCondition(recognizer);
-                Token t = recognizer.getCurrentToken();
-                IntervalSet expecting = getExpectedTokens(recognizer);
+                Token t = e.getOffendingToken();
+                IntervalSet expecting = e.getExpectedTokens();
                 String msg = "Expressão " +getTokenErrorDisplay(t)+ " não faz sentido, era esperado o token "+expecting.toString(recognizer.getVocabulary())+".";
-                throw new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+                RecognitionException ex = new RecognitionException(msg, recognizer, recognizer.getInputStream(), recognizer.getContext());
+                     ex.initCause(e);
+                throw ex;
             }
         });
         
