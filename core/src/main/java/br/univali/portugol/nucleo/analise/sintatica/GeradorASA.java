@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import org.antlr.runtime.UnwantedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -36,8 +37,6 @@ public class GeradorASA {
     private class Antlr4ParserVisitor extends PortugolBaseVisitor<No> {
 
         private final ASAPrograma asa = new ASAPrograma();
-        
-        private boolean dentroLoopSwitch = false;
 
         public ASAPrograma getAsa() {
             return asa;
@@ -267,11 +266,27 @@ public class GeradorASA {
         public No visitPare(PareContext ctx) {
             NoPare noPare = new NoPare();
             noPare.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.PARE()));
-            if(!dentroLoopSwitch)
+            if(!estaDentroDeUmLoop(ctx))
             {                
                 throw new RecognitionException("Pare fora de escopo", parser, parser.getInputStream(), ctx);
             }
             return noPare;
+        }
+        
+        private boolean estaDentroDeUmLoop(RuleContext ctx)
+        {
+            if(ctx instanceof ParaContext || ctx instanceof EnquantoContext || ctx instanceof FacaEnquantoContext)
+            {
+                return true;
+            }
+            else if(ctx.getParent() == null)
+            {
+                return false;
+            }
+            else
+            {
+                return estaDentroDeUmLoop(ctx.getParent());
+            }
         }
 
         @Override
@@ -285,7 +300,6 @@ public class GeradorASA {
         
         @Override
         public No visitEscolha(EscolhaContext ctx) {
-            dentroLoopSwitch = true;
             NoEscolha noEscolha = new NoEscolha((NoExpressao)ctx.expressao().accept(this));
             
             List<NoCaso> casos = new ArrayList<>();
@@ -296,7 +310,6 @@ public class GeradorASA {
             noEscolha.setCasos(casos);
             
             noEscolha.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ESCOLHA(), ctx.getText().length()));
-            dentroLoopSwitch = false;
             return noEscolha;
         }
 
@@ -628,7 +641,6 @@ public class GeradorASA {
         // Loop para (for)
         @Override
         public No visitPara(PortugolParser.ParaContext contexto) {
-            dentroLoopSwitch = true;
             PortugolParser.InicializacaoParaContext inicializacaoPara = contexto.inicializacaoPara();
             PortugolParser.CondicaoContext condicao = contexto.condicao();
             PortugolParser.IncrementoParaContext incrementoPara = contexto.incrementoPara();
@@ -667,27 +679,22 @@ public class GeradorASA {
             noPara.setBlocos(getBlocos(contexto.listaComandos()));
 
             noPara.setTrechoCodigoFonte(getTrechoCodigoFonte(contexto.PARA(), contexto.getText().length()));
-            dentroLoopSwitch = false;
             return noPara;
         }
 
         @Override
         public No visitFacaEnquanto(FacaEnquantoContext ctx) {
-            dentroLoopSwitch = true;
             NoFacaEnquanto facaEnquanto = new NoFacaEnquanto((NoExpressao)ctx.expressao().accept(this));
             facaEnquanto.setBlocos(getBlocos(ctx.listaComandos()));
             facaEnquanto.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.FACA(), ctx.getText().length()));
-            dentroLoopSwitch = false;
             return facaEnquanto;
         }
 
         @Override
         public No visitEnquanto(EnquantoContext ctx) {
-            dentroLoopSwitch = true;
             NoEnquanto enquanto = new NoEnquanto((NoExpressao)ctx.expressao().accept(this));
             enquanto.setBlocos(getBlocos(ctx.listaComandos()));
             enquanto.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ENQUANTO(), ctx.getText().length()));
-            dentroLoopSwitch = false;
             return enquanto;
         }
         
