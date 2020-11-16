@@ -47,6 +47,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoParametroFuncao;
 import br.univali.portugol.nucleo.asa.NoPare;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
@@ -54,6 +55,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.NoSenao;
 import br.univali.portugol.nucleo.asa.NoTitulo;
 import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
@@ -708,6 +710,16 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA
     {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

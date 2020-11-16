@@ -107,7 +107,7 @@ task debug(dependsOn: compileJava, type: JavaExec) {
     
     description = 'Runs this program as a JVM application for debugging'
 	group = 'application'
-	   debug = true 
+	    debug = true
     doFirst {
     
 	    main = mainClass

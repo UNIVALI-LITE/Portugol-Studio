@@ -175,13 +175,10 @@ public class GeradorASA {
             TipoDado tipoRetorno = TipoDado.obterTipoDadoPeloNome(nomeTipoRetorno);
 
             NoDeclaracaoFuncao declaracaoFuncao = new NoDeclaracaoFuncao(nomeFuncao, tipoRetorno, Quantificador.VALOR);
-
-            if (ctx.listaParametros() != null) { // se a função tem parâmetros
-                List<NoDeclaracaoParametro> parametros = new ArrayList<>();
-                for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
-                    parametros.add((NoDeclaracaoParametro)parametroContext.accept(this));
-                }
-                declaracaoFuncao.setParametros(parametros);
+            
+            if (ctx.parametroFuncao() != null) { // se a função tem parâmetros
+                NoParametroFuncao noParametroFuncao = (NoParametroFuncao) visit(ctx.parametroFuncao());
+                declaracaoFuncao.setParametros(noParametroFuncao.getParametros());
             }
                         
             declaracaoFuncao.setBlocos(getBlocos(ctx.comando()));
@@ -194,6 +191,16 @@ public class GeradorASA {
             }
 
             return declaracaoFuncao;
+        }
+
+        @Override
+        public No visitParametroFuncao(ParametroFuncaoContext ctx) {
+            NoParametroFuncao noParametroFuncao = new NoParametroFuncao();
+            if(ctx.listaParametros()!=null)
+            for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
+                noParametroFuncao.addParametro((NoDeclaracaoParametro)parametroContext.accept(this));
+            }
+            return noParametroFuncao;
         }
 
         @Override
@@ -669,17 +676,22 @@ public class GeradorASA {
         
         @Override
         public No visitSe(SeContext ctx) {
-            NoSe se = new NoSe((NoExpressao)ctx.expressao().accept(this));
-            
-            se.setBlocosVerdadeiros(getBlocos(ctx.listaComandos(0)));
-            
-            if (ctx.SENAO() != null) {
-                se.setBlocosFalsos(getBlocos(ctx.listaComandos(1)));
+            NoSe se = new NoSe((NoExpressao)ctx.expressao().accept(this));            
+            se.setBlocosVerdadeiros(getBlocos(ctx.listaComandos()));
+            if(ctx.senao() != null)
+            {
+                NoSenao senao = (NoSenao) visit(ctx.senao());            
+                se.setBlocosFalsos(senao.getBlocosFalsos());                            
             }
-            
-            se.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.SE(), ctx.getText().length()));
-            
+            se.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.SE(), ctx.getText().length()));            
             return se;
+        }
+
+        @Override
+        public No visitSenao(SenaoContext ctx) {
+            NoSenao senao = new NoSenao();            
+            senao.setBlocosFalsos(getBlocos(ctx.listaComandos()));
+            return senao;
         }
         
         @Override

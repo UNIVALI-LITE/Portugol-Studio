@@ -441,4 +441,14 @@ public class DetectaNosParada implements VisitanteASA
         return null;
     }
 
+    @Override
+    public Object visitar(NoSenao noSenao) throws ExcecaoVisitaASA {
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoParametroFuncao noParametroFuncao) throws ExcecaoVisitaASA {
+        return null;
+    }
+
 }

@@ -89,6 +89,12 @@ public interface PortugolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaracaoFuncao(PortugolParser.DeclaracaoFuncaoContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PortugolParser#parametroFuncao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParametroFuncao(PortugolParser.ParametroFuncaoContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PortugolParser#listaParametros}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -164,6 +170,12 @@ public interface PortugolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSe(PortugolParser.SeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PortugolParser#senao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSenao(PortugolParser.SenaoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PortugolParser#enquanto}.
 	 * @param ctx the parse tree
