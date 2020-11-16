@@ -955,10 +955,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 String texto = documento.getText(0, documento.getLength());
                 texto = inserirInformacoesPortugolStudio(texto);
                 FileHandle.save(texto, getArquivoComExtensaoRecuperacao(arquivoRecuperavel));
-            } catch (BadLocationException ex) {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             } catch (Exception ex) {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                LOGGER.log(Level.WARNING, null, ex);
             }
         }
     }
