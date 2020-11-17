@@ -34,6 +34,13 @@ public final class FileHandle
                     if(!pasta.contains("recuperavel"))
                     throw new ExcecaoAplicacao("Não há espaço no disco", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
                 }
+                else if (e.getMessage().contains("used by another process") || e.getMessage().contains("sendo usado por outro processo")) {
+                    String arquivo = file.getName();
+                    throw new ExcecaoAplicacao("O arquivo "+arquivo+" está sendo utilizado em outro processo. Não é possível altera-lo!", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+                }
+                else if (e.getMessage().contains("cloud file provider") || e.getMessage().contains("O provedor do arquivo de nuvem")) {
+                    throw new ExcecaoAplicacao("O seu provedor de arquivos OneDrive está impedindo o Portugol de fazer modificações. Por favor reinicie ele.", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+                }
                 else {
                     throw e;
                 }

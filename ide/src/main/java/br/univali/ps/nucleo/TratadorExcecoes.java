@@ -172,39 +172,6 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         }
     }
     
-    private ExcecaoAplicacao excecaoExterna(Throwable excecao)
-    {
-        String mensagem = excecao.getLocalizedMessage()==null?"":excecao.getLocalizedMessage();
-        String erro = "";
-        
-        String[] search = new String[1];
-        search[0] = "There is not enough space on the disk";
-        if(silenciador_de_excecoes_and(mensagem, search))
-        {
-            erro = "Não há espaço no disco!";
-        }
-        
-        search = new String[1];
-        search[0] = "sendo usado por outro processo";
-        if(silenciador_de_excecoes_and(mensagem, search))
-        {
-            erro = "O arquivo está sendo utilizado em outro processo. Não é possível altera-lo!";
-        }
-        
-        search = new String[1];
-        search[0] = "O provedor do arquivo de nuvem";
-        if(silenciador_de_excecoes_and(mensagem, search))
-        {
-            erro = "O seu provedor de arquivos OneDrive está impedindo o Portugol de fazer modificações. Por favor reinicie ele.";
-        }
-        
-        if(erro.isEmpty())
-        {
-            return null;
-        }
-        return new ExcecaoAplicacao(erro, excecao, ExcecaoAplicacao.Tipo.ERRO_USUARIO);
-    }
-    
     private boolean silenciador_de_excecoes(){
         String mensagem = fluxoSaida.getFullStack();
         //ignorar até JDK ser atualizada para versão 9
@@ -306,10 +273,6 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private ExcecaoAplicacao transformarExcecao(Exception excecao)
     {
-        ExcecaoAplicacao ea = excecaoExterna(excecao);
-        if(ea!=null){
-            return ea;
-        }
         if (!(excecao instanceof ExcecaoAplicacao))
         {
             excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
