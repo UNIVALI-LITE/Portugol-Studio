@@ -142,8 +142,8 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     @Override
     public void uncaughtException(Thread thread, Throwable excecao)
     {
-        final ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);        
-        
+        final ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
+            
         if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
         {
             String mensagem;
@@ -165,15 +165,13 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         {
             LOGGER.log(Level.WARNING, "Exceção não identificada", excecao);
         }
-        else if (silenciador_de_excecoes())
-        {
-            //Shhhh, você não viu nada aqui, continue andando...
-        }
+        else if (silenciador_de_excecoes()){}
         else
         {
             exibirExcecao(excecaoAplicacao);
         }
     }
+    
     private boolean silenciador_de_excecoes(){
         String mensagem = fluxoSaida.getFullStack();
         //ignorar até JDK ser atualizada para versão 9
@@ -184,9 +182,8 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
             return true;
         
         //https://github.com/UNIVALI-LITE/Portugol-Studio/issues/486
-        search = new String[2];
-        search[0] = "java.lang.NullPointerException: peer";
-        search[1] = "Caused by: java.lang.NullPointerException: peer";
+        search = new String[1];
+        search[0] = "peer";
         if(silenciador_de_excecoes_and(mensagem, search))
             return true;
         
@@ -199,8 +196,8 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         
         //issue #495
         search = new String[2];
-        search[0] = "org.fife.ui.rsyntaxtextarea.ParserManager.noticeContainsPosition(ParserManager.java:531)";
-        search[1] = "javax.swing.ToolTipManager$insideTimerAction.actionPerformed(ToolTipManager.java:663)";
+        search[0] = "org.fife.ui.rsyntaxtextarea.ParserManager.noticeContainsPosition";
+        search[1] = "javax.swing.ToolTipManager$insideTimerAction.actionPerformed";
         if(silenciador_de_excecoes_and(mensagem, search))
             return true;
         return false;
@@ -280,7 +277,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         {
             excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
         }
-
+        
         return (ExcecaoAplicacao) excecao;
     }
 }
