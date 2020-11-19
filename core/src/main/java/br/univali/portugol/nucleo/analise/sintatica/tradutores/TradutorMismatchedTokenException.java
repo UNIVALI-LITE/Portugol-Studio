@@ -7,6 +7,7 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoForaEscopoFuncao;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
@@ -83,6 +84,11 @@ public final class TradutorMismatchedTokenException
             if(token.equals("senao"))
             {
                return new ErroSenaoInesperado(linha, coluna, token);
+            }
+            
+            if(contextoAtual.equals("arquivo"))
+            {
+                return new ErroExpressaoForaEscopoFuncao(linha, coluna, token);
             }
             
             if(contextoAtual.equals("expressao") && contextos.getContextoPai().equals("declaracaoVariavel"))
