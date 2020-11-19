@@ -26,8 +26,10 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.runtime.MismatchedTokenException;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
 
@@ -62,7 +64,8 @@ public final class TradutorMismatchedTokenException
         String contextoDaCausa = null;
         String tokenDaCausa = null;
         
-        if (erro.getCause() != null) {
+        if(erro.getCause() != null)
+        {
             RecognitionException exception = (RecognitionException)erro.getCause();
             tokenDaCausa = exception.getOffendingToken().getText();
             contextoDaCausa = exception.getRecognizer().getRuleNames()[exception.getCtx().getRuleIndex()];
@@ -71,18 +74,12 @@ public final class TradutorMismatchedTokenException
                 return new ErroSimboloFaltandoOuRealComVirgula(linha, coluna, contextoAtual);
             }
         }
-        
-//        if(tokensEsperados.size()>1)
-//        {
-//            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
-//            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
-//            {
-////                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
-////                {
-////                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
-////                }
-//            }
-//        }
+        try
+        {
+            if(token.matches("[0-9]"))
+                if(getFullText((ParserRuleContext)erro.getCtx(), 2, 0).matches("[0-9],[0-9]"))
+                    return new ErroSimboloFaltandoOuRealComVirgula(linha, coluna, contextoAtual);
+        }catch(Exception e){}
         
         if(erro.getMessage().contains("Remove-lo pode solucionar o problema"))
         {
@@ -253,5 +250,12 @@ public final class TradutorMismatchedTokenException
         // only got here if we didn't return false
         return true;
     }
-
+    
+    public String getFullText(ParserRuleContext ctx, int offsetBackwards, int offsetFrontwards)
+    {
+        int a = ctx.start.getStartIndex();
+        int b = a-offsetBackwards+offsetFrontwards;
+        Interval interval = new Interval(b,a);
+        return ctx.start.getInputStream().getText(interval);
+    }
 }
