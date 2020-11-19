@@ -84,7 +84,7 @@ public final class TradutorMismatchedTokenException
             if(token.equals("senao"))
             {
                return new ErroSenaoInesperado(linha, coluna, token);
-            }
+            } 
             
 //            if(contextoAtual.equals("arquivo"))
 //            {
