@@ -362,14 +362,12 @@ public final class PortugolStudio
             
             String jsontext = WebConnectionUtils.getString(Configuracoes.getInstancia().getUriAlertas());
             ObjectMapper mapper = new ObjectMapper();
-            ObjectNode node = (ObjectNode) mapper.readTree(jsontext);
-            
-            JsonNode alertasNode = node.get("alertas&avisos");
+            JsonNode alertasNode = mapper.readTree(jsontext);
                         
             for (JsonNode jsonNode : alertasNode) {
                 ArrayNode versaoArray = (ArrayNode)jsonNode.get("versao");
                 ArrayNode OSArray = (ArrayNode)jsonNode.get("OS");
-                String idmensagem = jsonNode.get("id").asText("");
+                String idmensagem = jsonNode.get("_id").asText("");
                 String OSName = System.getProperty("os.name").toLowerCase();
                 boolean acceptedOS = false;
                 boolean acceptedVersion = false;
@@ -402,7 +400,6 @@ public final class PortugolStudio
                 String subtitulo = jsonNode.get("subtitulo").asText("");
                 String mensagem = jsonNode.get("mensagem").asText("");
                 String link = jsonNode.get("link").asText("");
-                String tipo = jsonNode.get("tipo").asText("");
                 
                 PainelTextoAlerta alerta = new PainelTextoAlerta(titulo, subtitulo, mensagem, link, idmensagem);                
                 TelaAlertas tAlertas = new TelaAlertas(alerta);               
