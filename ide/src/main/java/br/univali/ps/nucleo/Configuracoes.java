@@ -85,7 +85,7 @@ public final class Configuracoes
     private String userMac = "0-0-0-0";
     private String userAnalyticsID = "bafta";
     private String uriAtualizacao = "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest";
-    private String uriAlertas = "https://cdn.discordapp.com/attachments/354074984857206794/775879353748946944/alertaseavisos.json";
+    private String uriAlertas = "https://portugol-api.vercel.app/api/alertas";
     private String caminhoUltimoDiretorio = getDiretorioUsuario().toString();
     private JSONObject arquivo_temas = null;
 

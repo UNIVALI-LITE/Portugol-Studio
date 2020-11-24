@@ -3,7 +3,10 @@ package br.univali.ps.ui.carrossel;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.paineis.ImagePanel;
 import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.utils.WebConnectionUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -55,6 +58,8 @@ public class CarrosselCursos extends JPanel {
     private final Collection<CarrosselListener> listeners = new ArrayList<>();
 
     private final String PACOTE_RESOURCES = "br/univali/ps/carrossel/";
+    
+    private final String LINK_CURSOS = "https://portugol-api.vercel.app/api/cursos";
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -140,7 +145,7 @@ public class CarrosselCursos extends JPanel {
 
         executor.submit(() -> {
             try {
-                carregaCursos(getInputStreamCursos());
+                carregaCursos(getCursosJson());
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
@@ -206,36 +211,23 @@ public class CarrosselCursos extends JPanel {
         return "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/";
     }
 
-    private InputStream getInputStreamCursos() throws Exception {
-        if (Configuracoes.rodandoEmDesenvolvimento()) {
-            LOGGER.log(Level.INFO, "Lendo 'cursos.json' do JAR!");
-            return ClassLoader.getSystemClassLoader().getResourceAsStream(PACOTE_RESOURCES + "cursos.json");
-        }
-
-        LOGGER.log(Level.INFO, "Lendo 'cursos.json' do github!");
-
-        URL url = new URL(getBaseUrl() + PACOTE_RESOURCES + "cursos.json");
-
-        return url.openStream();
+    private String getCursosJson() throws Exception {
+        return WebConnectionUtils.getString(LINK_CURSOS);
     }
 
     public void addListener(CarrosselListener listener) {
         listeners.add(listener);
     }
 
-    private void carregaCursos(InputStream stream) {
-
-        if (stream == null) {
-            throw new IllegalArgumentException("O stream está nulo!");
-        }
-
+    private void carregaCursos(String cursosJson) {
+        
         if (cursos.size() > 0) { // cursos já estão carregados?
             return;
         }
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            cursos = Arrays.asList(mapper.readValue(stream, Curso[].class));
+            cursos = Arrays.asList(mapper.readValue(cursosJson, Curso[].class));
 
             for (CarrosselListener listener : listeners) {
                 listener.cursosCarregados();
@@ -309,15 +301,11 @@ public class CarrosselCursos extends JPanel {
     }
 
     private InputStream getStreamImagem(String caminhoImagem) throws Exception {
-        if (Configuracoes.rodandoEmDesenvolvimento()) {
-            return ClassLoader.getSystemClassLoader().getResourceAsStream(caminhoImagem);
-        } else {
-            return new URL(caminhoImagem).openStream();
-        }
+        return new URL(caminhoImagem).openStream();
     }
 
     private String getCaminhoImagem(Curso curso) {
-        return getBaseUrl() + PACOTE_RESOURCES + curso.getCaminhoImagem();
+        return curso.getCaminhoImagem();
     }
 
     private void mostraCurso(Curso curso) {
