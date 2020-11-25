@@ -17,6 +17,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 /**
  *
@@ -77,17 +79,13 @@ public class PainelTextoAlerta extends javax.swing.JPanel implements Themeable{
     
     private void appendToPane(JTextPane tp, String msg, Color c)
     {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-        aset = sc.addAttribute(aset, StyleConstants.Size, 14);
-
-        int len = tp.getDocument().getLength();
-        tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, false);
-        tp.replaceSelection(msg);
+        StringBuilder sb = new StringBuilder("<html><body>");
+        sb.append("<div style=\"font-family:arial;color:#cdcdcd;text-align:justify;font-size:11px\">");
+        sb.append(msg);
+        sb.append("</div></body></html>");
+        tp.setContentType("text/html");
+        tp.setEditable(false);
+        tp.setText(sb.toString());
     }
 
     public String getIdMensagem() {
