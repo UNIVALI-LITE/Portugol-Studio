@@ -275,7 +275,7 @@ public class GeradorASA {
         
         private boolean estaDentroDeUmLoop(RuleContext ctx)
         {
-            if(ctx instanceof ParaContext || ctx instanceof EnquantoContext || ctx instanceof FacaEnquantoContext)
+            if(ctx instanceof ParaContext || ctx instanceof EnquantoContext || ctx instanceof FacaEnquantoContext || ctx instanceof EscolhaContext)
             {
                 return true;
             }
