@@ -87,6 +87,25 @@ public class ErrosSintaticosTest {
     }
     
     @Test
+    public void testPareForaDeLoop() throws Exception {
+         String codigoFonte
+                = " programa {                                                  "
+                + "    funcao inicio(){                                         "
+                + "             pare                                            "
+                + "       }                                                     "
+                + "    }                                                        "
+                + " }                                                           ";
+
+        AnalisadorAlgoritmo analisador = new AnalisadorAlgoritmo();
+        ResultadoAnalise analise = analisador.analisar(codigoFonte);
+                
+        Assert.assertEquals(1, analise.getErrosSintaticos().size());
+        
+        ErroSintatico erro = analise.getErrosSintaticos().get(0);
+        Assert.assertTrue(erro instanceof ErroPareForaDeLoopOuSwitch);
+    }
+    
+    @Test
     public void testParametrosNaoTipados() throws Exception {
          String codigoFonte
                 = " programa {                                                  "

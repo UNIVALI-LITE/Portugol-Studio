@@ -7,8 +7,14 @@ import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.antlr.runtime.UnwantedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class GeradorASA {
@@ -260,7 +266,27 @@ public class GeradorASA {
         public No visitPare(PareContext ctx) {
             NoPare noPare = new NoPare();
             noPare.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.PARE()));
+            if(!estaDentroDeUmLoop(ctx))
+            {                
+                throw new RecognitionException("Pare fora de escopo", parser, parser.getInputStream(), ctx);
+            }
             return noPare;
+        }
+        
+        private boolean estaDentroDeUmLoop(RuleContext ctx)
+        {
+            if(ctx instanceof ParaContext || ctx instanceof EnquantoContext || ctx instanceof FacaEnquantoContext || ctx instanceof EscolhaContext)
+            {
+                return true;
+            }
+            else if(ctx.getParent() == null)
+            {
+                return false;
+            }
+            else
+            {
+                return estaDentroDeUmLoop(ctx.getParent());
+            }
         }
 
         @Override
@@ -284,7 +310,6 @@ public class GeradorASA {
             noEscolha.setCasos(casos);
             
             noEscolha.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ESCOLHA(), ctx.getText().length()));
-            
             return noEscolha;
         }
 
@@ -344,7 +369,7 @@ public class GeradorASA {
             return blocos;
         }
         
-        private List<NoBloco> getBlocos(ListaComandosContext ctx) {
+        private List<NoBloco> getBlocos(ListaComandosContext ctx) {   
             return getBlocos(ctx.comando());
         }
         
@@ -654,7 +679,6 @@ public class GeradorASA {
             noPara.setBlocos(getBlocos(contexto.listaComandos()));
 
             noPara.setTrechoCodigoFonte(getTrechoCodigoFonte(contexto.PARA(), contexto.getText().length()));
-            
             return noPara;
         }
 
