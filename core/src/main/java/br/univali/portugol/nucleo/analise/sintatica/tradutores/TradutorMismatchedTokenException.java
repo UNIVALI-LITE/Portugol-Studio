@@ -84,12 +84,12 @@ public final class TradutorMismatchedTokenException
             if(token.equals("senao"))
             {
                return new ErroSenaoInesperado(linha, coluna, token);
-            }
+            } 
             
-            if(contextoAtual.equals("arquivo"))
-            {
-                return new ErroExpressaoForaEscopoFuncao(linha, coluna, token);
-            }
+//            if(contextoAtual.equals("arquivo"))
+//            {
+//                return new ErroExpressaoForaEscopoFuncao(linha, coluna, token);
+//            }
             
             if(contextoAtual.equals("expressao") && contextos.getContextoPai().equals("declaracaoVariavel"))
             {
@@ -101,7 +101,7 @@ public final class TradutorMismatchedTokenException
                 return new ErroParaEsperaCondicao(linha, coluna);
             }
             
-            if(contextoAtual.equals("parametroFuncao"))
+            if(contextoAtual.equals("parametroFuncao") && tokensEsperados.contains("FECHA_PARENTESES"))
             {
                 return new ErroParametrosNaoTipados(linha, coluna, token);
             }
