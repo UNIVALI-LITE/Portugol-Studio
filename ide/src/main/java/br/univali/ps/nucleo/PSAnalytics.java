@@ -5,6 +5,7 @@
  */
 package br.univali.ps.nucleo;
 
+import static br.univali.ps.ui.utils.WebConnectionUtils.getHTML;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -156,24 +157,7 @@ public class PSAnalytics {
             }
         }
     }
-    public static String getHTML(String urlToRead){
-        try {
-            StringBuilder result = new StringBuilder();
-            URL url = new URL(urlToRead);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-               result.append(line);
-            }
-            rd.close();
-            return result.toString();
-
-        } catch (Exception e) {
-            return "FALHA DE CONEXAO";
-        }
-   }
+    
     public void iniciar_sessao_servidor(){
         if(pode_enviar_dados)
         {

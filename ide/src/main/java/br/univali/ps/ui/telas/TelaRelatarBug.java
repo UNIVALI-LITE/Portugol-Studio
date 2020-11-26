@@ -31,6 +31,14 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
                 WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new");
             }
         });
+        webButton1.setAction(new AbstractAction("Tela Duplicando")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/421");
+            }
+        });
         configurarLink(labelDiscord);
         configurarLink(labelFacebook);
         configurarLink(labelGmail);
@@ -53,6 +61,7 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         if(WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configurarBotao(webButton2, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(webButton1, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
         }
     }
     
@@ -84,6 +93,7 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         labelDescIssue = new javax.swing.JLabel();
         painelBotaoIssue = new javax.swing.JPanel();
         webButton2 = new com.alee.laf.button.WebButton();
+        webButton1 = new com.alee.laf.button.WebButton();
         painelTitleIssue = new javax.swing.JPanel();
         labelTitleIssue = new javax.swing.JLabel();
         paineInferior = new javax.swing.JPanel();
@@ -122,22 +132,38 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
 
         webButton2.setText("Reportar Erro");
         webButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        webButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton2ActionPerformed(evt);
+            }
+        });
+
+        webButton1.setText("Tela Duplicando");
+        webButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelBotaoIssueLayout = new javax.swing.GroupLayout(painelBotaoIssue);
         painelBotaoIssue.setLayout(painelBotaoIssueLayout);
         painelBotaoIssueLayout.setHorizontalGroup(
             painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoIssueLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(webButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         painelBotaoIssueLayout.setVerticalGroup(
             painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoIssueLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(webButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         painelTxtIssue.add(painelBotaoIssue, java.awt.BorderLayout.EAST);
@@ -152,7 +178,7 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         painelTitleIssueLayout.setHorizontalGroup(
             painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelTitleIssueLayout.createSequentialGroup()
-                .addContainerGap(87, Short.MAX_VALUE)
+                .addContainerGap(96, Short.MAX_VALUE)
                 .addComponent(labelTitleIssue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))
         );
@@ -201,6 +227,14 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         add(paineInferior, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_webButton2ActionPerformed
+
+    private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_webButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -215,6 +249,7 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel painelDescIssue;
     private javax.swing.JPanel painelTitleIssue;
     private javax.swing.JPanel painelTxtIssue;
+    private com.alee.laf.button.WebButton webButton1;
     private com.alee.laf.button.WebButton webButton2;
     // End of variables declaration//GEN-END:variables
     

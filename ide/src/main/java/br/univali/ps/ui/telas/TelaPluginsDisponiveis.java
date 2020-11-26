@@ -7,7 +7,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.Configuracoes;
-import static br.univali.ps.nucleo.PSAnalytics.getHTML;
+import static br.univali.ps.ui.utils.WebConnectionUtils.getHTML;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.paineis.PainelPluginItem;

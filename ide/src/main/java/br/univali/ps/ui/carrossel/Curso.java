@@ -5,7 +5,8 @@ package br.univali.ps.ui.carrossel;
  * @author Elieser
  */
 class Curso {
-
+    
+    private final String _id;
     private final String titulo;
     private final String descricao;
     private final int tempoExibicao;
@@ -13,6 +14,7 @@ class Curso {
     private final String link;
 
     public Curso() {
+        this._id = null;
         this.titulo = null;
         this.descricao = null;
         this.tempoExibicao = 0;
@@ -22,7 +24,8 @@ class Curso {
 
     
     
-    public Curso(String titulo, String descricao, String link, String caminhoImagem, int tempoExibicao) {
+    public Curso(String _id, String titulo, String descricao, String link, String caminhoImagem, int tempoExibicao) {
+        this._id = _id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.tempoExibicao = tempoExibicao;
@@ -50,4 +53,7 @@ class Curso {
         return titulo;
     }
 
+    public String get_id() {
+        return _id;
+    }
 }

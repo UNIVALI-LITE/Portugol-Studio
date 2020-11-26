@@ -14,6 +14,7 @@ import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.PSFindReplace;
 import br.univali.ps.ui.paineis.PainelPluginsInstalados;
+import br.univali.ps.ui.paineis.PainelTextoAlerta;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
@@ -23,11 +24,17 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.Sobre;
+import br.univali.ps.ui.telas.TelaAlertas;
 import br.univali.ps.ui.telas.TelaAtalhos;
 import br.univali.ps.ui.telas.TelaEditarTemas;
 import br.univali.ps.ui.telas.TelaRelatarBug;
 import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.window.OutsidePanel;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -74,6 +81,9 @@ public final class PortugolStudio
 
     private final List<File> arquivosIniciais = new ArrayList<>();
     private final List<File> diretoriosPluginsInformadosPorParametro = new ArrayList<>();
+    
+    List<PainelTextoAlerta> alertas = new ArrayList<>();
+    List<String> mensagensLidas = new ArrayList<>();
 
     private final Random random = new Random(System.nanoTime());
     private final List<String> dicas = new ArrayList<>();
@@ -102,7 +112,7 @@ public final class PortugolStudio
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
-        
+            
     private TratadorExcecoes tratadorExcecoes = null;
     
     private static boolean portugolCarregado = false;
@@ -307,6 +317,101 @@ public final class PortugolStudio
         System.exit(codigo);
         
         Lancador.getInstance().finalizarServico();
+    }
+    
+    public void adicionaMensagemLida(String id)
+    {
+        File diretorioConfiguracoes = Configuracoes.getInstancia().getDiretorioConfiguracoes();
+        File arquivoMensagensLidas = new File(diretorioConfiguracoes, "mensagensLidas.txt");
+        try {            
+            mensagensLidas.add(id);
+            StringBuilder mensagens = new StringBuilder();
+
+            for (String mensagemLida : mensagensLidas) {
+                mensagens.append(mensagemLida+"\n");
+            }
+
+            FileHandle.save(mensagens.toString(), arquivoMensagensLidas, "UTF-8");                
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void carregarMensagensLidas()
+    {
+        mensagensLidas = new ArrayList<>();
+        File diretorioConfiguracoes = Configuracoes.getInstancia().getDiretorioConfiguracoes();
+        File arquivoMensagensLidas = new File(diretorioConfiguracoes, "mensagensLidas.txt");
+        if(arquivoMensagensLidas.exists())
+        {
+            try {
+                String arquivo = FileHandle.open(arquivoMensagensLidas);
+                String [] caminhos = arquivo.split("\n");
+                for (String caminho : caminhos) {
+                        mensagensLidas.add(caminho);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void apresentarAlertas(boolean showAll)
+    {
+        try {
+            
+            String jsontext = WebConnectionUtils.getString(Configuracoes.getInstancia().getUriAlertas());
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode alertasNode = mapper.readTree(jsontext);
+                        
+            for (JsonNode jsonNode : alertasNode) {
+                ArrayNode versaoArray = (ArrayNode)jsonNode.get("versao");
+                ArrayNode OSArray = (ArrayNode)jsonNode.get("OS");
+                String idmensagem = jsonNode.get("_id").asText("");
+                String OSName = System.getProperty("os.name").toLowerCase();
+                boolean acceptedOS = false;
+                boolean acceptedVersion = false;
+                                
+                for (JsonNode OS : OSArray) {
+                    if(OSName.contains(OS.asText("?")))
+                    {
+                        acceptedOS = true;
+                        break;
+                    }
+                }
+                
+                for (JsonNode versao : versaoArray) {
+                    if(versao.asText("").equals(PortugolStudio.getInstancia().getVersao()))
+                    {
+                        acceptedVersion = true;
+                        break;
+                    }
+                }
+                
+                if(mensagensLidas.contains(idmensagem))
+                {
+                    if(!showAll)
+                    continue;
+                }
+                if((!acceptedOS || !acceptedVersion))
+                    continue;
+                
+                String titulo = jsonNode.get("titulo").asText("");
+                String subtitulo = jsonNode.get("subtitulo").asText("");
+                String mensagem = jsonNode.get("mensagem").asText("");
+                String link = jsonNode.get("link").asText("");
+                
+                PainelTextoAlerta alerta = new PainelTextoAlerta(titulo, subtitulo, mensagem, link, idmensagem);                
+                TelaAlertas tAlertas = new TelaAlertas(alerta);               
+                TelaCustomBorder telaAlertas = new TelaCustomBorder(tAlertas, "Alerta!");
+                
+                this.alertas.add(alerta);
+                telaAlertas.setLocationRelativeTo(null);
+                telaAlertas.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String obterProximaDica()

@@ -33,6 +33,7 @@ public final class AbaInicial extends Aba implements Themeable
     private Action acaoExibirAtalhosTeclado;
     private Action acaoExibirDicasInterface;
     private boolean redimensionouParaBaixaResolucao = false;
+    private javax.swing.JLabel rotuloMostrarAlertas;
 
     public AbaInicial(TelaPrincipal telaPrincipal)
     {
@@ -41,6 +42,7 @@ public final class AbaInicial extends Aba implements Themeable
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents();
+        configurarBotaoAlertas();
         configurarCores();
         configurarResolucao();
         configurarCursorLogos();
@@ -67,7 +69,22 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloInformacoesSoftware.setForeground(ColorController.COR_LETRA);
         rotuloRelatarBug.setBackground(ColorController.FUNDO_MEDIO);
         rotuloRelatarBug.setForeground(ColorController.COR_LETRA);
+        rotuloMostrarAlertas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloMostrarAlertas.setForeground(ColorController.COR_LETRA);
         //        rotuloSlogan.setForeground(new Color(250, 250, 250));
+    }
+    
+    private void configurarBotaoAlertas()
+    {
+        rotuloMostrarAlertas = new javax.swing.JLabel();
+        rotuloMostrarAlertas.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloMostrarAlertas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloMostrarAlertas.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloMostrarAlertas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloMostrarAlertas.setText("<html><body><div>Mostrar Alertas</div></body></html>");
+        rotuloMostrarAlertas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloMostrarAlertas.setName("dicasInterface"); // NOI18N
+        conteudoColaborar.add(rotuloMostrarAlertas);
     }
 
     private void instalarObservadorCombinacoesSecretas()
@@ -200,6 +217,7 @@ public final class AbaInicial extends Aba implements Themeable
         configurarAcaoRelatarBug();
         configurarAcaoExibirAtalhosTeclado();
         configurarAcaoDicasInterface();
+        configurarAcaoMostrarAlertas();
     }
 
     
@@ -298,6 +316,9 @@ public final class AbaInicial extends Aba implements Themeable
 
         rotuloInformacoesSoftware.addMouseListener(listener);
         rotuloInformacoesSoftware.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        rotuloMostrarAlertas.addMouseListener(listener);
+        rotuloMostrarAlertas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
     }
 
@@ -343,6 +364,20 @@ public final class AbaInicial extends Aba implements Themeable
 
         getPainelTabulado().getActionMap().put(nome, acaoExibirDicasInterface);
         getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void configurarAcaoMostrarAlertas()
+    {
+        Action acao = new AbstractAction(rotuloMostrarAlertas.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                PortugolStudio.getInstancia().apresentarAlertas(true);
+            }
+        };
+
+        getActionMap().put(rotuloMostrarAlertas.getName(), acao);
     }
 
     public PainelExemplos getPainelExemplos() {
