@@ -28,6 +28,7 @@ import java.util.List;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.IntervalSet;
@@ -63,6 +64,7 @@ public final class TradutorMismatchedTokenException
             
         String contextoDaCausa = null;
         String tokenDaCausa = null;
+        String textoErroDoContexto = ((ParserRuleContext)erro.getCtx()).getText();
         
         if(erro.getCause() != null)
         {
@@ -76,8 +78,8 @@ public final class TradutorMismatchedTokenException
         }
         try
         {
-            if(token.matches("[0-9]"))
-                if(getFullText((ParserRuleContext)erro.getCtx(), 2, 0).matches("[0-9],[0-9]"))
+            if(token.matches("[0-9]*"))
+                if(getFullText((ParserRuleContext)erro.getCtx(), 2, 0).matches("[0-9]*,[0-9]*"))
                     return new ErroSimboloFaltandoOuRealComVirgula(linha, coluna, contextoAtual);
         }catch(Exception e){}
         
@@ -107,6 +109,12 @@ public final class TradutorMismatchedTokenException
             {
                 return new ErroParametrosNaoTipados(linha, coluna, token);
             }
+            
+            if(token.equals(",") && textoErroDoContexto.matches(".*retorne([0-9])*"))
+            {
+                return new ErroRealComVirgula(linha, coluna);
+            }
+            
             return new ErroExpressaoInesperada(linha, coluna, token);
         }
         
@@ -159,10 +167,6 @@ public final class TradutorMismatchedTokenException
                 return new ErroChaveDeVetorMatrizMalPosicionada(linha, coluna);
             }
             if (tokensEsperados.contains("ID")){
-                if(isInteger(token))
-                {
-                    return new ErroSimboloFaltandoOuRealComVirgula(linha, coluna, contextoAtual);
-                }
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
             }
         }
