@@ -269,14 +269,8 @@ public class CarrosselCursos extends JPanel {
     }
 
     private void abreLinkCursoAtual() {
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            Curso curso = cursos.get(cursoAtual);
-            try {
-                Desktop.getDesktop().browse(new URI(curso.getLink()));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+        Curso curso = cursos.get(cursoAtual);
+        WebConnectionUtils.abrirSite(curso.getLink());
     }
 
     private void mostraCursoAnterior() throws IOException {
