@@ -1,10 +1,9 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
-import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroChaveDeVetorMatrizMalPosicionada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
-import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscapeUnico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroEscopo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoEsperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoForaEscopoFuncao;
@@ -18,19 +17,21 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParaEsperaCondicao
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParametrosNaoTipados;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroRealComVirgula;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroRetornoVetorMatriz;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSenaoInesperado;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroSimboloFaltandoOuRealComVirgula;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTokenFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.runtime.MismatchedTokenException;
-import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
 
@@ -61,18 +62,27 @@ public final class TradutorMismatchedTokenException
         String contextoAtual = contextos.getContextoAtual();
         
         String token = TradutorUtils.getToken(erro).getText();
+            
+        String contextoDaCausa = null;
+        String tokenDaCausa = null;
+        String textoErroDoContexto = ((ParserRuleContext)erro.getCtx()).getText();
         
-//        if(tokensEsperados.size()>1)
-//        {
-//            PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
-//            for (Token token = lexer.nextToken(); token.getType() != Token.EOF; token = lexer.nextToken())
-//            {
-////                if(token.getType() == PortugolLexer.INVALID_ESCAPE)
-////                {
-////                    return new ErroEscapeUnico(token.getLine(), token.getCharPositionInLine(), "\\", token.getText());
-////                }
-//            }
-//        }
+        if(erro.getCause() != null)
+        {
+            RecognitionException exception = (RecognitionException)erro.getCause();
+            tokenDaCausa = exception.getOffendingToken().getText();
+            contextoDaCausa = exception.getRecognizer().getRuleNames()[exception.getCtx().getRuleIndex()];
+            if(contextoDaCausa.equals("comando") && tokenDaCausa.equals(","))
+            {
+                return new ErroSimboloFaltandoOuRealComVirgula(linha, coluna, contextoAtual);
+            }
+        }
+        try
+        {
+            if(token.matches("[0-9]*"))
+                if(getFullText((ParserRuleContext)erro.getCtx(), 2, 0).matches("[0-9]*,[0-9]*"))
+                    return new ErroSimboloFaltandoOuRealComVirgula(linha, coluna, contextoAtual);
+        }catch(Exception e){}
         
         if(erro.getMessage().contains("Remove-lo pode solucionar o problema"))
         {
@@ -105,6 +115,12 @@ public final class TradutorMismatchedTokenException
             {
                 return new ErroParametrosNaoTipados(linha, coluna, token);
             }
+            
+            if(token.equals(",") && textoErroDoContexto.matches(".*retorne([0-9])*"))
+            {
+                return new ErroRealComVirgula(linha, coluna);
+            }
+            
             return new ErroExpressaoInesperada(linha, coluna, token);
         }
         
@@ -124,6 +140,11 @@ public final class TradutorMismatchedTokenException
                 return new ErroExpressaoIncompleta(linha, coluna);
             }
             
+            if(token.equals(","))
+            {
+                return new ErroRealComVirgula(linha, coluna);
+            }
+            
             if (erro.getMessage() != null && erro.getMessage().contains("<EOF>")) {
                 return new ErroCadeiaIncompleta(linha, coluna, mensagemPadrao);
             }
@@ -133,15 +154,23 @@ public final class TradutorMismatchedTokenException
             ContextSet contextoPara = contextos;
             if (erro.getCause() != null) {
                 contextoPara = new ContextSet((RecognitionException)erro.getCause());
+                if(token.equals(",") && contextoDaCausa.equals("expressao"))
+                {
+                    return new ErroRealComVirgula(linha, coluna);
+                }
             }
             return traduzirErrosPara(linha, coluna, erro, tokensEsperados, contextoPara);
         }
         
         // função, variável ou parâmetro sem nome
         if (contextoAtual.startsWith("declaracao") || contextoAtual.equals("parametro")) {
-            if(token.equals("["))
+            if(token.equals("[") && contextoAtual.equals("declaracaoFuncao"))
             {
                 return new ErroRetornoVetorMatriz(linha, coluna, contextoAtual);
+            }
+            else if(token.equals("["))
+            {
+                return new ErroChaveDeVetorMatrizMalPosicionada(linha, coluna);
             }
             if (tokensEsperados.contains("ID")){
                 return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
@@ -219,5 +248,24 @@ public final class TradutorMismatchedTokenException
     private int numeroPontoVirgula(String string) {
         return string.split(";", -1).length-1;
     }
- 
+    
+    public static boolean isInteger(String s) {
+        try { 
+            Integer.parseInt(s); 
+        } catch(NumberFormatException e) { 
+            return false; 
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+    
+    public String getFullText(ParserRuleContext ctx, int offsetBackwards, int offsetFrontwards)
+    {
+        int a = ctx.start.getStartIndex();
+        int b = a-offsetBackwards+offsetFrontwards;
+        Interval interval = new Interval(b,a);
+        return ctx.start.getInputStream().getText(interval);
+    }
 }
