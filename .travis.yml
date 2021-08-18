@@ -5,3 +5,8 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 jdk:
   - oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
