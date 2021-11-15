@@ -7,18 +7,24 @@ package br.univali.portugol.nucleo.bibliotecas.objetos;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
 /**
  *
  * @author Gabriel Schade
  */
 public class CacheObjetos {
 
-    private final List<Objeto> objetos;
+    private final HashMap<Integer, Objeto> objetos;
+    private final List<Integer> idsLivres;
+    private final int LIMITE = Integer.MAX_VALUE;
 
     private CacheObjetos()
     {
-        objetos = new ArrayList<>();
+        objetos = new HashMap<>();
+        idsLivres = new ArrayList<>();
     }
 
     public static CacheObjetos criar()
@@ -27,11 +33,12 @@ public class CacheObjetos {
     }
 
     private int obterProximoIndiceLivre() throws ErroExecucaoBiblioteca
-    {   
-        int size = objetos.size();
-        return size >= 0 ? 
-                size
-                :lancarExcecaoLimiteObjetos();
+    {
+        if (objetos.size() - idsLivres.size() >= LIMITE) {
+            return lancarExcecaoLimiteObjetos();
+        } else {
+            return idsLivres.isEmpty() ? objetos.size() : idsLivres.remove(idsLivres.size() - 1);
+        }
     }
 
     private int lancarExcecaoLimiteObjetos() throws ErroExecucaoBiblioteca
@@ -41,7 +48,7 @@ public class CacheObjetos {
    
     public Objeto obterObjeto(int endereco) throws ErroExecucaoBiblioteca
     {
-        return endereco >= 0 && endereco < objetos.size() ?
+        return objetos.containsKey(endereco) ?
                 objetos.get(endereco)
                 : lancarExcecaoEnderecoNaoApontaParaUmObjeto();
     }
@@ -58,8 +65,10 @@ public class CacheObjetos {
 
     public void liberarObjeto(int endereco) throws ErroExecucaoBiblioteca 
     {
-        if(endereco >= 0 && endereco < objetos.size() )
+        if (objetos.containsKey(endereco)) {
             objetos.remove(endereco);
+            idsLivres.add(endereco);
+        }
         else
             lancarExcecaoEnderecoNaoApontaParaUmObjeto();
     }
@@ -67,9 +76,7 @@ public class CacheObjetos {
     public int criarObjeto(Objeto objeto) throws ErroExecucaoBiblioteca
     {
         int indice = obterProximoIndiceLivre();
-
-        objetos.add(indice, objeto);
-
+        objetos.put(indice, objeto);
         return indice;
     }
 }
