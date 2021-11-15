@@ -36,8 +36,8 @@ public final class DesenhoRetangulo extends OperacaoDesenho
         this.opacidade = opacidade;
         this.centroX = x + (largura >> 1);
         this.centroY = y + (altura >> 1);
-        this.raioX = (int) (Math.min(largura, altura) * 0.2);
-        this.raioY = (int) (Math.min(largura, altura) * 0.2);
+        this.raioX = (int) (Math.min(largura, altura) * 0.2) / 2;
+        this.raioY = (int) (Math.min(largura, altura) * 0.2) / 2;
     }
 
     void setParametros(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, boolean preencher, int raioX, int raioY, double rotacao, int opacidade)
