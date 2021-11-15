@@ -7,10 +7,8 @@ import br.univali.portugol.nucleo.bibliotecas.objetos.Objeto;
 import br.univali.portugol.nucleo.programa.Programa;
 import org.junit.Test;
 
-import java.util.Collections;
-
 /**
- * @author Elieser
+ * @author Gabriel  
  */
 public class BibliotecaObjetosTest
 {
