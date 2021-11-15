@@ -8,7 +8,7 @@ import br.univali.portugol.nucleo.programa.Programa;
 import org.junit.Test;
 
 /**
- * @author Gabriel  
+ * @author Gabriel Porto
  */
 public class BibliotecaObjetosTest
 {
