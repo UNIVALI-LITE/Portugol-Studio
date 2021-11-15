@@ -380,6 +380,44 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
             throw new ErroExcessoOperacoes();
         }            
     }
+
+    @DocumentacaoFuncao(
+            descricao
+                    = "Desenha um retângulo na posição definida pelos parâmetros <param>x</param> e <param>y</param> "
+                    + "e com as dimensões especificadas pelos parâmetros <param>largura</param> e <param>altura</param>. <br><br>"
+                    + "O retângulo é desenhado na tela a partir do seu canto superior esquerdo ",
+            parametros =
+                    {
+                            @DocumentacaoParametro(nome = "x", descricao = "a posição (distância) do retângulo no eixo horizontal, em relação ao lado esquerdo da janela"),
+                            @DocumentacaoParametro(nome = "y", descricao = "a posição (distância) do retângulo no eixo vertical, em relação ao topo da janela"),
+                            @DocumentacaoParametro(nome = "largura", descricao = "a largura do retângulo em pixels"),
+                            @DocumentacaoParametro(nome = "altura", descricao = "a altura do retângulo em pixels"),
+                            @DocumentacaoParametro(nome = "raio_x", descricao = "define o raio horizontal do arredondamento de cantos"),
+                            @DocumentacaoParametro(nome = "raio_y", descricao = "define o raio vertical do arredondamento de cantos"),
+                            @DocumentacaoParametro(
+                                    nome = "preencher",
+                                    descricao
+                                            = "define se o retângulo será preenchido com a cor do ambiente gráfico. "
+                                            + "Se o valor for <tipo>verdadeiro</tipo>, o retângulo será preenchido. Se o valor for "
+                                            + "<tipo>falso</tipo>, somente o contorno do retângulo será desenhado"
+                            )
+                    },
+            autores =
+                    {
+                            @Autor(nome = "Gabriel Santos Porto", email = "gsporto226@gmail.com"),
+                    }
+    )
+    public void desenhar_retangulo_arredondado(final int x, final int y, final int largura, final int altura, final int raio_x, final int raio_y, final boolean preencher) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.desenharRetanguloArredondado(x, y, largura, altura, raio_x, raio_y, preencher);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }
+    }
     
     @DocumentacaoFuncao(
         descricao

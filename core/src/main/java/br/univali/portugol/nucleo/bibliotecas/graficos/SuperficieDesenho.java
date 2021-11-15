@@ -27,6 +27,8 @@ public interface SuperficieDesenho
 
     public void desenharRetangulo(int x, int y, int largura, int altura, boolean arredondarCantos, boolean preencher);
 
+    public void desenharRetanguloArredondado(int x, int y, int largura, int altura, int raioX, int raioY, boolean preencher);
+
     public void desenharElipse(int x, int y, int largura, int altura, boolean preencher);
 
     public void desenharLinha(int x1, int y1, int x2, int y2);

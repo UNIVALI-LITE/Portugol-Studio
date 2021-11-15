@@ -193,6 +193,15 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
+    public void desenharRetanguloArredondado(int x, int y, int largura, int altura, int raioX, int raioY, boolean preencher)
+    {
+        verificaExcessoOperacoes();
+
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoRetanguloArredondado(this, x, y, largura, altura, raioX, raioY, preencher, rotacao, opacidade);
+        indiceOperacao++;
+    }
+
+    @Override
     public void desenharElipse(int x, int y, int largura, int altura, boolean preencher)
     {
         verificaExcessoOperacoes();

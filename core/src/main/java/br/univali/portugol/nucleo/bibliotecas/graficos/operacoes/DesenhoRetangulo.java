@@ -13,7 +13,8 @@ public final class DesenhoRetangulo extends OperacaoDesenho
     private SuperficieDesenho superficieDesenho;
     private boolean preencher;
     private boolean arredondarCantos;
-    private int canto;
+    private int raioX;
+    private int raioY;
     private int largura;
     private int altura;
 
@@ -35,7 +36,25 @@ public final class DesenhoRetangulo extends OperacaoDesenho
         this.opacidade = opacidade;
         this.centroX = x + (largura >> 1);
         this.centroY = y + (altura >> 1);
-        this.canto = (int) (Math.min(largura, altura) * 0.2);
+        this.raioX = (int) (Math.min(largura, altura) * 0.2);
+        this.raioY = (int) (Math.min(largura, altura) * 0.2);
+    }
+
+    void setParametros(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, boolean preencher, int raioX, int raioY, double rotacao, int opacidade)
+    {
+        this.superficieDesenho = superficieDesenho;
+        this.x = x;
+        this.y = y;
+        this.largura = largura;
+        this.altura = altura;
+        this.preencher = preencher;
+        this.arredondarCantos = true;
+        this.rotacao = rotacao;
+        this.opacidade = opacidade;
+        this.centroX = x + (largura >> 1);
+        this.centroY = y + (altura >> 1);
+        this.raioX = raioX;
+        this.raioY = raioY;
     }
     
     @Override
@@ -47,7 +66,7 @@ public final class DesenhoRetangulo extends OperacaoDesenho
         {
             if (arredondarCantos)
             {
-                graficos.fillRoundRect(x, y, largura, altura, canto, canto);
+                graficos.fillRoundRect(x, y, largura, altura, raioX * 2, raioY * 2);
             }
             else
             {
@@ -58,7 +77,7 @@ public final class DesenhoRetangulo extends OperacaoDesenho
         {
             if (arredondarCantos)
             {
-                graficos.drawRoundRect(x, y, largura, altura, canto, canto);
+                graficos.drawRoundRect(x, y, largura, altura, raioX * 2, raioY * 2);
             }
             else
             {
