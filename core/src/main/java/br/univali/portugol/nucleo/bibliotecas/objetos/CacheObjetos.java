@@ -61,6 +61,7 @@ public class CacheObjetos {
     public void liberar()
     {
         objetos.clear();
+        idsLivres.clear();
     }
 
     public void liberarObjeto(int endereco) throws ErroExecucaoBiblioteca 
