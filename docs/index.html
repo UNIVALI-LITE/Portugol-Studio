@@ -36,8 +36,7 @@
 
   <link rel="shortcut icon" href="assets/img/fav-icon.ico">
 
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-    name='viewport' />
+  <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
@@ -78,7 +77,7 @@
     <div class="container">
       <div class="navbar-translate">
         <a class="navbar-brand" href="javascript:void(0)" onclick="scrollToTop()" rel="tooltip" data-placement="bottom">
-          <img src="./assets/img/logo.png" style="height: 32px; margin-top: -8px;">Portugol Studio
+          <img alt="logo" src="./assets/img/logo.png" style="height: 32px; margin-top: -8px;">Portugol Studio
         </a>
         <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
           aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,12 +153,15 @@
           <h3><b class="text-primary download-count">100000</b> pessoas já estão utilizando o Portugol Studio
           </h3>
           <div class="row text-center" id="header-buttons">
+            <div class="h4 macdetails" style="display:none;">As versões do Portugol para BigSur e Monterey do MacOS estão
+              gerando problemas e não podemos garantir o seu funcionamento no momento!
+            </div>
             <div class="col-12 my-5 downloaders-header">
               <a href="https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.7.4/portugol-studio-2.7.4-windows.exe"
                 class="btn btn-md btn-primary col-12 col-md-5 col-lg-3 btn-simple download-link">Download</a>
-              <span class="col-2"></span>
-              <a href="https://www.patreon.com/portugolstudio" target="_blank" role="button"
-                class="btn btn-md btn-primary col-12 col-md-5 col-lg-3 btn-simple donation-link">Apoie</a>
+              <!-- <span class="col-2"></span> -->
+              <!-- <a href="https://www.patreon.com/portugolstudio" target="_blank" role="button"
+                class="btn btn-md btn-primary col-12 col-md-5 col-lg-3 btn-simple donation-link">Apoie</a> -->
             </div>
             <div class="col-12"><a
                 href="https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.7.4/portugol-studio-2.7.4-windows.exe"
@@ -182,7 +184,7 @@
           <div class="row">
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/interface_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="interface icon" src="assets/img/interface_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Interface Didática</h5>
                 <p class="lead text-center">A tela inicial foi projetada para permitir rápido acesso às
                   principais funcionalidades do ambiente</p>
@@ -190,7 +192,7 @@
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/help_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="help icon" src="assets/img/help_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Sistema de ajuda</h5>
                 <p class="lead text-center">O sistema de ajuda navegável e os demais materiais de apoio
                   facilitam o aprendizado da ferramenta</p>
@@ -198,7 +200,7 @@
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/tree_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="tree" src="assets/img/tree_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Arvore Estrutural</h5>
                 <p class="lead text-center">A árvore estrutural permite identificar e compreender os
                   elementos que compõem o programa escrito</p>
@@ -206,7 +208,7 @@
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/code_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="code" src="assets/img/code_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Editor de Código</h5>
                 <p class="lead text-center">O editor possui destaque de sintaxe, conclusão de código
                   (para bibliotecas), suporte a temas e dobramento de código</p>
@@ -214,14 +216,14 @@
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/debug_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="debug" src="assets/img/debug_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Depurador</h5>
                 <p class="lead text-center">O depurador permite executar o programa passo a passo</p>
               </div>
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/game_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="game" src="assets/img/game_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Suporte à Jogos</h5>
                 <p class="lead text-center">As bibliotecas do Portugol Studio permitem escrever
                   programas mais complexos incluindo jogos com interface gráfica</p>
@@ -256,7 +258,7 @@
           <div class="row">
             <div class="col-md-4">
               <a href="https://www.youtube.com/user/portugolstudio" target="_blank">
-                <div class="text-center"><img src="assets/img/chanels/portugol.jpg" height="100px"
+                <div class="text-center"><img alt="portugol" src="assets/img/chanels/portugol.jpg" height="100px"
                     class="rounded-circle img-raised"></div>
                 <h5 class="text-center">Portugol Studio</h5>
               </a>
@@ -264,7 +266,7 @@
             <div class="col-md-4">
               <a href="https://www.youtube.com/watch?v=uwHNagJ1M2g&amp;list=PLN2AgTfb0UJV69nlF8XMtWIRlpiBxxW0v"
                 target="_blank">
-                <div class="text-center"><img src="assets/img/chanels/jean.jpg" height="100px"
+                <div class="text-center"><img alt="jean" src="assets/img/chanels/jean.jpg" height="100px"
                     class="rounded-circle img-raised"></div>
                 <h5 class="text-center">Jean Vargas</h5>
               </a>
@@ -272,21 +274,21 @@
             <div class="col-md-4">
               <a href="https://www.youtube.com/watch?v=6OIADpFImtc&amp;list=PLJ4lbwalqv3Eaiay2pCeU_QU6vb-Hz989"
                 target="_blank">
-                <div class="text-center"><img src="assets/img/chanels/hm.jpg" height="100px"
+                <div class="text-center"><img alt="hm" src="assets/img/chanels/hm.jpg" height="100px"
                     class="rounded-circle img-raised"></div>
                 <h5 class="text-center">HM Programming</h5>
               </a>
             </div>
             <div class="col-md-4">
               <a href="https://www.youtube.com/watch?v=Tp1iHwek9Hg" target="_blank">
-                <div class="text-center"><img src="assets/img/chanels/rm.jpg" height="100px"
+                <div class="text-center"><img alt="rm" src="assets/img/chanels/rm.jpg" height="100px"
                     class="rounded-circle img-raised"></div>
                 <h5 class="text-center">Prof RMuniz</h5>
               </a>
             </div>
             <div class="col-md-4">
               <a href="https://www.youtube.com/watch?v=O1CgreteotI&amp;list=UUt45KLNW7ZYlZvdTA02ojkQ" target="_blank">
-                <div class="text-center"><img src="assets/img/chanels/nj.jpg" height="100px"
+                <div class="text-center"><img alt="nj" src="assets/img/chanels/nj.jpg" height="100px"
                     class="rounded-circle img-raised"></div>
                 <h5 class="text-center">Nilson Júnior</h5>
               </a>
@@ -294,7 +296,7 @@
             <div class="col-md-4">
               <a href="https://www.youtube.com/watch?v=ECxkjvIVbkc&list=PLWinCsaFzrrE_vgJZUbnfdydPrlzkVgha"
                 target="_blank">
-                <div class="text-center"><img src="assets/img/chanels/rrs.jpg" height="100px"
+                <div class="text-center"><img alt="rrs" src="assets/img/chanels/rrs.jpg" height="100px"
                     class="rounded-circle img-raised"></div>
                 <h5 class="text-center">Rodrigo R Silva</h5>
               </a>
@@ -311,7 +313,7 @@
           <div class="row">
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/setings_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="settings" src="assets/img/setings_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Exemplos</h5>
                 <p class="lead text-center">O Portugol Studio conta com vários exemplos que vão de
                   entrada e saída até jogos completos</p>
@@ -319,7 +321,7 @@
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/inspetor_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="inspetor" src="assets/img/inspetor_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Inspetor de Variáveis</h5>
                 <p class="lead text-center">O inspetor de variáveis auxilia a entender o que está
                   acontecendo em cada etapa da execução</p>
@@ -327,7 +329,7 @@
             </div>
             <div class="col-md-4">
               <div class="">
-                <div class="text-center"><img src="assets/img/projetor_icon.svg" height="120px"></div>
+                <div class="text-center"><img alt="projetor" src="assets/img/projetor_icon.svg" height="120px"></div>
                 <h5 class="text-center title">Configurações para Projetor</h5>
                 <p class="lead text-center">O editor conta com ferramentas que ajudam o professor a
                   utilizar o Portugol em suas aulas</p>

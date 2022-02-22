@@ -98,6 +98,7 @@ function testOS () {
   } else if (os === 'Mac OS X') {
     path += 'mac'
     link = versionInfo.links.osx
+    $('.macdetails').attr('style', 'display:block;')
   } else {
     path += 'lin'
     link = versionInfo.links.linux_x64
