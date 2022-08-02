@@ -18,18 +18,6 @@ escolha(numero)
 		//Instruções caso nenhum dos casos anteriores não seja verdadeiro
 }
 
-cadeia texto
-leia(texto)
-escolha(texto)
-{
-	caso "sim":
-		//Instruções caso o texto for igual a "sim"
-	pare
-
-	caso "nao":
-		//Instruções caso o texto for igual a "nao"
-}
-
 caracter simbolo
 leia(simbolo)
 escolha(simbolo)
