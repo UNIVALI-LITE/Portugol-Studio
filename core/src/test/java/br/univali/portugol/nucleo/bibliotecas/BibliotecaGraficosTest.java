@@ -73,6 +73,9 @@ public class BibliotecaGraficosTest
            g.definir_cor(Graficos.COR_AZUL);
            g.desenhar_retangulo(LARGURA_TELA - tamanho - x, ALTURA_TELA - tamanho - y, tamanho, tamanho, false, true);
 
+           g.definir_cor(Graficos.COR_VERDE);
+           g.desenhar_retangulo_arredondado(LARGURA_TELA - tamanho / 3 - x / 2, ALTURA_TELA - tamanho / 3 - y, tamanho, tamanho, 5, 30, true);
+
            g.definir_cor(Graficos.COR_AMARELO);
            g.desenhar_elipse(x, ALTURA_TELA - tamanho / 2 - y, tamanho / 2, tamanho / 2, true);
 

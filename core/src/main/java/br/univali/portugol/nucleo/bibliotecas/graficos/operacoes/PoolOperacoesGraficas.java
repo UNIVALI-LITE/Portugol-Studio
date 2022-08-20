@@ -92,6 +92,15 @@ public final class PoolOperacoesGraficas
         return desenhoRetangulo;
     }
 
+    public DesenhoRetangulo obterOperacaoDesenhoRetanguloArredondado(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, int raioX, int raioY, boolean preencher, double rotacao, int opacidade)
+    {
+        DesenhoRetangulo desenhoRetangulo = CACHE_OPERACOES_DESENHO_RETANGULO.obter();
+
+        desenhoRetangulo.setParametros(superficieDesenho, x, y, largura, altura, preencher, raioX, raioY, rotacao, opacidade);
+
+        return desenhoRetangulo;
+    }
+
     public DesenhoElipse obterOperacaoDesenhoElipse(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, boolean preencher, double rotacao, int opacidade)
     {
         DesenhoElipse desenhoElipse = CACHE_OPERACOES_DESENHO_ELIPSE.obter();
