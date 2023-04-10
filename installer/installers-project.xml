@@ -887,6 +887,27 @@ include /usr/share/nano/portugol.nanorc</text>
                     <explanation>Mac</explanation>
                     <actionList>
                         <actionGroup>
+                            <explanation>Configurando executáveis no path do sistema</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>ln</program>
+                                    <programArguments>-s ${install_app_dir}/executar-studio-mac.sh /usr/local/bin/portugol-studio</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>ln</program>
+                                    <programArguments>-s ${install_app_dir}/executar-console-mac.sh /usr/local/bin/portugol-console</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 /usr/local/bin/portugol-studio</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 /usr/local/bin/portugol-console</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
                             <explanation>Ajustando quebras de linha nos arquivos</explanation>
                             <actionList>
                                 <runProgram>
