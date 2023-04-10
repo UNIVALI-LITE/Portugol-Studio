@@ -73,8 +73,6 @@
 		<key>selectedTab</key>
 		<string>log</string>
 	</dict>
-	<key>LSUIElement</key>
-	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright ? LITE - UNIVALI, 2009 - 2023. Todos os direitos reservados</string>
 </dict>
