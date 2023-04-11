@@ -44,5 +44,5 @@ if [ $numero_parametros -gt 0 ]; then
 fi
 
 cd "$caminho_portugol"
-sh -c "$comando > /dev/null 2>&1 &"
+(sh -c "$comando")&
 
