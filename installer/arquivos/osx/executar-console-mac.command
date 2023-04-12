@@ -30,7 +30,8 @@ clear
 
 numero_parametros=$#
 
-comando="'$caminho_java' -server -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio -Xdock:name=Portugol-Studio -Xdock:icon=./aplicacao/icones/mac/portugol-studio.icns -jar portugol-console.jar"
+
+comando="JAVA_HOME='$caminho_portugol/java/java-mac' '$caminho_java' -server -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio -Xdock:name=Portugol-Studio -Xdock:icon=../portugol-studio.icns -Djava.awt.headless=true -jar aplicacao/portugol-console.jar"
 
 if [ $numero_parametros -gt 0 ]; then
 
@@ -47,5 +48,5 @@ if [ $numero_parametros -gt 0 ]; then
 	comando="$comando '$arquivo' $@"
 fi
 
-cd "$caminho_aplicacao"
+cd "$caminho_portugol"
 sh -c "$comando"

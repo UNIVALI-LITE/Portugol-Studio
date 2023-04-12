@@ -5,17 +5,24 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-  <string>6.0</string>
+	<string>6.0</string>
 	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>dplt</string>
+	<key>LSMinimumSystemVersionByArchitecture</key>
+	<dict>
+		<key>x86_64</key>
+		<string>10.6</string>
+	</dict>
+	<key>LSRequiresCarbon</key>
+	<true/>
 	<key>CFBundleName</key>
 	<string>Portugol Studio</string>
 	<key>CFBundleExecutable</key>
 	<string>Portugol Studio</string>
 	<key>CFBundleVersion</key>
-	<string>2.7.2</string>
+	<string>2.7.5</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.7.2</string>
+	<string>2.7.5</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>Portuguese</string>
 	<key>CFBundleIdentifier</key>
@@ -45,7 +52,28 @@
 			<string>Alternate</string>
 		</dict>
 	</array>
+	<key>OSAAppletShowStartupScreen</key>
+	<false/>
+	<key>WindowState</key>
+	<dict>
+		<key>bundleDividerCollapsed</key>
+		<true/>
+		<key>bundlePositionOfDivider</key>
+		<real>0.0</real>
+		<key>dividerCollapsed</key>
+		<false/>
+		<key>eventLogLevel</key>
+		<integer>2</integer>
+		<key>name</key>
+		<string>ScriptWindowState</string>
+		<key>positionOfDivider</key>
+		<real>547</real>
+		<key>savedFrame</key>
+		<string>325 106 853 669 0 0 1280 775 </string>
+		<key>selectedTab</key>
+		<string>log</string>
+	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © LITE - UNIVALI, 2009 - 2019. Todos os direitos reservados</string>
+	<string>Copyright ? LITE - UNIVALI, 2009 - 2023. Todos os direitos reservados</string>
 </dict>
 </plist>
