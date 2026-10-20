@@ -1,0 +1,25 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.programa.*;
+
+public class testVetorComTamanhoDinamico extends Programa
+{
+
+
+
+     public testVetorComTamanhoDinamico() throws ErroExecucao, InterruptedException {
+     }
+
+
+     @Override
+     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+     {
+     int n = 5;
+     int vet[] = new int[validaTamanhoDinamico(n)];
+     int mat[][] = new int[validaTamanhoDinamico(n)][validaTamanhoDinamico(n)];
+
+
+     }
+
+}

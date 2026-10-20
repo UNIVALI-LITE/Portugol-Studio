@@ -24,9 +24,11 @@ import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.execucao.TradutorRuntimeException;
+import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroTamanhoVetorMatrizInvalido;
 import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroValorEntradaInvalido;
 import br.univali.portugol.nucleo.execucao.erros.tradutores.TradutorArithmeticException;
 import br.univali.portugol.nucleo.execucao.erros.tradutores.TradutorArrayIndexOutOfBoundsException;
+import br.univali.portugol.nucleo.execucao.erros.tradutores.TradutorNegativeArraySizeException;
 import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.EntradaSaidaPadrao;
 import br.univali.portugol.nucleo.execucao.es.Saida;
@@ -170,6 +172,7 @@ public abstract class Programa
 	{
 		tradutoresRuntimeException.put(ArrayIndexOutOfBoundsException.class, new TradutorArrayIndexOutOfBoundsException());
 		tradutoresRuntimeException.put(ArithmeticException.class, new TradutorArithmeticException());
+		tradutoresRuntimeException.put(NegativeArraySizeException.class, new TradutorNegativeArraySizeException());
 	}	
 	
 	public Programa()
@@ -222,6 +225,32 @@ public abstract class Programa
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
+
+    /**
+     * Valida um tamanho de vetor/matriz que só pode ser resolvido em tempo de
+     * execução e devolve o valor validado.
+     * <p>
+     * O tamanho de um vetor ou matriz declarado com tamanho dinâmico é
+     * avaliado durante a execução do programa. Este método verifica se o
+     * valor obtido é válido (maior que zero) e, em caso contrário, gera o
+     * erro {@link ErroTamanhoVetorMatrizInvalido}.
+     *
+     * @param tamanho o tamanho obtido em tempo de execução
+     *
+     * @return o tamanho validado
+     *
+     * @since 2.8
+     */
+    protected int validaTamanhoDinamico(int tamanho) throws ErroExecucao
+    {
+        if (tamanho <= 0)
+        {
+            throw new ErroTamanhoVetorMatrizInvalido();
+        }
+
+        return tamanho;
+    }
+
         
         protected String concatena(char a, String b)
 	{

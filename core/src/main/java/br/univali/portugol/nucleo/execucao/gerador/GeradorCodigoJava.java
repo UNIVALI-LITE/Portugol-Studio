@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.execucao.gerador;
 
 import br.univali.portugol.nucleo.StringUtils;
+import br.univali.portugol.nucleo.analise.semantica.TamanhoDinamicoDetector;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.*;
@@ -138,6 +139,27 @@ public class GeradorCodigoJava
             }
         }
 
+        /**
+         * Gera a expressão que define o tamanho de um vetor ou matriz. Quando
+         * o tamanho é dinâmico (depende de uma variável que só tem valor em
+         * tempo de execução), a expressão é envolvida por uma chamada a
+         * {@code validaTamanhoDinamico}, que verifica se o tamanho obtido é
+         * positivo, gerando um erro amigável caso contrário.
+         */
+        private void geraTamanho(NoExpressao tamanho, PrintWriter saida, VisitanteASA visitor) throws ExcecaoVisitaASA
+        {
+            if (TamanhoDinamicoDetector.ehTamanhoDinamico(tamanho))
+            {
+                saida.append("validaTamanhoDinamico(");
+                tamanho.aceitar(visitor);
+                saida.append(")");
+            }
+            else
+            {
+                tamanho.aceitar(visitor);
+            }
+        }
+
         private List<NoDeclaracaoInicializavel> getVariaveisGlobaisDeclaradas(ASAPrograma asa, boolean excluiConstantes)
         {
             List<NoDeclaracao> declaracoesGlobais = asa.getListaDeclaracoesGlobais();
@@ -191,7 +213,7 @@ public class GeradorCodigoJava
                             {
                                 String nomeTipo = Utils.getNomeTipoJava(variavel.getTipoDado());
                                 saida.format("new %s[", nomeTipo);
-                                tamanho.aceitar(this);
+                                geraTamanho(tamanho, saida, this);
                                 saida.append("]");
                             }
                         }
@@ -203,9 +225,9 @@ public class GeradorCodigoJava
                             {
                                 String nomeTipo = Utils.getNomeTipoJava(variavel.getTipoDado());
                                 saida.format("new %s[", nomeTipo);
-                                linhas.aceitar(this);
+                                geraTamanho(linhas, saida, this);
                                 saida.append("][");
-                                colunas.aceitar(this);
+                                geraTamanho(colunas, saida, this);
                                 saida.append("]");
                             }
                         }

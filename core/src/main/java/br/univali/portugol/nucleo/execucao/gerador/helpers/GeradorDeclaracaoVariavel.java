@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.execucao.gerador.helpers;
 
+import br.univali.portugol.nucleo.analise.semantica.TamanhoDinamicoDetector;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -152,11 +153,42 @@ public class GeradorDeclaracaoVariavel
                 if (tamanho != null)
                 {
                     saida.format(" = new %s[", tipo);
-                    tamanho.aceitar(visitor);
+                    geraTamanhoVetor(tamanho, saida, visitor);
                     saida.append("]");
                 }
             }
         }
+    }
+
+    /**
+     * Gera a expressão que define o tamanho de um vetor. Quando o tamanho é
+     * dinâmico (depende de uma variável que só tem valor em tempo de
+     * execução), a expressão é envolvida por uma chamada a
+     * {@code validaTamanhoDinamico}, que verifica se o tamanho obtido é
+     * positivo, gerando um erro amigável caso contrário.
+     */
+    private void geraTamanhoVetor(NoExpressao tamanho, PrintWriter saida, VisitanteASA visitor) throws ExcecaoVisitaASA
+    {
+        if (TamanhoDinamicoDetector.ehTamanhoDinamico(tamanho))
+        {
+            saida.append("validaTamanhoDinamico(");
+            tamanho.aceitar(visitor);
+            saida.append(")");
+        }
+        else
+        {
+            tamanho.aceitar(visitor);
+        }
+    }
+
+    /**
+     * Gera a expressão que define o número de linhas ou colunas de uma
+     * matriz. Quando o tamanho é dinâmico, a expressão é envolvida por uma
+     * chamada a {@code validaTamanhoDinamico}.
+     */
+    private void geraTamanhoMatriz(NoExpressao tamanho, PrintWriter saida, VisitanteASA visitor) throws ExcecaoVisitaASA
+    {
+        geraTamanhoVetor(tamanho, saida, visitor);
     }
 
     public void gera(NoDeclaracaoMatriz matriz, PrintWriter saida, VisitanteASA visitor, 
@@ -185,9 +217,9 @@ public class GeradorDeclaracaoVariavel
                             append(tipo)
                             .append("[");
                     
-                    matriz.getNumeroLinhas().aceitar(visitor);
+                    geraTamanhoMatriz(matriz.getNumeroLinhas(), saida, visitor);
                     saida.append("][");
-                    matriz.getNumeroColunas().aceitar(visitor);
+                    geraTamanhoMatriz(matriz.getNumeroColunas(), saida, visitor);
                     saida.append("]");
                 }
             }

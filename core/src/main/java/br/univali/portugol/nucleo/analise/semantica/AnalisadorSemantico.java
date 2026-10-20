@@ -2506,7 +2506,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         if (expTamanho != null)
         {
             TipoDado tipoTamanho = (TipoDado) expTamanho.aceitar(this);
-            AnalisadorDeclaracaoTamanhoVetorMatriz adtvm = new AnalisadorDeclaracaoTamanhoVetorMatriz();            
+            AnalisadorDeclaracaoTamanhoVetorMatriz adtvm = new AnalisadorDeclaracaoTamanhoVetorMatriz();
             
             if (tipoTamanho == TipoDado.INTEIRO)
             {
@@ -2520,22 +2520,33 @@ public final class AnalisadorSemantico implements VisitanteASA
 
                     if (ref.getEscopoBiblioteca() == null)
                     {
-                        Variavel variavel = (Variavel) memoria.getSimbolo(ref.getNome());
-                        NoDeclaracaoVariavel decl = (NoDeclaracaoVariavel) variavel.getOrigemDoSimbolo();
-
-                        if (variavel.constante())
+                        Simbolo simboloTamanho = memoria.getSimbolo(ref.getNome());
+                        if (simboloTamanho instanceof Variavel)
                         {
-                            Integer intg = ((NoInteiro) decl.getInicializacao()).getValor();
-                            if(intg<=0)
+                            Variavel variavel = (Variavel) simboloTamanho;
+                            NoDeclaracaoVariavel decl = (NoDeclaracaoVariavel) variavel.getOrigemDoSimbolo();
+
+                            if (variavel.constante())
                             {
+                                Integer intg = ((NoInteiro) decl.getInicializacao()).getValor();
+                                if(intg<=0)
+                                {
+                                    notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
+                                }
+                                return intg;
+                            }
+                            else if (memoria.isEscopoGlobal())
+                            {
+                                // tamanho dinâmico só é permitido em escopo local (dentro de funções),
+                                // onde a expressão é avaliada em tempo de execução pelo código Java gerado
                                 notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
                             }
-                            return intg;
+                            // variável local não-constante: tamanho dinâmico válido,
+                            // retorna null para indicar que o tamanho só será conhecido em runtime
+                            // (as checagens de limite passam a ser feitas em tempo de execução)
+                            return null;
                         }
-                        else
-                        {
-                            notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
-                        }
+                        notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
                     }
                     else
                     {
@@ -2555,6 +2566,20 @@ public final class AnalisadorSemantico implements VisitanteASA
                 }
                 else if(expTamanho instanceof NoOperacao)
                 {                            
+                    // Se a operação envolve variáveis não constantes, o tamanho só pode ser
+                    // resolvido em tempo de execução. Nesse caso devolvemos null para sinalizar
+                    // que o tamanho é dinâmico e a alocação é feita pelo código Java gerado.
+                    if (TamanhoDinamicoDetector.ehTamanhoDinamico(expTamanho))
+                    {
+                        if (memoria.isEscopoGlobal())
+                        {
+                            // tamanho dinâmico não é permitido no escopo global
+                            notificarErroSemantico(new ErroTamanhoVetorMatriz(noDeclaracao, expTamanho));
+                        }
+
+                        return null;
+                    }
+
                     try {
                         return adtvm.possuiExpressaoDeTamanhoValida(noDeclaracao, expTamanho);
                     } catch (ErroExpressaoTamanhoVetorMatriz ex) {
