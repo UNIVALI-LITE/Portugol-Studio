@@ -31,7 +31,7 @@ public class ErroTamanhoVetorMatriz extends ErroSemantico
         	codigo += "1";
         	super.setCodigo(codigo);
         	
-            return String.format("O tamanho do vetor '%s' deve ser um valor ou uma constante do tipo inteiro e positivo \n Ex: vetor[3]", declaracao.getNome());
+            return String.format("O tamanho do vetor '%s' deve ser um valor, uma constante ou uma variavel inteira declarada em escopo local e positiva \n Ex: vetor[3] ou leia(n) e inteiro vetor[n]", declaracao.getNome());
         }
         else
         {            

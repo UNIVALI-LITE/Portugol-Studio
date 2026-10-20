@@ -245,8 +245,8 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
 
     @Override
     public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {        
-        Integer valor1 = (Integer) noOperacaoSoma.getOperandoDireito().aceitar(this);
-        Integer valor2 = (Integer) noOperacaoSoma.getOperandoEsquerdo().aceitar(this);        
+        Integer valor1 = (Integer) noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
+        Integer valor2 = (Integer) noOperacaoSoma.getOperandoDireito().aceitar(this);        
         Integer resultado = valor1 + valor2;
         
         return resultado;
@@ -254,8 +254,8 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
 
     @Override
     public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA {
-        Integer valor1 = (Integer) noOperacaoSubtracao.getOperandoDireito().aceitar(this);
-        Integer valor2 = (Integer) noOperacaoSubtracao.getOperandoEsquerdo().aceitar(this);        
+        Integer valor1 = (Integer) noOperacaoSubtracao.getOperandoEsquerdo().aceitar(this);
+        Integer valor2 = (Integer) noOperacaoSubtracao.getOperandoDireito().aceitar(this);        
         Integer resultado = valor1 - valor2;
         
         return resultado;
@@ -263,8 +263,8 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
-        Integer valor1 = (Integer) noOperacaoDivisao.getOperandoDireito().aceitar(this);
-        Integer valor2 = (Integer) noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);        
+        Integer valor1 = (Integer) noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
+        Integer valor2 = (Integer) noOperacaoDivisao.getOperandoDireito().aceitar(this);        
         Integer resultado = valor1 / valor2;
         
         return resultado;
@@ -272,8 +272,8 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
 
     @Override
     public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA {
-        Integer valor1 = (Integer) noOperacaoMultiplicacao.getOperandoDireito().aceitar(this);
-        Integer valor2 = (Integer) noOperacaoMultiplicacao.getOperandoEsquerdo().aceitar(this);        
+        Integer valor1 = (Integer) noOperacaoMultiplicacao.getOperandoEsquerdo().aceitar(this);
+        Integer valor2 = (Integer) noOperacaoMultiplicacao.getOperandoDireito().aceitar(this);        
         Integer resultado = valor1 * valor2;
         
         return resultado;
@@ -281,8 +281,8 @@ public class AnalisadorDeclaracaoTamanhoVetorMatriz implements VisitanteASA{
 
     @Override
     public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA {
-        Integer valor1 = (Integer) noOperacaoModulo.getOperandoDireito().aceitar(this);
-        Integer valor2 = (Integer) noOperacaoModulo.getOperandoEsquerdo().aceitar(this);        
+        Integer valor1 = (Integer) noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
+        Integer valor2 = (Integer) noOperacaoModulo.getOperandoDireito().aceitar(this);        
         Integer resultado = valor1 % valor2;
         
         return resultado;

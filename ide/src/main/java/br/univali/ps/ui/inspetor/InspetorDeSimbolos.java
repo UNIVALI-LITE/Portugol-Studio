@@ -1,6 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.analise.semantica.AnalisadorDeclaracaoTamanhoVetorMatriz;
+import br.univali.portugol.nucleo.analise.semantica.TamanhoDinamicoDetector;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroExpressaoTamanhoVetorMatriz;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.programa.Programa;
@@ -662,7 +663,13 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     {
         int colunas = -1;
         if (declaracaoVetor.getTamanho() != null) {
-            colunas = obtemValorDeExpressaoDoTipoInteiro(declaracaoVetor.getTamanho());
+            Integer tamanhoResolvido = obtemValorDeExpressaoDoTipoInteiro(declaracaoVetor.getTamanho());
+            if (tamanhoResolvido != null) {
+                colunas = tamanhoResolvido;
+            }
+            // quando o tamanho é dinâmico (ex.: inteiro vet[n] onde n só tem valor
+            // em tempo de execução) ele não pode ser resolvido estaticamente e o
+            // vetor não é adicionado ao inspetor por enquanto
         } else if (declaracaoVetor.getInicializacao() != null) {
             colunas = ((NoVetor) declaracaoVetor.getInicializacao()).getValores().size();
         }
@@ -719,6 +726,13 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
         if(expressao instanceof NoOperacao)
         {
+            if (TamanhoDinamicoDetector.ehTamanhoDinamico(expressao))
+            {
+                // a expressão envolve variáveis cujo valor só é conhecido em tempo
+                // de execução, então não é possível resolvê-la estaticamente
+                return null;
+            }
+
             AnalisadorDeclaracaoTamanhoVetorMatriz analisadorDeclaracaoTamanhoVetorMatriz = new AnalisadorDeclaracaoTamanhoVetorMatriz();
             try {
                 return analisadorDeclaracaoTamanhoVetorMatriz.possuiExpressaoDeTamanhoValida(null, expressao);
@@ -734,8 +748,17 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         int colunas = -1, linhas = -1;
         if (noTransferido.getNumeroColunas() != null && noTransferido.getNumeroLinhas() != null) 
         {
-            colunas = obtemValorDeExpressaoDoTipoInteiro(noTransferido.getNumeroColunas());
-            linhas = obtemValorDeExpressaoDoTipoInteiro(noTransferido.getNumeroLinhas());
+            Integer colunasResolvidas = obtemValorDeExpressaoDoTipoInteiro(noTransferido.getNumeroColunas());
+            Integer linhasResolvidas = obtemValorDeExpressaoDoTipoInteiro(noTransferido.getNumeroLinhas());
+
+            // quando as dimensões são dinâmicas (ex.: inteiro mat[n][n]) elas não
+            // podem ser resolvidas estaticamente e a matriz não é adicionada ao
+            // inspetor por enquanto
+            if (colunasResolvidas != null && linhasResolvidas != null)
+            {
+                colunas = colunasResolvidas;
+                linhas = linhasResolvidas;
+            }
         } 
         else if (noTransferido.getInicializacao() != null) 
         {

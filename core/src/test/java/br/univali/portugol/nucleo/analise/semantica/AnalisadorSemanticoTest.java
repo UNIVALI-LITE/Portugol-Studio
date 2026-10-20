@@ -10,6 +10,7 @@ import br.univali.portugol.nucleo.analise.semantica.erros.ErroInclusaoBiblioteca
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloRedeclarado;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroTamanhoVetorMatriz;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTipoParametroIncompativel;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
 import br.univali.portugol.nucleo.asa.TipoDado;
@@ -83,6 +84,50 @@ public final class AnalisadorSemanticoTest
         
     }
     
+    @Test 
+    public void testVetorComTamanhoDinamico() throws ErroCompilacao {
+        // tamanho dinâmico em escopo local é válido: não deve gerar erro
+        try {
+            Portugol.compilarParaAnalise(
+                    "programa                       "
+                +   "{                              "
+                +   "   funcao inicio()             "
+                +   "   {                           "
+                +   "       inteiro n = 5           "
+                +   "       inteiro vet[n]          "
+                +   "       inteiro mat[n][n]       "
+                +   "   }                           "
+                +   "}                              "
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.fail("não era esperado nenhum erro semântico, mas obtivemos " + resultado.getErros().size()
+                    + ": " + resultado.getErros());
+        }
+    }
+
+    @Test
+    public void testVetorComTamanhoDinamicoEmEscopoGlobal() throws ErroCompilacao {
+        // tamanho dinâmico não é permitido fora de funções (escopo global)
+        try {
+            Portugol.compilarParaAnalise(
+                  "programa                                       "
+                + "{                                              "
+                + "   inteiro n = 5                               "
+                + "   inteiro vet[n]                              "
+                + "   funcao inicio() { escreva(\"ok\") }          "
+                + "}                                              "
+            );
+            Assert.fail("era esperado um erro de compilação");
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() == 1);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroTamanhoVetorMatriz.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
+    }
+
     @Test 
     public void testEscrevaComFuncaoSemRetorno() throws ErroCompilacao {
         try {
